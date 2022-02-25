@@ -3,7 +3,12 @@
         "sourceMap": true,
         "target": "es6",
         "module": "commonjs",
-        "jsx": "react"
+        "jsx": "react",
+        "lib": [
+            "es2019",
+            "dom"
+        ],
+        "experimentalDecorators": true
     },
     "exclude": [
         "node_modules",

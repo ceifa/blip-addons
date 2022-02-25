@@ -1,8 +1,8 @@
 {
-    "name": "TS/R/WP Chrome Extension",
+    "name": "Blips",
     "version": "0.0.1",
     "manifest_version": 2,
-    "description": "Boilerplate for a Chrome extension with TypeScript, React, and Webpack.",
+    "description": "Collection of Blip utilities",
     "homepage_url": "https://duo.com/labs",
     "icons": {
       "16": "icons/icon16.png",
@@ -24,10 +24,13 @@
       "https://*/*"
     ],
     "content_security_policy": "default-src 'self';",
+    "web_accessible_resources": [
+      "js/listener.js"
+    ],
     "content_scripts": [
       {
         "matches": [
-          "https://*/*"
+          "*://*.blip.ai/*"
         ],
         "js": [
           "js/content.js"
