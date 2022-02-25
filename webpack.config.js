@@ -5,8 +5,8 @@ module.exports = {
   devtool: "inline-source-map",
 
   entry: {
-    content: "./src/app/content.ts",
-    background: "./src/app/background.ts",
+    content: "./src/app/Content.ts",
+    background: "./src/app/Background.ts",
     popup: "./src/ui/popup.tsx",
     listener: "./src/app/Listener.ts",
   },
