@@ -1,27 +1,12 @@
-import { Retriever } from "./Retriever";
+import { BlipsExtension } from './BlipsExtension'
+import { GetVariable } from './Commands'
 
-console.log("hi");
+const extension = new BlipsExtension().start()
 
-function injectScript(scriptPath: string) {
-  const script = document.createElement("script");
+extension.onBuilderReady(async () => {
+  console.log('Pronto')
 
-  script.setAttribute("src", chrome.extension.getURL(scriptPath));
+  const flow = await GetVariable.execute('flow')
 
-  document.body.appendChild(script);
-}
-
-window.addEventListener("message", (message: Message<BlipResponse>) => {
-  if (message.data.isBlipsResponse) {
-    const { identifier, result } = message.data;
-
-    Retriever.resolve(identifier, result);
-  }
-});
-
-(() => {
-  setInterval(async () => {
-    await Retriever.run("GET_VARIABLE", ["flow"]);
-  }, 1000);
-})();
-
-injectScript("/js/listener.js");
+  console.log(flow)
+})

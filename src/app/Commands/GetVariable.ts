@@ -1,30 +1,40 @@
-import { get } from "dot-prop";
+import { get } from 'dot-prop'
 
-import { Command } from "../decorators/Command";
-import { Constants } from "../Constants";
-import { BaseCommand } from "./BaseCommand";
+import { BaseCommand } from './BaseCommand'
 
-@Command({
-  code: "GET_VARIABLE",
-})
+/**
+ * Gets a variable by its name
+ *
+ * @code `GET_VARIABLE`
+ * @arg variableName The name of the variable to get
+ */
 export class GetVariable extends BaseCommand {
+  /**
+   * Obtains the canvas
+   */
+  private getCanvas() {
+    return document.querySelector('#canvas')
+  }
+
   /**
    * Returns the value of the variable
    *
    * @param variableName The variable
    */
   public handle(variableName: string): unknown {
-    const isReady = !!window.angular;
+    const isReady = !!window.angular
 
     if (isReady) {
-      const canvas = document.querySelector("#canvas");
-      const bot = window.angular.element(canvas).controller();
+      const canvas = this.getCanvas()
+      const hasCanvas = !!this.getCanvas()
 
-      console.log({ bot, variableName, test: get(bot, "flow") });
+      if (hasCanvas) {
+        const controller = window.angular.element(canvas).controller()
 
-      return get(bot, variableName);
+        return get(controller, variableName)
+      }
     }
 
-    return null;
+    return null
   }
 }

@@ -1,1 +1,1 @@
-export * from "./GetVariable";
+export * from './GetVariable'

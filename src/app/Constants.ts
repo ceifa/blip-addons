@@ -1,3 +1,3 @@
 export class Constants {
-  public static CANVAS = document.querySelector("#canvas");
+  public static CANVAS = document.querySelector('#canvas')
 }

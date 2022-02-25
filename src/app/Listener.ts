@@ -1,29 +1,27 @@
-import "./Commands";
+import { Storage } from './Storage'
+import * as Commands from './Commands'
+import type { Message, BlipsRequest, BlipResponse, Command } from './types'
 
-import { Retriever } from "./Retriever";
-import { Storage } from "./Storage";
+Object.values(Commands).forEach(Storage.add)
 
-window.addEventListener("message", async (message: Message<BlipsRequest>) => {
-  if (message.data.isBlipsRequest) {
-    const Command: any = Storage.get(message.data.commandCode);
+window.addEventListener('message', async (message: Message<BlipsRequest>) => {
+  if (isBlipRequest(message.data)) {
+    const Command: any = Storage.get(message.data.commandCode)
 
-    if (!!Command) {
-      const { identifier, args } = message.data;
+    if (isCommand(Command)) {
+      const { identifier, args } = message.data
+      const result = await new Command().handle(...args)
 
-      console.log(args);
+      const response: BlipResponse = {
+        isBlipsResponse: true,
+        identifier,
+        result,
+      }
 
-      const result = await new Command().handle.apply(this, args);
-
-      window.postMessage(
-        {
-          isBlipsResponse: true,
-          identifier,
-          result,
-        } as BlipResponse,
-        "*"
-      );
-
-      Retriever.resolve(identifier, result);
+      window.postMessage(response, '*')
     }
   }
-});
+})
+
+const isBlipRequest = (request: BlipsRequest) => !!request.isBlipsRequest
+const isCommand = (command: Command) => command

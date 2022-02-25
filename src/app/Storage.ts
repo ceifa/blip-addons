@@ -1,7 +1,7 @@
-import { BaseCommand } from "./Commands/BaseCommand";
+import { Command } from './types'
 
 export class Storage {
-  private static store: typeof BaseCommand[] = [];
+  public static store: Command[] = []
 
   /**
    * Returns the comand with the given code
@@ -9,7 +9,7 @@ export class Storage {
    * @param code The code
    */
   public static get(code: string) {
-    return this.store.find((Command) => Command.code === code);
+    return Storage.store.find((Command) => Command.code === code)
   }
 
   /**
@@ -17,9 +17,9 @@ export class Storage {
    *
    * @param Command The command
    */
-  public static add(Command: typeof BaseCommand) {
-    this.store.push(Command);
+  public static add(Command: Command) {
+    Storage.store.push(Command)
 
-    return this;
+    return this
   }
 }
