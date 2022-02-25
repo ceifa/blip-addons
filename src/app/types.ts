@@ -20,3 +20,9 @@ export type BlipResponse = {
 export type Command = {
   new (): BaseCommand
 } & typeof BaseCommand
+
+export type FeatureRequest = {
+  code: string
+  type: 'run' | 'cleanup'
+  isFeatureRequest: boolean
+}

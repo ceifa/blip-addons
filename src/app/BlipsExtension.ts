@@ -1,10 +1,16 @@
 import { GetVariable } from './Commands'
 import { Resolver } from './Resolver'
-import type { BlipResponse, Message } from './types'
+import * as Features from './Features'
+import type { FeatureRequest, Message } from './types'
 
 const LISTENER_SCRIPT = chrome.extension.getURL('/js/listener.js')
 
+const MINIMAL_INTERVAL = 200
+const MAXIMUM_INTERVAL = 1500
+
 export class BlipsExtension {
+  public onReadyCallback: Function
+
   constructor() {
     this.injectScript()
   }
@@ -26,7 +32,7 @@ export class BlipsExtension {
    *
    * @param message The message
    */
-  private onMessage(message: Message<BlipResponse>) {
+  private onMessage(message: Message<any>) {
     const { isBlipsResponse, identifier, result } = message.data
     const isWaitingToBeResolved = Resolver.isWaiting(identifier)
 
@@ -40,16 +46,66 @@ export class BlipsExtension {
    *
    * @param callback The callback
    */
-  public onBuilderReady(callback: Function) {
-    const interval = setInterval(async () => {
+  public onBuilderLoad(callback: Function) {
+    this.onReadyCallback = callback
+
+    let interval = MINIMAL_INTERVAL
+
+    setInterval(async () => {
       const isLoading = await GetVariable.execute('isLoading')
       const isReady = isLoading === false
 
       if (isReady) {
-        callback()
-        clearInterval(interval)
+        this.onReadyCallback()
+        interval = MAXIMUM_INTERVAL
+      } else {
+        this.cleanFeatures()
+        interval = MINIMAL_INTERVAL
       }
-    })
+    }, interval)
+  }
+
+  /**
+   * Runs all features
+   */
+  public runFeatures() {
+    Object.values(Features).forEach((Feature) =>
+      this.requestFeature(Feature.code, 'run')
+    )
+  }
+
+  /**
+   * Request cleanup of all features
+   */
+  public cleanFeatures() {
+    Object.values(Features).forEach((Feature) =>
+      this.requestFeature(Feature.code, 'cleanup')
+    )
+  }
+
+  /**
+   * Requests a feature
+   *
+   * @param code The code of the feature
+   * @param type The type of the feature
+   */
+  public requestFeature(code: string, type: 'cleanup' | 'run') {
+    const message: FeatureRequest = {
+      isFeatureRequest: true,
+      type,
+      code,
+    }
+
+    this.sendMessage(message)
+  }
+
+  /**
+   * Sends a message
+   *
+   * @param message The message
+   */
+  private sendMessage(message: any) {
+    window.postMessage(message, '*')
   }
 
   /**
