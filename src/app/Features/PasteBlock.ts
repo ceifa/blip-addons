@@ -87,7 +87,7 @@ export class PasteBlock extends BaseFeature {
    * @param block The block
    */
   private treatBlock(block: any) {
-    const outputs = block.$conditionOutputs
+    const outputs = [...block.$conditionOutputs, block.$defaultOutput]
     let isInvalid = false
 
     for (const output of outputs) {
@@ -121,10 +121,27 @@ export class PasteBlock extends BaseFeature {
         const isId = ['id', '$id', 'stateId'].includes(key)
 
         if (isId) {
-          block[key] = this.getIdFor(block[key])
+          const isDefaultBlock = this.isDefaultBlock(block[key])
+          const isExistingId = this.blockExists(block[key])
+          const shouldChangeId = !isExistingId || !isDefaultBlock
+
+          if (shouldChangeId) {
+            block[key] = this.getIdFor(block[key])
+          }
         }
       }
     }
+  }
+
+  /**
+   * Returns if the block is a default block
+   *
+   * @param id The id of the block
+   */
+  private isDefaultBlock(id: string) {
+    const defaultBlocks = ['onboarding', 'welcome', 'error', 'fallback']
+
+    return defaultBlocks.includes(id)
   }
 
   /**
