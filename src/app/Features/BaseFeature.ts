@@ -4,6 +4,7 @@ export abstract class BaseFeature {
   public static shouldRunOnce = false
   public static hasRun = false
   public static isCleaned = false
+  public static alwaysClean = false
 
   constructor() {}
 

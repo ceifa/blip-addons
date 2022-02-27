@@ -1,6 +1,8 @@
 import { BaseFeature } from './BaseFeature'
 
 export class BuilderTitle extends BaseFeature {
+  public static alwaysClean = true
+
   public get botName() {
     const botNameElement = document.querySelector('.bot-name:nth-child(1)')
 

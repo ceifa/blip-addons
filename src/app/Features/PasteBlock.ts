@@ -1,13 +1,36 @@
 import { v4 as uuid } from 'uuid'
 
 import { BaseFeature } from './BaseFeature'
-import { getFlow } from './Utils'
+import {
+  cleanCopiedStates,
+  cleanSelectedNodes,
+  getBlocks,
+  getFlow,
+  selectBlock,
+  showSuccessToast,
+} from '../Utils'
+import type { BlipsCopy } from '../types'
 
 export class PasteBlock extends BaseFeature {
   /**
-   * Only runs this feature once
+   * This feature should only be executed once
    */
   public static shouldRunOnce = true
+
+  /**
+   * Map of cached ids
+   */
+  private cachedIds = new Map<string, string>()
+
+  private getIdFor(id: string) {
+    if (this.cachedIds.has(id)) {
+      return this.cachedIds.get(id)
+    }
+
+    const newId = uuid()
+    this.cachedIds.set(id, newId)
+    return newId
+  }
 
   /**
    * Handles the copy
@@ -15,66 +38,108 @@ export class PasteBlock extends BaseFeature {
   private async handlePaste(event: ClipboardEvent) {
     const flow = getFlow()
     const clipboardData = event.clipboardData.getData('text')
-    const block = this.fixBlock(JSON.parse(clipboardData))
+    const blipsCopy = JSON.parse(clipboardData)
 
-    flow[block.id] = block
-  }
+    if (isCopyFromBlips(blipsCopy)) {
+      cleanCopiedStates()
+      cleanSelectedNodes()
 
-  /**
-   * Fix the blocks by setting invalid outputs and removings
-   * the destination from conditions output
-   *
-   * @param block The block
-   */
-  private fixBlock(block: any) {
-    const newBlock = { ...block }
+      const blocks = JSON.parse(blipsCopy.blocksCode)
 
-    newBlock.id = uuid()
+      if (blocks.length > 0) {
+        /**
+         * Adds all the blocks to the flow, if the block already
+         * exists in canvas, then tranverse the block replacing
+         * the ids
+         */
+        for (const block of blocks) {
+          this.transverseBlock(block)
+          flow[block.id] = block
+          selectBlock(block.id)
+        }
 
-    this.changeAllIds(newBlock)
+        /**
+         * After including all the block into the flow, we need
+         * to check if they're still valid
+         */
+        for (const block of blocks) {
+          this.treatBlock(block)
+        }
 
-    const outputs = newBlock.$conditionOutputs
-
-    for (const output of outputs) {
-      delete output.stateId
-      output.$invalid = true
-    }
-
-    newBlock.$invalid = true
-    newBlock.$invalidOutputs = true
-
-    return newBlock
-  }
-
-  /**
-   * Traverse the block changing the ids for avoiding
-   * collision
-   *
-   * @param block The block
-   */
-  private changeAllIds(block: Record<string, any>) {
-    for (const key of Object.keys(block)) {
-      const isNestedObject = typeof block[key] === 'object'
-
-      if (isNestedObject) {
-        this.changeAllIds(block[key])
-      } else if (['id', '$id'].includes(key)) {
-        block[key] = uuid()
+        showSuccessToast('Bloco(s) colado(s) com sucesso')
       }
     }
   }
 
   /**
-   * Adds the functionality to copy the block
+   * Returns if the block exists
+   */
+  public blockExists(id: string) {
+    const existingBlocksId = getBlocks().map((block) => block.id)
+
+    return existingBlocksId.includes(id)
+  }
+
+  /**
+   * Treats the block by applying verifications, corrections
+   * and
+   *
+   * @param block The block
+   */
+  private treatBlock(block: any) {
+    const outputs = block.$conditionOutputs
+    let isInvalid = false
+
+    for (const output of outputs) {
+      if (!this.blockExists(output.stateId)) {
+        isInvalid = true
+        output.$invalid = true
+        delete output.stateId
+      }
+    }
+
+    if (isInvalid) {
+      block.$invalid = true
+      block.invalidOutputs = true
+    }
+  }
+
+  /**
+   * Transverse the block replacing its ids
+   *
+   * @param block The block
+   */
+  public transverseBlock(block: any) {
+    const keys = Object.keys(block)
+
+    for (const key of keys) {
+      const isNestedObject = typeof block[key] === 'object'
+
+      if (isNestedObject) {
+        this.transverseBlock(block[key])
+      } else {
+        const isId = ['id', '$id', 'stateId'].includes(key)
+
+        if (isId) {
+          block[key] = this.getIdFor(block[key])
+        }
+      }
+    }
+  }
+
+  /**
+   * Adds the functionality of pasting the block
    */
   public handle() {
     document.body.addEventListener('paste', this.handlePaste.bind(this))
   }
 
   /**
-   * Removes the functionality to copy the block
+   * Removes the functionality of pasting the block
    */
   public cleanup() {
     document.body.removeEventListener('paste', this.handlePaste.bind(this))
   }
 }
+
+const isCopyFromBlips = (data: any): data is BlipsCopy => !!data.isCopyFromBlips

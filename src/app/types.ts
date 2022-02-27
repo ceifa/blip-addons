@@ -11,7 +11,7 @@ export type BlipsRequest = {
   args: any[]
 }
 
-export type BlipResponse = {
+export type BlipsResponse = {
   isBlipsResponse: boolean
   identifier: string
   result: unknown
@@ -25,4 +25,9 @@ export type FeatureRequest = {
   code: string
   type: 'run' | 'cleanup'
   isFeatureRequest: boolean
+}
+
+export type BlipsCopy = {
+  isCopyFromBlips: boolean
+  blocksCode: string
 }
