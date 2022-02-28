@@ -123,7 +123,7 @@ export class PasteBlock extends BaseFeature {
         if (isId) {
           const isDefaultBlock = this.isDefaultBlock(block[key])
           const isExistingId = this.blockExists(block[key])
-          const shouldChangeId = !isExistingId || !isDefaultBlock
+          const shouldChangeId = isExistingId && !isDefaultBlock
 
           if (shouldChangeId) {
             block[key] = this.getIdFor(block[key])
