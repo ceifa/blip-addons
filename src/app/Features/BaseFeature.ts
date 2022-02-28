@@ -6,7 +6,9 @@ export abstract class BaseFeature {
   public static isCleaned = false
   public static alwaysClean = false
 
-  constructor() {}
+  constructor() {
+    // ...
+  }
 
   /**
    * Returns if the feature can run
@@ -30,5 +32,7 @@ export abstract class BaseFeature {
   /**
    * The code for cleaning up the feature
    */
-  public cleanup() {}
+  public cleanup() {
+    // ...
+  }
 }

@@ -1,7 +1,7 @@
 import { Command } from './types'
 
 export class Storage {
-  public static store: Command[] = []
+  public static store = new Map<string, Command>()
 
   /**
    * Returns the comand with the given code
@@ -9,7 +9,7 @@ export class Storage {
    * @param code The code
    */
   public static get(code: string) {
-    return Storage.store.find((Command) => Command.code === code)
+    return Storage.store.get(code)
   }
 
   /**
@@ -18,7 +18,7 @@ export class Storage {
    * @param Command The command
    */
   public static add(Command: Command) {
-    Storage.store.push(Command)
+    Storage.store.set(Command.code, Command)
 
     return this
   }

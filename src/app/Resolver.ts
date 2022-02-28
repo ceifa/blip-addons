@@ -2,7 +2,7 @@ export class Resolver {
   /**
    * The resolvers
    */
-  public static resolvers = new Map<string, Function>()
+  public static resolvers = new Map<string, (arg: any) => void>()
 
   /**
    * Returns if the resolver associated to identifier is still waiting
@@ -19,7 +19,7 @@ export class Resolver {
    * @param identifier The identifier
    * @param resolve The resolver
    */
-  public static register(identifier: string, resolve: Function) {
+  public static register(identifier: string, resolve: (arg: any) => void) {
     this.resolvers.set(identifier, resolve)
 
     return this

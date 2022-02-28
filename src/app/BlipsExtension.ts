@@ -4,12 +4,11 @@ import * as Features from './Features'
 import type { FeatureRequest, Message } from './types'
 
 const LISTENER_SCRIPT = chrome.extension.getURL('/js/listener.js')
-
 const MINIMAL_INTERVAL = 200
 const MAXIMUM_INTERVAL = 1500
 
 export class BlipsExtension {
-  public onReadyCallback: Function
+  public onReadyCallback: () => any
 
   constructor() {
     this.injectScript()
@@ -46,9 +45,10 @@ export class BlipsExtension {
    *
    * @param callback The callback
    */
-  public onBuilderLoad(callback: Function) {
+  public onBuilderLoad(callback: () => any) {
     this.onReadyCallback = callback
 
+    // Starts with the minimal interval
     let interval = MINIMAL_INTERVAL
 
     setInterval(async () => {
@@ -57,6 +57,12 @@ export class BlipsExtension {
 
       if (isReady) {
         this.onReadyCallback()
+
+        /**
+         * Once the 'onReadyCallback' was already executed
+         * increases the interval time to reduce CPU and
+         * memory usages
+         */
         interval = MAXIMUM_INTERVAL
       } else {
         this.cleanFeatures()
@@ -106,6 +112,8 @@ export class BlipsExtension {
    */
   private sendMessage(message: any) {
     window.postMessage(message, '*')
+
+    return this
   }
 
   /**

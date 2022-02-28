@@ -5,6 +5,10 @@ import { BaseFeature } from './BaseFeature'
  * same casing that the user typed.
  */
 export class OriginalCaseInput extends BaseFeature {
+  /**
+   * Removes the 'ttu' class from all the inputs, thus
+   * making the input display the original case
+   */
   public handle() {
     const inputs = document.querySelectorAll('input.ttu')
     const listOfInputs = Array.from(inputs)
