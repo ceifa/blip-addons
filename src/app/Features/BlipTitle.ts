@@ -9,7 +9,7 @@ export class BuilderTitle extends BaseFeature {
   public get botName() {
     const botNameElement = document.querySelector('.bot-name:nth-child(1)')
 
-    return botNameElement ? botNameElement.innerHTML : 'Unknown'
+    return botNameElement
   }
 
   /**
@@ -29,9 +29,11 @@ export class BuilderTitle extends BaseFeature {
    * Adds title to builder
    */
   public handle() {
-    const botName = this.botName
+    if (this.botName) {
+      const botName = this.botName
 
-    document.title = `${botName} - Blip`
+      document.title = `${botName} - Blip`
+    }
   }
 
   /**
