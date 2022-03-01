@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "devDependencies": {
     "@types/chrome": "0.0.75",
     "@types/constant-case": "^1.1.2",

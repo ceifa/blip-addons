@@ -9,6 +9,35 @@ This extension provides a collection of utilities for working with [Blip](https:
 - Changes the uppercase inputs to normal inputs.
 - More features in development.
 
+## How to install
+
+While this extension is not published in the Chrom
+
+1. Clone this project
+
+```bash
+$ git clone https://github.com/jotaajunior/blips-extension
+```
+
+2. Install the dependencies
+
+```bash
+$ npm install
+$ yarn install
+```
+
+3. Build the project
+
+```bash
+$ npm run build
+$ yarn build
+```
+
+4. Go to <a href="chrome://extensions"><code>chrome://extensions</code></a>.
+
+5. Click in 'Load unpacked' and select the 'dist' folder in the directory you've cloned this repository.
+
+
 ## Contribute
 
 We encourage you to contribute with the project, even if you don't work at [TakeBlip](https://www.take.net/).
