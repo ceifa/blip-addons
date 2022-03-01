@@ -5,6 +5,7 @@ export abstract class BaseFeature {
   public static hasRun = false
   public static isCleaned = false
   public static alwaysClean = false
+  public static isUserTriggered = false
 
   constructor() {
     // ...
@@ -27,7 +28,7 @@ export abstract class BaseFeature {
   /**
    * The code for handling the feature
    */
-  public abstract handle(): void
+  public abstract handle(...args: any[]): void
 
   /**
    * The code for cleaning up the feature

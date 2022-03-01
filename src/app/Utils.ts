@@ -1,3 +1,5 @@
+import { FeatureRequest } from './types'
+
 export function getController() {
   const canvas = document.querySelector('#canvas')
 
@@ -47,4 +49,22 @@ export function interceptFunction(functionName: string, callback: () => void) {
     callback()
     return functionToWrap.apply(this, args)
   }
+}
+
+export function convertToHours(waitingTime: number) {
+  const waitingHours = Math.floor(waitingTime / 60)
+  const waitingMinutes = waitingTime % 60
+
+  return `${waitingHours}:${waitingMinutes}`
+}
+
+export function requestFeature(code: string, type: 'cleanup' | 'run', ...args) {
+  const message: FeatureRequest = {
+    isFeatureRequest: true,
+    type,
+    code,
+    args,
+  }
+
+  window.postMessage(message, '*')
 }

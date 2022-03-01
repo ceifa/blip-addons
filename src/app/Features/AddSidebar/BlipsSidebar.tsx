@@ -1,12 +1,21 @@
 import * as React from 'react'
 
-import { BdsButton, BdsInput } from 'blip-ds/dist/blip-ds-react'
+import { BdsButton } from 'blip-ds/dist/blip-ds-react'
+import { Input } from './Components/Input'
 
 export type BlipsSidebarProps = {
   onClose: () => void
+  onAdd?: (time: number) => void
+  onRemove?: () => void
 }
 
-export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
+export const BlipsSidebar = ({
+  onClose,
+  onAdd,
+  onRemove,
+}: BlipsSidebarProps) => {
+  const [waitingTime, setWaitingTime] = React.useState('0')
+
   return (
     <>
       <div
@@ -43,17 +52,31 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
               Adicionar tempo de inatividade global
             </span>
 
-            <p style={{ color: '#607b99', fontSize: '.875rem' }}>
+            <p style={{ color: '#607b99', fontSize: '.875rem', marginTop: 8 }}>
               Todos os blocos que esperam por uma entrada do usuário terão seu
               limite de espera setados para o valor abaixo.
             </p>
 
             <div className="mt3">
-              <BdsInput label="Limite de espera (em minutos)" type="number" />
+              <Input
+                onChange={(e) => setWaitingTime((e.target as any).value)}
+                label="Limite de espera (em minutos)"
+                type="number"
+              />
+
+              <h1>{waitingTime}</h1>
 
               <div className="flex justify-between items-center mt3">
-                <BdsButton variant="primary">Adicionar tempo</BdsButton>
-                <BdsButton variant="delete">Remover</BdsButton>
+                <BdsButton
+                  variant="primary"
+                  onClick={() => onAdd(Number(waitingTime))}
+                >
+                  Adicionar tempo
+                </BdsButton>
+
+                <BdsButton variant="delete" onClick={onRemove}>
+                  Remover
+                </BdsButton>
               </div>
             </div>
           </div>

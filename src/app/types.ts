@@ -25,6 +25,7 @@ export type FeatureRequest = {
   code: string
   type: 'run' | 'cleanup'
   isFeatureRequest: boolean
+  args: any[]
 }
 
 export type BlipsCopy = {

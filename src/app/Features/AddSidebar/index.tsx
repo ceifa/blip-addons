@@ -1,8 +1,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { interceptFunction } from '../../Utils'
 
+import { convertToHours, interceptFunction, requestFeature } from '../../Utils'
 import { BaseFeature } from '../BaseFeature'
+import { SetInactivity } from '../SetInactivity'
 import { BlipsButton } from './BlipsButton'
 import { BlipsSidebar } from './BlipsSidebar'
 
@@ -11,15 +12,30 @@ const BLIPS_SIDEBAR_ID = 'blips-extension-sidebar'
 
 export class AddSidebar extends BaseFeature {
   /**
-   * Only runs this feature once
-   */
-  public static shouldRunOnce = true
-
-  /**
    * Gets the sidebar
    */
   private getSidebar() {
     return document.getElementById(BLIPS_SIDEBAR_ID)
+  }
+
+  /**
+   * Gets the icon
+   */
+  private getIcon() {
+    return document.getElementById(BLIPS_BUTTON_ID)
+  }
+
+  /**
+   * Sets the waiting limit time
+   *
+   * @param waitingTime The waiting limit time
+   */
+  private setInactivity(waitingTime: number) {
+    const hours = convertToHours(waitingTime)
+
+    console.log('#debug', { hours })
+
+    requestFeature(SetInactivity.code, 'run', hours)
   }
 
   /**
@@ -32,7 +48,7 @@ export class AddSidebar extends BaseFeature {
 
       blipsSidebar.setAttribute('id', BLIPS_SIDEBAR_ID)
       ReactDOM.render(
-        <BlipsSidebar onClose={this.closeSidebar} />,
+        <BlipsSidebar onClose={this.closeSidebar} onAdd={this.setInactivity} />,
         blipsSidebar
       )
 
@@ -66,14 +82,14 @@ export class AddSidebar extends BaseFeature {
    * Adds the functionality to copy the block
    */
   public handle() {
-    const buttonsList = document.querySelector('.icon-button-list')
-    const blipsDiv = document.createElement('div')
+    if (!this.getIcon()) {
+      const buttonsList = document.querySelector('.icon-button-list')
+      const blipsDiv = document.createElement('div')
 
-    blipsDiv.setAttribute('id', BLIPS_BUTTON_ID)
-
-    ReactDOM.render(<BlipsButton onClick={this.openSidebar} />, blipsDiv)
-
-    buttonsList.appendChild(blipsDiv)
+      blipsDiv.setAttribute('id', BLIPS_BUTTON_ID)
+      ReactDOM.render(<BlipsButton onClick={this.openSidebar} />, blipsDiv)
+      buttonsList.appendChild(blipsDiv)
+    }
   }
 
   /**

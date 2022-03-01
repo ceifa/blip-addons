@@ -1,7 +1,8 @@
 import { GetVariable } from './Commands'
 import { Resolver } from './Resolver'
 import * as Features from './Features'
-import type { FeatureRequest, Message } from './types'
+import type { Message } from './types'
+import { requestFeature } from './Utils'
 
 const LISTENER_SCRIPT = chrome.extension.getURL('/js/listener.js')
 const MINIMAL_INTERVAL = 200
@@ -75,9 +76,9 @@ export class BlipsExtension {
    * Runs all features
    */
   public runFeatures() {
-    Object.values(Features).forEach((Feature) =>
-      this.requestFeature(Feature.code, 'run')
-    )
+    Object.values(Features)
+      .filter((Feature) => !Feature.isUserTriggered)
+      .forEach((Feature) => requestFeature(Feature.code, 'run'))
   }
 
   /**
@@ -85,35 +86,8 @@ export class BlipsExtension {
    */
   public cleanFeatures() {
     Object.values(Features).forEach((Feature) =>
-      this.requestFeature(Feature.code, 'cleanup')
+      requestFeature(Feature.code, 'cleanup')
     )
-  }
-
-  /**
-   * Requests a feature
-   *
-   * @param code The code of the feature
-   * @param type The type of the feature
-   */
-  public requestFeature(code: string, type: 'cleanup' | 'run') {
-    const message: FeatureRequest = {
-      isFeatureRequest: true,
-      type,
-      code,
-    }
-
-    this.sendMessage(message)
-  }
-
-  /**
-   * Sends a message
-   *
-   * @param message The message
-   */
-  private sendMessage(message: any) {
-    window.postMessage(message, '*')
-
-    return this
   }
 
   /**

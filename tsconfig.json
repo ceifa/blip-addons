@@ -5,7 +5,8 @@
     "module": "commonjs",
     "jsx": "react",
     "lib": ["es2019", "dom"],
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules"]
 }
