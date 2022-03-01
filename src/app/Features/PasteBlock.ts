@@ -22,6 +22,11 @@ export class PasteBlock extends BaseFeature {
    */
   private cachedIds = new Map<string, string>()
 
+  /**
+   * Returns a new uuid for the id
+   *
+   * @param id The id
+   */
   private getIdFor(id: string) {
     if (this.cachedIds.has(id)) {
       return this.cachedIds.get(id)
