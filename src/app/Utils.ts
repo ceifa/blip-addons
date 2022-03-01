@@ -38,3 +38,13 @@ export function selectBlock(id: string) {
 export function cleanSelectedNodes() {
   getController().selectedNodes = []
 }
+
+export function interceptFunction(functionName: string, callback: () => void) {
+  const controller = getController()
+  const functionToWrap = controller[functionName]
+
+  controller[functionName] = function keepThis(...args: any[]) {
+    callback()
+    return functionToWrap.apply(this, args)
+  }
+}

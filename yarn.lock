@@ -829,6 +829,20 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
+blip-ds@^1.135.2:
+  version "1.135.2"
+  resolved "https://registry.yarnpkg.com/blip-ds/-/blip-ds-1.135.2.tgz#ed3656539a59a2a2ba0e7115c57d2b89b9e2d937"
+  integrity sha512-rs/VS4pXhXZkuGNg+z6AmL/KDzB72mc5xVgp4kMl563JN7cv/loVBesvkt/Hi9fOw6oYd/MlpoBkoQTml4d9zg==
+  dependencies:
+    blip-tokens "^1.22.1"
+  optionalDependencies:
+    fsevents "^2.3.1"
+
+blip-tokens@^1.22.1:
+  version "1.24.0"
+  resolved "https://registry.yarnpkg.com/blip-tokens/-/blip-tokens-1.24.0.tgz#5c9b68795aeb1cf103ee8b78889dac9793dcf5b0"
+  integrity sha512-5G7IgpF83/sdK2s+JRvif/vzMiOJTlTF74c+xEx3svXRbYBYt1npg3t8Txuw1gRek0MDpC4smbFsgMjZTllV8g==
+
 bluebird@^3.5.5:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
@@ -2069,7 +2083,7 @@ fsevents@^1.2.7:
     bindings "^1.5.0"
     nan "^2.12.1"
 
-fsevents@~2.3.2:
+fsevents@^2.3.1, fsevents@~2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
