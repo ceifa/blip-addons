@@ -25,9 +25,3 @@ Suggest the feature at [Blips Discussions](https://github.com/jotaajunior/blips-
 - Make sure to include relevant information about the bug.
 
 <br /><br />
-
----
-
-<center>
-    <sub>Made with ❤️ by (Jota)[https://github.com/jotaajunior]</sub>
-</center>
