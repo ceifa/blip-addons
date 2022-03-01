@@ -59,6 +59,13 @@
   dependencies:
     "@types/filesystem" "*"
 
+"@types/constant-case@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/constant-case/-/constant-case-1.1.2.tgz#4225e5e9080f51ffd60eee564f9086c3d3265a73"
+  integrity sha1-QiXl6QgPUf/WDu5WT5CGw9MmWnM=
+  dependencies:
+    constant-case "*"
+
 "@types/filesystem@*":
   version "0.0.32"
   resolved "https://registry.yarnpkg.com/@types/filesystem/-/filesystem-0.0.32.tgz#307df7cc084a2293c3c1a31151b178063e0a8edf"
@@ -925,7 +932,7 @@ console-browserify@^1.1.0:
   resolved "https://registry.yarnpkg.com/console-browserify/-/console-browserify-1.2.0.tgz#67063cef57ceb6cf4993a2ab3a55840ae8c49336"
   integrity sha512-ZMkYO/LkF17QvCPqM0gxw8yUzigAOZOSWSHg91FH6orS7vcEj5dVZTidN2fQ14yBSdg97RqhSNwLUXInd52OTA==
 
-constant-case@^3.0.4:
+constant-case@*, constant-case@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/constant-case/-/constant-case-3.0.4.tgz#3b84a9aeaf4cf31ec45e6bf5de91bdfb0589faf1"
   integrity sha512-I2hSBi7Vvs7BEuJDr5dDHfzb/Ruj3FyvFyh7KLilAjNQw3Be+xgqUBA2W6scVEcL0hL1dwPRtIqEPVUCKkSsyQ==
