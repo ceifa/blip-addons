@@ -9,7 +9,7 @@ export class BuilderTitle extends BaseFeature {
   public get botName() {
     const botNameElement = document.querySelector('.bot-name:nth-child(1)')
 
-    return botNameElement
+    return botNameElement.innerHTML
   }
 
   /**
@@ -21,7 +21,7 @@ export class BuilderTitle extends BaseFeature {
     return iFrames.find((iFrame) => {
       const source = iFrame.getAttribute('src')
 
-      return source.includes('beholder')
+      return typeof source === 'string' ? source.includes('beholder') : false
     })
   }
 
