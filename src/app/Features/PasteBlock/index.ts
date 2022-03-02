@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid'
 
-import { BaseFeature } from './BaseFeature'
+import { BaseFeature } from '../BaseFeature'
 import {
   cleanCopiedStates,
   cleanSelectedNodes,
@@ -8,8 +8,8 @@ import {
   getFlow,
   selectBlock,
   showSuccessToast,
-} from '../Utils'
-import type { BlipsCopy } from '../types'
+} from '../../Utils'
+import type { BlipsCopy } from '../../types'
 
 export class PasteBlock extends BaseFeature {
   /**
@@ -115,10 +115,12 @@ export class PasteBlock extends BaseFeature {
    * @param block The block
    */
   public transverseBlock(block: any) {
+    console.log('block:', block)
     const keys = Object.keys(block)
 
     for (const key of keys) {
-      const isNestedObject = typeof block[key] === 'object'
+      const isNestedObject =
+        typeof block[key] === 'object' && block[key] != null
 
       if (isNestedObject) {
         this.transverseBlock(block[key])

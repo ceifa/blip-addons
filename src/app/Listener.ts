@@ -1,4 +1,3 @@
-import { Storage } from './Storage'
 import * as RawCommands from './Commands'
 import * as RawFeatures from './Features'
 import type {
@@ -12,16 +11,14 @@ import type {
 const Commands = Object.values(RawCommands)
 const Features = Object.values(RawFeatures)
 
-Commands.forEach(Storage.add)
-
 window.addEventListener('message', async (message: Message<any>) => {
   /**
    * Determine if it's a feature request, and properly runs
    * `handle` or `cleanup` functions
    */
   if (isFeatureRequest(message.data)) {
-    const { code, type } = message.data
-    const Feature = getCommand(code)
+    const { code, type, args } = message.data
+    const Feature = getFeature(code)
 
     /**
      * Runs the feature and update its states, as features may
@@ -29,7 +26,9 @@ window.addEventListener('message', async (message: Message<any>) => {
      */
     if (type === 'run') {
       if (Feature.canRun) {
-        await new Feature().handle()
+        const featureInstance = new Feature()
+        // eslint-disable-next-line prefer-spread
+        await featureInstance.handle.apply(featureInstance, args)
         Feature.hasRun = true
         Feature.isCleaned = false
       }
@@ -58,7 +57,7 @@ window.addEventListener('message', async (message: Message<any>) => {
    * command and responds
    */
   if (isBlipsRequest(message.data)) {
-    const Command = Storage.get(message.data.commandCode)
+    const Command: Command = getCommand(message.data.commandCode)
 
     if (isCommand(Command)) {
       const { identifier, args } = message.data
@@ -68,6 +67,8 @@ window.addEventListener('message', async (message: Message<any>) => {
         identifier,
         result,
       })
+
+      return
     }
   }
 })
@@ -79,4 +80,5 @@ const isBlipsRequest = (request: any): request is BlipsRequest =>
 const isCommand = (command: Command) => command
 const sendResponse = (message: Omit<BlipsResponse, 'isBlipsResponse'>) =>
   window.postMessage({ isBlipsResponse: true, ...message }, '*')
-const getCommand = (code) => Features.find((Feature) => Feature.code === code)
+const getFeature = (code) => Features.find((Feature) => Feature.code === code)
+const getCommand = (code) => Commands.find((Command) => Command.code === code)

@@ -1,4 +1,6 @@
-import { BaseFeature } from './BaseFeature'
+import { BaseFeature } from '../BaseFeature'
+
+const BEHOLDER_TAG = 'take-plugin-bot-beholder'
 
 export class BuilderTitle extends BaseFeature {
   public static alwaysClean = true

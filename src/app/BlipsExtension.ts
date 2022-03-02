@@ -1,7 +1,8 @@
 import { GetVariable } from './Commands'
 import { Resolver } from './Resolver'
+import { requestFeature } from './Utils'
 import * as Features from './Features'
-import type { FeatureRequest, Message } from './types'
+import type { BlipsResponse, Message } from './types'
 
 const LISTENER_SCRIPT = chrome.extension.getURL('/js/listener.js')
 const MINIMAL_INTERVAL = 200
@@ -31,12 +32,16 @@ export class BlipsExtension {
    *
    * @param message The message
    */
-  private onMessage(message: Message<any>) {
-    const { isBlipsResponse, identifier, result } = message.data
-    const isWaitingToBeResolved = Resolver.isWaiting(identifier)
+  private onMessage(message: Message<BlipsResponse>) {
+    if (isBlipsResponse(message.data)) {
+      const { identifier, result } = message.data
+      const isWaitingToBeResolved = Resolver.isWaiting(identifier)
 
-    if (isBlipsResponse && isWaitingToBeResolved) {
-      Resolver.resolve(identifier, result)
+      if (isWaitingToBeResolved) {
+        return Resolver.resolve(identifier, result)
+      }
+
+      return
     }
   }
 
@@ -75,9 +80,9 @@ export class BlipsExtension {
    * Runs all features
    */
   public runFeatures() {
-    Object.values(Features).forEach((Feature) =>
-      this.requestFeature(Feature.code, 'run')
-    )
+    Object.values(Features)
+      .filter((Feature) => !Feature.isUserTriggered)
+      .forEach((Feature) => requestFeature(Feature.code, 'run'))
   }
 
   /**
@@ -85,35 +90,8 @@ export class BlipsExtension {
    */
   public cleanFeatures() {
     Object.values(Features).forEach((Feature) =>
-      this.requestFeature(Feature.code, 'cleanup')
+      requestFeature(Feature.code, 'cleanup')
     )
-  }
-
-  /**
-   * Requests a feature
-   *
-   * @param code The code of the feature
-   * @param type The type of the feature
-   */
-  public requestFeature(code: string, type: 'cleanup' | 'run') {
-    const message: FeatureRequest = {
-      isFeatureRequest: true,
-      type,
-      code,
-    }
-
-    this.sendMessage(message)
-  }
-
-  /**
-   * Sends a message
-   *
-   * @param message The message
-   */
-  private sendMessage(message: any) {
-    window.postMessage(message, '*')
-
-    return this
   }
 
   /**
@@ -125,3 +103,6 @@ export class BlipsExtension {
     return this
   }
 }
+
+const isBlipsResponse = (request: any): request is BlipsResponse =>
+  request.isBlipsResponse

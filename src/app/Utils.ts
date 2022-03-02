@@ -1,3 +1,5 @@
+import type { FeatureRequest } from './types'
+
 export function getController() {
   const canvas = document.querySelector('#canvas')
 
@@ -14,6 +16,10 @@ export function getBlocks(): any[] {
 
 export function showSuccessToast(message: string) {
   getController().ngToast.success(message)
+}
+
+export function showWarningToast(message: string) {
+  getController().ngToast.warning(message)
 }
 
 export function showDangerToast(message: string) {
@@ -37,4 +43,32 @@ export function selectBlock(id: string) {
 
 export function cleanSelectedNodes() {
   getController().selectedNodes = []
+}
+
+export function interceptFunction(functionName: string, callback: () => void) {
+  const controller = getController()
+  const functionToWrap = controller[functionName]
+
+  controller[functionName] = function keepThis(...args: any[]) {
+    callback()
+    return functionToWrap.apply(this, args)
+  }
+}
+
+export function convertToHours(waitingTime: number) {
+  const waitingHours = Math.floor(waitingTime / 60)
+  const waitingMinutes = waitingTime % 60
+
+  return `${waitingHours}:${waitingMinutes}`
+}
+
+export function requestFeature(code: string, type: 'cleanup' | 'run', ...args) {
+  const message: FeatureRequest = {
+    isFeatureRequest: true,
+    type,
+    code,
+    args,
+  }
+
+  window.postMessage(message, '*')
 }

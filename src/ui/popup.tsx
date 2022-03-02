@@ -1,16 +1,30 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
-import "../styles/popup.css";
+import '../styles/popup.css'
 
 class Hello extends React.Component {
   render() {
     return (
       <div className="popup-padded">
-        <h1>{chrome.i18n.getMessage("l10nHello")}</h1>
+        <form>
+          <div>
+            <label htmlFor="inactivity">
+              Tempo de inatividade em minutos:
+              <br />
+              <sub>Em minutos</sub>
+            </label>
+
+            <input type="number" placeholder="1" />
+          </div>
+
+          <div>
+            <button>Aplicar</button>
+          </div>
+        </form>
       </div>
-    );
+    )
   }
 }
 
-ReactDOM.render(<Hello />, document.getElementById("root"));
+ReactDOM.render(<Hello />, document.getElementById('root'))
