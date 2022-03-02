@@ -14,7 +14,7 @@ This extension provides a collection of utilities for working with [Blip](https:
 
 ## How to install
 
-While this extension is not published in the Chrom
+While this extension is not published in the Chrome App Store, you need to install it manually:
 
 1. Clone this project
 
