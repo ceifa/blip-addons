@@ -94,7 +94,9 @@ export class AddSidebar extends BaseFeature {
    */
   public handle() {
     if (!this.getIcon()) {
-      const buttonsList = document.querySelector('.icon-button-list')
+      const buttonsList = document.querySelector(
+        '.icon-button-list, .builder-icon-button-list'
+      )
       const blipsDiv = document.createElement('div')
 
       blipsDiv.setAttribute('id', BLIPS_BUTTON_ID)
