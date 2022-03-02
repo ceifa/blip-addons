@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { Settings } from '../../Settings'
 
+import { Settings } from '../../Settings'
 import { convertToHours, interceptFunction, requestFeature } from '../../Utils'
 import { BaseFeature } from '../BaseFeature'
 import { SetInactivity } from '../SetInactivity'
