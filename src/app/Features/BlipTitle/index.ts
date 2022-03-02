@@ -23,7 +23,7 @@ export class BuilderTitle extends BaseFeature {
     return iFrames.find((iFrame) => {
       const source = iFrame.getAttribute('src')
 
-      return typeof source === 'string' ? source.includes('beholder') : false
+      return typeof source === 'string' ? source.includes(BEHOLDER_TAG) : false
     })
   }
 
