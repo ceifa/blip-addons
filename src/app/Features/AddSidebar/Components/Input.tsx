@@ -6,22 +6,28 @@ export type InputProps = {
   type: any
   value?: string
   onChange?: (e) => void
+  onSubmit?: (e) => void
 }
 
-export const Input = ({ label, type, value, onChange }: InputProps) => {
+export const Input = ({
+  label,
+  type,
+  value,
+  onChange,
+  onSubmit,
+}: InputProps) => {
   const inputRef = React.useRef(null)
-
-  React.useEffect(() => {
-    const { current } = inputRef
-
-    current.addEventListener('bdsChange', onChange)
-
-    return () => current.removeEventListener('bdsChange', onChange)
-  }, [])
 
   return (
     <div className="relative">
-      <BdsInput value={value} type={type} label={label} ref={inputRef} />
+      <BdsInput
+        onBdsSubmit={onSubmit}
+        onBdsChange={onChange}
+        value={value}
+        type={type}
+        label={label}
+        ref={inputRef}
+      />
     </div>
   )
 }

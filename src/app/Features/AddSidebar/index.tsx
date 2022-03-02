@@ -31,11 +31,18 @@ export class AddSidebar extends BaseFeature {
    *
    * @param waitingTime The waiting limit time
    */
-  private setInactivity(waitingTime: number) {
+  private setInactivity(waitingTime: number, shouldOverwrite: boolean) {
     const hours = convertToHours(waitingTime)
     Settings.lastGlobalInactivityTime = String(waitingTime)
 
-    requestFeature(SetInactivity.code, 'run', hours)
+    requestFeature(SetInactivity.code, 'run', hours, shouldOverwrite)
+  }
+
+  /**
+   * Remove the inactivity time
+   */
+  public removeInactivity() {
+    requestFeature(SetInactivity.code, 'run')
   }
 
   /**
@@ -48,7 +55,11 @@ export class AddSidebar extends BaseFeature {
 
       blipsSidebar.setAttribute('id', BLIPS_SIDEBAR_ID)
       ReactDOM.render(
-        <BlipsSidebar onClose={this.closeSidebar} onAdd={this.setInactivity} />,
+        <BlipsSidebar
+          onClose={this.closeSidebar}
+          onAdd={this.setInactivity}
+          onRemove={this.removeInactivity}
+        />,
         blipsSidebar
       )
 
