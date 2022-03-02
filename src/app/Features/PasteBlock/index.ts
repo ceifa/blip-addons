@@ -146,7 +146,7 @@ export class PasteBlock extends BaseFeature {
    * @param id The id of the block
    */
   private isDefaultBlock(id: string) {
-    const defaultBlocks = ['onboarding', 'welcome', 'error', 'fallback']
+    const defaultBlocks = ['onboarding', 'error']
 
     return defaultBlocks.includes(id)
   }
