@@ -7,6 +7,7 @@ export type InputProps = {
   value?: string
   onChange?: (e) => void
   onSubmit?: (e) => void
+  errorMessage?: string
 }
 
 export const Input = ({
@@ -15,6 +16,7 @@ export const Input = ({
   value,
   onChange,
   onSubmit,
+  errorMessage,
 }: InputProps) => {
   const inputRef = React.useRef(null)
 
@@ -27,6 +29,8 @@ export const Input = ({
         type={type}
         label={label}
         ref={inputRef}
+        errorMessage={errorMessage}
+        danger={!!errorMessage}
       />
     </div>
   )

@@ -20,9 +20,24 @@ export const BlipsSidebar = ({
     Settings.lastGlobalInactivityTime
   )
   const [shouldKeep, setShouldKeep] = React.useState(false)
+  const [error, setError] = React.useState('')
 
-  function handleSubmit() {
-    onAdd(Number(waitingTime), shouldKeep)
+  function handleSubmit(e) {
+    if (!waitingTime) {
+      setError('Preencha com um valor entre 1 e 1380')
+      return
+    }
+
+    const time = Number(waitingTime)
+    const isTimeValid = time > 0 && time < 1380
+
+    if (!isTimeValid) {
+      setError('Utilize números entre 1 e 1380')
+      return
+    }
+
+    setError('')
+    onAdd(time, shouldKeep)
   }
 
   return (
@@ -73,6 +88,7 @@ export const BlipsSidebar = ({
                 value={waitingTime}
                 onChange={(e) => setWaitingTime((e.target as any).value)}
                 onSubmit={handleSubmit}
+                errorMessage={error}
                 label="Limite de espera (em minutos)"
                 type="number"
               />
