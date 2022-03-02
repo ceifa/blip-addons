@@ -22,23 +22,29 @@ While this extension is not published in the Chrom
 $ git clone https://github.com/jotaajunior/blips-extension
 ```
 
-2. Install the dependencies
+2. Go to the directory
+
+```bash
+$ cd blips-extension
+```
+
+3. Install the dependencies
 
 ```bash
 $ npm install
 $ yarn install
 ```
 
-3. Build the project
+4. Build the project
 
 ```bash
 $ npm run build
 $ yarn build
 ```
 
-4. Go to [`chrome://extensions`](chrome://extensions).
+5. Go to [`chrome://extensions`](chrome://extensions).
 
-5. Click in `Load unpacked` and select the `dist` folder in the directory you've cloned this repository.
+6. Click in `Load unpacked` and select the `dist` folder in the directory you've cloned this repository.
 
 
 ## Contribute
