@@ -1,4 +1,4 @@
-import { BaseFeature } from './BaseFeature'
+import { BaseFeature } from '../BaseFeature'
 
 /**
  * This feature leaves the input in actions with the exact

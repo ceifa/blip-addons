@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid'
 
-import { BaseFeature } from './BaseFeature'
+import { BaseFeature } from '../BaseFeature'
 import {
   cleanCopiedStates,
   cleanSelectedNodes,
@@ -8,8 +8,8 @@ import {
   getFlow,
   selectBlock,
   showSuccessToast,
-} from '../Utils'
-import type { BlipsCopy } from '../types'
+} from '../../Utils'
+import type { BlipsCopy } from '../../types'
 
 export class PasteBlock extends BaseFeature {
   /**

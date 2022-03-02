@@ -1,6 +1,6 @@
-import { BaseFeature } from './BaseFeature'
-import { getBlocks, showSuccessToast } from '../Utils'
-import type { BlipsCopy } from '../types'
+import { BaseFeature } from '../BaseFeature'
+import { getBlocks, showSuccessToast } from '../../Utils'
+import type { BlipsCopy } from '../../types'
 
 export class CopyBlock extends BaseFeature {
   /**
