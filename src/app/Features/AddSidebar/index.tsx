@@ -1,12 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { Settings } from '../../Settings'
 
-import {
-  convertToHours,
-  interceptFunction,
-  requestFeature,
-  updateSettings,
-} from '../../Utils'
+import { convertToHours, interceptFunction, requestFeature } from '../../Utils'
 import { BaseFeature } from '../BaseFeature'
 import { SetInactivity } from '../SetInactivity'
 import { BlipsButton } from './BlipsButton'
@@ -37,10 +33,7 @@ export class AddSidebar extends BaseFeature {
    */
   private setInactivity(waitingTime: number) {
     const hours = convertToHours(waitingTime)
-
-    updateSettings({
-      lastGlobalInactivityTime: String(waitingTime),
-    })
+    Settings.lastGlobalInactivityTime = String(waitingTime)
 
     requestFeature(SetInactivity.code, 'run', hours)
   }

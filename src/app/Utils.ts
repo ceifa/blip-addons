@@ -1,7 +1,4 @@
-import { v4 as uuid } from 'uuid'
-
-import type { FeatureRequest, SettingsUpdateRequest } from './types'
-import { Settings } from './Settings'
+import type { FeatureRequest } from './types'
 
 export function getController() {
   const canvas = document.querySelector('#canvas')
@@ -70,13 +67,4 @@ export function requestFeature(code: string, type: 'cleanup' | 'run', ...args) {
   }
 
   window.postMessage(message, '*')
-}
-
-export function updateSettings(newSettings: typeof Settings) {
-  const settingsUpdateRequest = {
-    isSettingsUpdateRequest: true,
-    newSettings,
-  } as SettingsUpdateRequest
-
-  window.postMessage(settingsUpdateRequest, '*')
 }

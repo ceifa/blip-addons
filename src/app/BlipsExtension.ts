@@ -2,7 +2,7 @@ import { GetVariable } from './Commands'
 import { Resolver } from './Resolver'
 import * as Features from './Features'
 import type { BlipsResponse, Message, SettingsUpdateRequest } from './types'
-import { requestFeature, updateSettings } from './Utils'
+import { requestFeature } from './Utils'
 import { Settings } from './Settings'
 
 const LISTENER_SCRIPT = chrome.extension.getURL('/js/listener.js')
@@ -13,20 +13,7 @@ export class BlipsExtension {
   public onReadyCallback: () => any
 
   constructor() {
-    this.setSettings()
     this.injectScript()
-  }
-
-  /**
-   * Loads the user settings
-   */
-  private setSettings() {
-    chrome.storage.sync.get('Settings', (result) => {
-      Object.assign(Settings, result.Settings)
-      chrome.storage.sync.set({ Settings })
-    })
-
-    updateSettings(Settings)
   }
 
   /**
