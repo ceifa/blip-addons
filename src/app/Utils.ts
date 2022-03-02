@@ -18,6 +18,10 @@ export function showSuccessToast(message: string) {
   getController().ngToast.success(message)
 }
 
+export function showWarningToast(message: string) {
+  getController().ngToast.warning(message)
+}
+
 export function showDangerToast(message: string) {
   getController().ngToast.danger(message)
 }
