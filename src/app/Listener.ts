@@ -1,13 +1,11 @@
 import * as RawCommands from './Commands'
 import * as RawFeatures from './Features'
-import { Settings } from './Settings'
 import type {
   Message,
   BlipsRequest,
   BlipsResponse,
   Command,
   FeatureRequest,
-  SettingsUpdateRequest,
 } from './types'
 
 const Commands = Object.values(RawCommands)
@@ -73,18 +71,6 @@ window.addEventListener('message', async (message: Message<any>) => {
       return
     }
   }
-
-  /**
-   * Determins if it's settings update request, if it's  update the
-   * settings
-   */
-  if (isSettingsUpdateRequest(message.data)) {
-    const { newSettings } = message.data
-
-    Object.assign(Settings, newSettings)
-
-    return
-  }
 })
 
 const isFeatureRequest = (request: any): request is FeatureRequest =>
@@ -96,6 +82,3 @@ const sendResponse = (message: Omit<BlipsResponse, 'isBlipsResponse'>) =>
   window.postMessage({ isBlipsResponse: true, ...message }, '*')
 const getFeature = (code) => Features.find((Feature) => Feature.code === code)
 const getCommand = (code) => Commands.find((Command) => Command.code === code)
-const isSettingsUpdateRequest = (
-  request: any
-): request is SettingsUpdateRequest => request.isSettingsUpdateRequest

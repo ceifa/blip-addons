@@ -1,9 +1,8 @@
 import { GetVariable } from './Commands'
 import { Resolver } from './Resolver'
-import * as Features from './Features'
-import type { BlipsResponse, Message, SettingsUpdateRequest } from './types'
 import { requestFeature } from './Utils'
-import { Settings } from './Settings'
+import * as Features from './Features'
+import type { BlipsResponse, Message } from './types'
 
 const LISTENER_SCRIPT = chrome.extension.getURL('/js/listener.js')
 const MINIMAL_INTERVAL = 200
@@ -41,24 +40,6 @@ export class BlipsExtension {
       if (isWaitingToBeResolved) {
         return Resolver.resolve(identifier, result)
       }
-
-      return
-    }
-
-    /**
-     * Determins if it's settings update request, if it's  update the
-     * settings
-     */
-    if (isSettingsUpdateRequest(message.data)) {
-      const { newSettings } = message.data
-
-      chrome.storage.sync.get('Settings', (result) => {
-        chrome.storage.sync.set({
-          Settings: Object.assign(result.Settings, newSettings),
-        })
-      })
-
-      Object.assign(Settings, newSettings)
 
       return
     }
@@ -125,6 +106,3 @@ export class BlipsExtension {
 
 const isBlipsResponse = (request: any): request is BlipsResponse =>
   request.isBlipsResponse
-const isSettingsUpdateRequest = (
-  request: any
-): request is SettingsUpdateRequest => request.isSettingsUpdateRequest
