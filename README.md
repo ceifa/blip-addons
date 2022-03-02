@@ -1,4 +1,6 @@
 # Blips Extension
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 This extension provides a collection of utilities for working with [Blip](https://portal.blip.ai/).
 
@@ -7,7 +9,8 @@ This extension provides a collection of utilities for working with [Blip](https:
 - Changes the title of the page for matching the chatbot you working
 - Allows <kbd>Ctrl + C</kbd>, <kbd>Ctrl + V</kbd> in different bots.
 - Changes the uppercase inputs to normal inputs.
-- More features in development.
+- Hability to add global waiting limit time to inputs.
+- More features in development!
 
 ## How to install
 
@@ -33,9 +36,9 @@ $ npm run build
 $ yarn build
 ```
 
-4. Go to <a href="chrome://extensions"><code>chrome://extensions</code></a>.
+4. Go to [`chrome://extensions`](chrome://extensions).
 
-5. Click in 'Load unpacked' and select the 'dist' folder in the directory you've cloned this repository.
+5. Click in `Load unpacked` and select the `dist` folder in the directory you've cloned this repository.
 
 
 ## Contribute
