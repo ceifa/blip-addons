@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { BdsButton } from 'blip-ds/dist/blip-ds-react'
 import { Input } from './Components/Input'
+import { Settings } from '../../Settings'
 
 export type BlipsSidebarProps = {
   onClose: () => void
@@ -14,7 +15,9 @@ export const BlipsSidebar = ({
   onAdd,
   onRemove,
 }: BlipsSidebarProps) => {
-  const [waitingTime, setWaitingTime] = React.useState('0')
+  const [waitingTime, setWaitingTime] = React.useState(
+    Settings.lastGlobalInactivityTime
+  )
 
   return (
     <>
@@ -55,16 +58,17 @@ export const BlipsSidebar = ({
             <p style={{ color: '#607b99', fontSize: '.875rem', marginTop: 8 }}>
               Todos os blocos que esperam por uma entrada do usuário terão seu
               limite de espera setados para o valor abaixo.
+              <br />
+              <b>Você ainda precisa publicar o fluxo</b>
             </p>
 
             <div className="mt3">
               <Input
+                value={waitingTime}
                 onChange={(e) => setWaitingTime((e.target as any).value)}
                 label="Limite de espera (em minutos)"
                 type="number"
               />
-
-              <h1>{waitingTime}</h1>
 
               <div className="flex justify-between items-center mt3">
                 <BdsButton

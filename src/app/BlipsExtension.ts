@@ -1,8 +1,9 @@
 import { GetVariable } from './Commands'
 import { Resolver } from './Resolver'
 import * as Features from './Features'
-import type { Message } from './types'
-import { requestFeature } from './Utils'
+import type { BlipsResponse, Message, SettingsUpdateRequest } from './types'
+import { requestFeature, updateSettings } from './Utils'
+import { Settings } from './Settings'
 
 const LISTENER_SCRIPT = chrome.extension.getURL('/js/listener.js')
 const MINIMAL_INTERVAL = 200
@@ -12,7 +13,20 @@ export class BlipsExtension {
   public onReadyCallback: () => any
 
   constructor() {
+    this.setSettings()
     this.injectScript()
+  }
+
+  /**
+   * Loads the user settings
+   */
+  private setSettings() {
+    chrome.storage.sync.get('Settings', (result) => {
+      Object.assign(Settings, result.Settings)
+      chrome.storage.sync.set({ Settings })
+    })
+
+    updateSettings(Settings)
   }
 
   /**
@@ -32,12 +46,34 @@ export class BlipsExtension {
    *
    * @param message The message
    */
-  private onMessage(message: Message<any>) {
-    const { isBlipsResponse, identifier, result } = message.data
-    const isWaitingToBeResolved = Resolver.isWaiting(identifier)
+  private onMessage(message: Message<BlipsResponse>) {
+    if (isBlipsResponse(message.data)) {
+      const { identifier, result } = message.data
+      const isWaitingToBeResolved = Resolver.isWaiting(identifier)
 
-    if (isBlipsResponse && isWaitingToBeResolved) {
-      Resolver.resolve(identifier, result)
+      if (isWaitingToBeResolved) {
+        return Resolver.resolve(identifier, result)
+      }
+
+      return
+    }
+
+    /**
+     * Determins if it's settings update request, if it's  update the
+     * settings
+     */
+    if (isSettingsUpdateRequest(message.data)) {
+      const { newSettings } = message.data
+
+      chrome.storage.sync.get('Settings', (result) => {
+        chrome.storage.sync.set({
+          Settings: Object.assign(result.Settings, newSettings),
+        })
+      })
+
+      Object.assign(Settings, newSettings)
+
+      return
     }
   }
 
@@ -99,3 +135,9 @@ export class BlipsExtension {
     return this
   }
 }
+
+const isBlipsResponse = (request: any): request is BlipsResponse =>
+  request.isBlipsResponse
+const isSettingsUpdateRequest = (
+  request: any
+): request is SettingsUpdateRequest => request.isSettingsUpdateRequest

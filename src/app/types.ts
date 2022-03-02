@@ -32,3 +32,8 @@ export type BlipsCopy = {
   isCopyFromBlips: boolean
   blocksCode: string
 }
+
+export type SettingsUpdateRequest = {
+  isSettingsUpdateRequest: true
+  newSettings: Record<string, any>
+}

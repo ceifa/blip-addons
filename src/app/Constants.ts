@@ -1,1 +1,1 @@
-export class Constants {}
+export const DEFAULT_INACTIVITY_TIME = '5'

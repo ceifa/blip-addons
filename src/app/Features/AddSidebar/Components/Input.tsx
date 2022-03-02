@@ -4,10 +4,11 @@ import { BdsInput } from 'blip-ds/dist/blip-ds-react'
 export type InputProps = {
   label: string
   type: any
+  value?: string
   onChange?: (e) => void
 }
 
-export const Input = ({ label, type, onChange }: InputProps) => {
+export const Input = ({ label, type, value, onChange }: InputProps) => {
   const inputRef = React.useRef(null)
 
   React.useEffect(() => {
@@ -20,7 +21,7 @@ export const Input = ({ label, type, onChange }: InputProps) => {
 
   return (
     <div className="relative">
-      <BdsInput type={type} label={label} ref={inputRef} />
+      <BdsInput value={value} type={type} label={label} ref={inputRef} />
     </div>
   )
 }
