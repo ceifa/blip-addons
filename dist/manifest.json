@@ -1,7 +1,7 @@
 {
   "name": "Blips",
   "version": "0.0.1",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "description": "Collection of Blip utilities",
   "homepage_url": "https://github.com/jotaajunior/blips-extension",
   "icons": {
@@ -9,18 +9,22 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "browser_action": {
+  "action": {
     "default_title": "Blips",
     "default_popup": "popup.html"
   },
   "default_locale": "en",
   "background": {
-    "scripts": ["js/background.js"],
-    "persistent": false
+    "service_worker": "js/background.js"
   },
-  "permissions": ["https://*/*", "storage"],
-  "content_security_policy": "default-src 'self';",
-  "web_accessible_resources": ["js/listener.js"],
+  "permissions": ["storage"],
+  "host_permissions": ["*://*.blip.ai/*"],
+  "web_accessible_resources": [
+    {
+      "resources": ["js/listener.js"],
+      "matches": ["http://*/*", "https://*/*"]
+    }
+  ],
   "content_scripts": [
     {
       "run_at": "document_end",

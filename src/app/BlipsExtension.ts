@@ -4,7 +4,7 @@ import { requestFeature } from './Utils'
 import * as Features from './Features'
 import type { BlipsResponse, Message } from './types'
 
-const LISTENER_SCRIPT = chrome.extension.getURL('/js/listener.js')
+const LISTENER_SCRIPT = chrome.runtime.getURL('/js/listener.js')
 const MINIMAL_INTERVAL = 200
 const MAXIMUM_INTERVAL = 1500
 
