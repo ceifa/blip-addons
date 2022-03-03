@@ -32,3 +32,13 @@ export type BlipsCopy = {
   isCopyFromBlips: boolean
   blocksCode: string
 }
+
+export type SettingsUpdate = {
+  isSettingsUpdate: true
+  newSettings: Record<string, any>
+  isFromClient: boolean
+}
+
+export type Handshake = {
+  isHandshake: boolean
+}

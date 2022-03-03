@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-import { Settings } from '../../Settings'
+import { setSettings, Settings } from '../../Settings'
 import { convertToHours, interceptFunction, requestFeature } from '../../Utils'
 import { BaseFeature } from '../BaseFeature'
 import { SetInactivity } from '../SetInactivity'
@@ -33,7 +33,10 @@ export class AddSidebar extends BaseFeature {
    */
   private setInactivity(waitingTime: number, shouldOverwrite: boolean) {
     const hours = convertToHours(waitingTime)
-    Settings.lastGlobalInactivityTime = String(waitingTime)
+
+    setSettings({
+      lastGlobalInactivityTime: String(waitingTime),
+    })
 
     requestFeature(SetInactivity.code, 'run', hours, shouldOverwrite)
   }

@@ -12,8 +12,6 @@ export class RemoveInactivity extends BaseFeature {
    * @param expirationTime The expiration time
    */
   public handle() {
-    console.log('Executando...')
-
     const blocks = getBlocks()
       .filter(isExpirableBlock)
       .filter(hasInput)

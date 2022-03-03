@@ -1,15 +1,21 @@
 import * as RawCommands from './Commands'
 import * as RawFeatures from './Features'
+import { Settings } from './Settings'
 import type {
   Message,
   BlipsRequest,
   BlipsResponse,
   Command,
   FeatureRequest,
+  SettingsUpdate,
 } from './types'
 
 const Commands = Object.values(RawCommands)
 const Features = Object.values(RawFeatures)
+const sendMessage = (message: any) => window.postMessage(message, '*')
+
+// Sends handshake to extension
+sendMessage({ isHandshake: true })
 
 window.addEventListener('message', async (message: Message<any>) => {
   /**
@@ -71,6 +77,19 @@ window.addEventListener('message', async (message: Message<any>) => {
       return
     }
   }
+
+  /**
+   * Check if a settings update request from server
+   */
+  if (isSettingsUpdate(message.data)) {
+    const isFromServer = !message.data.isFromClient
+
+    if (isFromServer) {
+      Object.assign(Settings, message.data.newSettings)
+    }
+
+    return
+  }
 })
 
 const isFeatureRequest = (request: any): request is FeatureRequest =>
@@ -79,6 +98,8 @@ const isBlipsRequest = (request: any): request is BlipsRequest =>
   !!request.isBlipsRequest
 const isCommand = (command: Command) => command
 const sendResponse = (message: Omit<BlipsResponse, 'isBlipsResponse'>) =>
-  window.postMessage({ isBlipsResponse: true, ...message }, '*')
+  sendMessage({ isBlipsResponse: true, ...message })
 const getFeature = (code) => Features.find((Feature) => Feature.code === code)
 const getCommand = (code) => Commands.find((Command) => Command.code === code)
+const isSettingsUpdate = (message: any): message is SettingsUpdate =>
+  message.isSettingsUpdate
