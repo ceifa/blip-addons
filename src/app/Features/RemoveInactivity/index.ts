@@ -1,4 +1,4 @@
-import { getBlocks, showSuccessToast } from '../../Utils'
+import { getBlocks, showSuccessToast, showWarningToast } from '../../Utils'
 import { BaseFeature } from '../BaseFeature'
 
 const SKIP_BLOCKS = ['onboarding', 'fallback', 'error']
@@ -12,8 +12,6 @@ export class RemoveInactivity extends BaseFeature {
    * @param expirationTime The expiration time
    */
   public handle() {
-    console.log('Executando...')
-
     const blocks = getBlocks()
       .filter(isExpirableBlock)
       .filter(hasInput)
@@ -29,7 +27,11 @@ export class RemoveInactivity extends BaseFeature {
       }
     }
 
-    showSuccessToast(`${blocksUpdated} bloco(s) alterado(s)`)
+    if (blocksUpdated > 0) {
+      showSuccessToast(`${blocksUpdated} bloco(s) alterado(s)`)
+    } else {
+      showWarningToast('Nenhum bloco alterado')
+    }
   }
 }
 

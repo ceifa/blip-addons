@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom'
 import { Settings } from '../../Settings'
 import { convertToHours, interceptFunction, requestFeature } from '../../Utils'
 import { BaseFeature } from '../BaseFeature'
+import { RemoveInactivity } from '../RemoveInactivity'
 import { SetInactivity } from '../SetInactivity'
 import { BlipsButton } from './BlipsButton'
 import { BlipsSidebar } from './BlipsSidebar'
@@ -42,7 +43,7 @@ export class AddSidebar extends BaseFeature {
    * Remove the inactivity time
    */
   public removeInactivity() {
-    requestFeature(SetInactivity.code, 'run')
+    requestFeature(RemoveInactivity.code, 'run')
   }
 
   /**
