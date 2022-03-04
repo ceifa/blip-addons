@@ -18,8 +18,6 @@ export const Input = ({
   onSubmit,
   errorMessage,
 }: InputProps) => {
-  const inputRef = React.useRef(null)
-
   return (
     <div className="relative">
       <BdsInput
@@ -28,7 +26,6 @@ export const Input = ({
         value={value}
         type={type}
         label={label}
-        ref={inputRef}
         errorMessage={errorMessage}
         danger={!!errorMessage}
       />
