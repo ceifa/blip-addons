@@ -19,7 +19,7 @@ export abstract class BaseFeature {
   }
 
   /**
-   * Returns the code of the afeature
+   * Returns the code of the feature
    */
   public static get code() {
     return constantCase(this.name)

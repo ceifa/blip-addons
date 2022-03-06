@@ -10,6 +10,7 @@ This extension provides a collection of utilities for working with [Blip](https:
 - Allows <kbd>Ctrl + C</kbd>, <kbd>Ctrl + V</kbd> in different bots.
 - Changes the uppercase inputs to normal inputs.
 - Hability to add global waiting limit time to inputs.
+- Hability to add with more flexibility global trackings.
 - More features in development!
 
 ## How to install
