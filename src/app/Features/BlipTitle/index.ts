@@ -1,18 +1,10 @@
+import { getBotName } from '../../Utils'
 import { BaseFeature } from '../BaseFeature'
 
 const BEHOLDER_TAG = 'take-plugin-bot-beholder'
 
 export class BuilderTitle extends BaseFeature {
   public static alwaysClean = true
-
-  /**
-   * Returnns the name of the bot
-   */
-  public get botName() {
-    const botNameElement = document.querySelector('.bot-name:nth-child(1)')
-
-    return botNameElement.innerHTML
-  }
 
   /**
    * Returns if the current page is Beholder
@@ -31,11 +23,9 @@ export class BuilderTitle extends BaseFeature {
    * Adds title to builder
    */
   public handle() {
-    if (this.botName) {
-      const botName = this.botName
+    const botName = getBotName()
 
-      document.title = `${botName} - Blip`
-    }
+    document.title = `${botName} - Blip`
   }
 
   /**
