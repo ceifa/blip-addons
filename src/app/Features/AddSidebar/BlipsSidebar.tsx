@@ -4,6 +4,7 @@ import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
 import { Input } from './Components/Input'
 import { Settings } from '../../Settings'
 import { Switch } from './Components/Switch'
+import ReactDOM from 'react-dom'
 
 export type BlipsSidebarProps = {
     onClose: () => void
@@ -23,10 +24,57 @@ export const BlipsSidebar = ({
     const [globalExtras, setGlobalExtras] = React.useState(
         Settings.lastGlobalTrackings
     )
-    const [shouldDeleteCurrentExtras, setshouldDeleteCurrentExtras] = React.useState(true)
+
+    const [numberOfTrackings, setNumberOfTrackings] = React.useState(0)
+    const [listOfLines, setListOfLines] = React.useState([])
+    const [shouldDeleteCurrentExtras, setShouldDeleteCurrentExtras] = React.useState(true)
 
     const [shouldKeep, setShouldKeep] = React.useState(false)
     const [error, setError] = React.useState('')
+
+    React.useEffect(() => {
+        console.log(numberOfTrackings);
+        let x = listOfLines;
+        x.push(getGlobalTrackingLine());
+        setListOfLines(x);
+
+        console.log('antes', listOfLines);
+    }, [numberOfTrackings]);
+
+
+    function getGlobalTrackingLine() {
+        const teste =
+        <>
+            <div className="w-45 flex justify-between">
+
+                <Input
+                    value=""
+                    onChange={(e) => setWaitingTime((e.target as any).value)}
+                    onSubmit={handleSubmit}
+                    errorMessage={error}
+                    label="Key"
+                    type="text"
+                />
+
+                <Input
+                    value=""
+                    onChange={(e) => setWaitingTime((e.target as any).value)}
+                    onSubmit={handleSubmit}
+                    errorMessage={error}
+                    label="Value"
+                    type="text"
+                />
+
+                    <i className="self-center icon-close lh-solid cursor-pointer ml2" onClick={() => setNumberOfTrackings(numberOfTrackings - 1)}></i>
+            </div>
+        </>
+
+        return teste;
+    }
+
+    function addNewLine() {
+        setNumberOfTrackings(numberOfTrackings + 1);
+    }
 
     function handleSubmit(e) {
         if (!waitingTime) {
@@ -45,6 +93,9 @@ export const BlipsSidebar = ({
         setError('')
         onAdd(time, shouldKeep)
     }
+
+    console.log('render');
+    console.log('dps', listOfLines);
 
     return (
         <>
@@ -150,13 +201,13 @@ export const BlipsSidebar = ({
                         </p>
 
                         <div className="mt3">
-
+                            {listOfLines}
 
                             <div className="flex mt3 pa2">
                                 <Switch
                                     isChecked={shouldDeleteCurrentExtras}
                                     name="overwrite"
-                                    onChange={(e) => setshouldDeleteCurrentExtras(e.target.checked)}
+                                    onChange={(e) => setShouldDeleteCurrentExtras(e.target.checked)}
                                 />
 
                                 <div className="ml2">
@@ -167,6 +218,13 @@ export const BlipsSidebar = ({
                             </div>
 
                             <div className="flex justify-between items-center mt5">
+                                <BdsButton
+                                    variant="dashed"
+                                    onClick={addNewLine}
+                                >
+                                    Add Tracking
+                                </BdsButton>
+
                                 <BdsButton
                                     type="submit"
                                     variant="primary"

@@ -2,7 +2,7 @@ import { SettingsUpdate } from './types'
 
 export const Settings = {
     lastGlobalInactivityTime: '5',
-    lastGlobalTrackings: [{}]
+    lastGlobalTrackings: []
 }
 
 export function setSettings(newSettings: Partial<typeof Settings>) {

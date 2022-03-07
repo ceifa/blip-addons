@@ -4,7 +4,7 @@ import { BdsInput } from 'blip-ds/dist/blip-ds-react'
 export type InputProps = {
   label: string
   type: any
-  value?: string
+  value?: any
   onChange?: (e) => void
   onSubmit?: (e) => void
   errorMessage?: string
