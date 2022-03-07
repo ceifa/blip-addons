@@ -1,5 +1,5 @@
 import { BaseFeature } from '../BaseFeature'
-import { getBlocks, showSuccessToast } from '../../Utils'
+import { getBlockById, getBotName, showSuccessToast } from '../../Utils'
 import type { BlipsCopy } from '../../types'
 
 export class CopyBlock extends BaseFeature {
@@ -11,7 +11,7 @@ export class CopyBlock extends BaseFeature {
   /**
    * Handles the copy
    */
-  private async handleCopy() {
+  private handleCopy = () => {
     const selectedNodesId = this.getSelectedNodesId()
     const hasSelectedNodes = selectedNodesId.length > 0
 
@@ -28,9 +28,15 @@ export class CopyBlock extends BaseFeature {
    * @param blocksId The blocks ids
    */
   private copyBlocks(blocksId: any[]) {
-    const selectedBlocks = getBlocks().filter((block) =>
-      blocksId.includes(block.id)
-    )
+    const selectedBlocks = []
+
+    for (const blockId of blocksId) {
+      const block = getBlockById(blockId)
+
+      if (block) {
+        selectedBlocks.push(block)
+      }
+    }
 
     this.copyToClipboard(selectedBlocks)
   }
@@ -46,6 +52,7 @@ export class CopyBlock extends BaseFeature {
     window.navigator.clipboard.writeText(
       JSON.stringify({
         isCopyFromBlips: true,
+        originBot: getBotName(),
         blocksCode,
       } as BlipsCopy)
     )
@@ -64,13 +71,13 @@ export class CopyBlock extends BaseFeature {
    * Adds the functionality to copy the block
    */
   public handle() {
-    document.body.addEventListener('copy', this.handleCopy.bind(this))
+    document.body.addEventListener('copy', this.handleCopy)
   }
 
   /**
    * Removes the functionality to copy the block
    */
   public cleanup() {
-    document.body.removeEventListener('copy', this.handleCopy.bind(this))
+    document.body.removeEventListener('copy', this.handleCopy)
   }
 }

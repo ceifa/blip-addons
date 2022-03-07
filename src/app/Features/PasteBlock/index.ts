@@ -5,6 +5,7 @@ import {
   cleanCopiedStates,
   cleanSelectedNodes,
   getBlocks,
+  getBotName,
   getFlow,
   selectBlock,
   showSuccessToast,
@@ -46,6 +47,16 @@ export class PasteBlock extends BaseFeature {
     const blipsCopy = JSON.parse(clipboardData)
 
     if (isCopyFromBlips(blipsCopy)) {
+      /**
+       * Don't copy if it's the same bot, as blip automatically deals
+       * with it
+       */
+      const isSameBot = blipsCopy.originBot === getBotName()
+
+      if (isSameBot) {
+        return
+      }
+
       cleanCopiedStates()
       cleanSelectedNodes()
 
