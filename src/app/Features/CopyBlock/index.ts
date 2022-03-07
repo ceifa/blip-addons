@@ -11,11 +11,12 @@ export class CopyBlock extends BaseFeature {
   /**
    * Handles the copy
    */
-  private handleCopy = () => {
+  private handleCopy = (e) => {
     const selectedNodesId = this.getSelectedNodesId()
     const hasSelectedNodes = selectedNodesId.length > 0
+    const isBlockCopy = e.srcElement.id === 'sidebar-title'
 
-    if (hasSelectedNodes) {
+    if (hasSelectedNodes && isBlockCopy) {
       this.copyBlocks(selectedNodesId)
       showSuccessToast('Bloco(s) copiado(s) com sucesso')
     }
