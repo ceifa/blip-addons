@@ -47,7 +47,7 @@ window.addEventListener('message', async (message: Message<any>) => {
      * to undo the changes when user leaves the page.
      */
     if (type === 'cleanup') {
-      const shouldRun = Feature.alwaysClean || !Feature.isCleaned
+      const shouldRun = Feature.shouldAlwaysClean || !Feature.isCleaned
 
       if (shouldRun) {
         await new Feature().cleanup()

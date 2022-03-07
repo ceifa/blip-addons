@@ -14,6 +14,10 @@ export function getBlocks(): any[] {
   return Object.values(getFlow())
 }
 
+export function getBlockById(id: string) {
+  return getFlow()[id]
+}
+
 export function showSuccessToast(message: string) {
   getController().ngToast.success(message)
 }
@@ -71,4 +75,8 @@ export function requestFeature(code: string, type: 'cleanup' | 'run', ...args) {
   }
 
   window.postMessage(message, '*')
+}
+
+export function getBotName() {
+  return getController().application.shortName
 }
