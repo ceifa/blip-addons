@@ -1,11 +1,10 @@
 import * as React from 'react'
 
-import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
-import { Input } from './Components/Input'
 import { Settings } from '../../Settings'
+import { Input } from './Components/Input'
 import { Switch } from './Components/Switch'
-import { GlobalTrackingsForm } from '../SetGlobalTrackings/globalTrackingsForm'
-import { v4 } from 'uuid'
+import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
+import { GlobalTrackingsForm } from '../SetGlobalTrackings/GlobalTrackingsForm'
 
 export type BlipsSidebarProps = {
   onClose: () => void
