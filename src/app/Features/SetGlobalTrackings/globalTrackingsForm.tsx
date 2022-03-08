@@ -1,19 +1,20 @@
 import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
 import * as React from 'react'
 import { v4 } from 'uuid'
+import { SetGlobalTrackings } from '.'
 import { Settings } from '../../Settings'
 import { Input } from '../AddSidebar/Components/Input'
 import { Switch } from '../AddSidebar/Components/Switch'
 
-export const GlobalTrackingsForm = (
-) => {
+export const GlobalTrackingsForm = () => {
   const [globalExtras, setGlobalExtras] = React.useState(
     Settings.lastGlobalTrackings
   )
-  const [error, setError] = React.useState('')
+  const [error, setError] = React.useState([])
   const [shouldDeleteCurrentExtras, setShouldDeleteCurrentExtras] =
     React.useState(true)
-  function getGlobalTrackingLine() {
+
+  function getGlobalTrackingLine(): any {
     return (
       <div>
         {globalExtras.map((field, index) => {
@@ -21,24 +22,18 @@ export const GlobalTrackingsForm = (
             <div className="w-100 flex justify-between mb2" key={v4()}>
               <Input
                 value={field.key}
-                onChange={(e) => {
-                  field.key = e.target.value
-                  setGlobalExtras([...globalExtras])
-                }}
+                onChange={(e) => (field.key = e.target.value)}
                 onSubmit={handleSubmit}
-                errorMessage={error}
+                errorMessage={error[index]}
                 label="Key"
                 type="text"
               />
               <div className="ml2">
                 <Input
                   value={field.value}
-                  onChange={(e) => {
-                    field.value = e.target.value
-                    setGlobalExtras([...globalExtras])
-                  }}
+                  onChange={(e) => (field.value = e.target.value)}
                   onSubmit={handleSubmit}
-                  errorMessage={error}
+                  errorMessage={error[index]}
                   label="Value"
                   type="text"
                 />
@@ -54,34 +49,71 @@ export const GlobalTrackingsForm = (
     )
   }
 
-  function addNewLine() {
+  function addNewLine(): void {
     setGlobalExtras([...globalExtras, { key: '', value: '' }])
   }
 
-  function removeLine(index) {
+  function removeLine(index: number): void {
     setGlobalExtras(globalExtras.filter((_, i) => i !== index))
   }
 
-  function handleSubmit(e) {
-    let waitingTime = 'alterar'
-    if (!waitingTime) {
-      setError('Preencha com um valor entre 1 e 1380')
-      return
-    }
-
-    const time = Number(waitingTime)
-    const isTimeValid = time > 0 && time < 1380
-
-    if (!isTimeValid) {
-      setError('Utilize números entre 1 e 1380')
-      return
-    }
-
-    setError('')
-    // onAdd(time, shouldDeleteCurrentExtras)
+  function getEmptyExtras(globalExtras): any[] {
+    return globalExtras.filter(
+      (currentExtra) => currentExtra.key === '' || currentExtra.value === ''
+    )
   }
 
-  function onRemove() {}
+  function hasKeyOrValueEmpty(globalExtras: any): boolean {
+    const emptyExtras = getEmptyExtras(globalExtras)
+    const hasKeyOrValueEmpty = emptyExtras.length > 0
+
+    return hasKeyOrValueEmpty
+  }
+
+  function listToObject(previousExtra: any, currentExtra: any): any {
+    return { ...previousExtra, [currentExtra.key]: currentExtra.value }
+  }
+
+  function setErrorFields(globalExtras: any): string[] {
+    const errorMessage = 'Preencha todos os campos'
+    const emptyExtrasIndexs = globalExtras.map((extra, index) => {
+      if (extra.key === '' || extra.value === '') {
+        return index
+      }
+    })
+    let arrayOfErrors = new Array(globalExtras.length)
+
+    emptyExtrasIndexs.forEach((extraIndex) => {
+      arrayOfErrors[extraIndex] = errorMessage
+    })
+
+    return arrayOfErrors
+  }
+
+  function handleSubmit(): void {
+    if (hasKeyOrValueEmpty(globalExtras)) {
+      let arrayOfErrors = setErrorFields(globalExtras)
+      setError(arrayOfErrors)
+      return
+    }
+
+    const globalSettingsWillBeSetted = globalExtras.reduce(
+      (previousExtra, currentExtra) =>
+        listToObject(previousExtra, currentExtra),
+      {}
+    )
+
+    new SetGlobalTrackings().handle(
+      globalSettingsWillBeSetted,
+      shouldDeleteCurrentExtras
+    )
+
+    setError(new Array(globalExtras.length))
+  }
+
+  function onRemove(): void {
+    new SetGlobalTrackings().handle({}, true)
+  }
 
   return (
     <div className="sidebar-inner-content pa5">
@@ -108,13 +140,13 @@ export const GlobalTrackingsForm = (
 
           <div className="ml2">
             <BdsTypo bold="extra-bold" variant="fs-14">
-              Manter trackings globais definidas
+              Apagar trackings globais definidas
             </BdsTypo>
           </div>
         </div>
 
         <div className="flex justify-between items-center mt5">
-          <BdsButton variant="dashed" onClick={addNewLine}> 
+          <BdsButton variant="dashed" onClick={addNewLine}>
             Add Tracking
           </BdsButton>
 

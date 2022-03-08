@@ -3,6 +3,7 @@ import { BaseFeature } from "../BaseFeature";
 
 export class SetGlobalTrackings extends BaseFeature {
 
+    public static isUserTriggered = true;
     /**
     * Sets the expiration time for all the bots
     *
@@ -11,18 +12,19 @@ export class SetGlobalTrackings extends BaseFeature {
     */
     public handle(customExtras: any, shouldDeleteCurrentExtras: boolean): void {
         const blocks = getBlocks();
-        const trackings = getActionsWithTrackingEvent(blocks);
+        const blocksWithTrackingAction = getActionsWithTrackingEvent(blocks);
         let blocksUpdated = 0;
 
 
-        for (const tracking of trackings) {
+        for (const blockWithTracking of blocksWithTrackingAction) {
             if (shouldDeleteCurrentExtras) {
-                tracking.settings.extras = customExtras;
-                ++blocksUpdated;
+                blockWithTracking.settings.extras = customExtras;
             }
             else {
-                Object.assign(tracking.settings.extras, customExtras);
+                Object.assign(blockWithTracking.settings.extras, customExtras);
             }
+           
+            ++blocksUpdated;
         }
 
         if (blocksUpdated > 0) {
