@@ -21,14 +21,14 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
-    "css-loader": "^1.0.1",
+    "css-loader": "^6.7.1",
     "eslint": "^8.10.0",
     "eslint-plugin-react": "^7.29.2",
     "husky": "^7.0.4",
     "ts-loader": "^5.3.1",
     "typescript": "^3.1.6",
-    "webpack": "^4.26.1",
-    "webpack-cli": "^3.1.2"
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
   },
   "dependencies": {
     "blip-ds": "^1.135.2",
