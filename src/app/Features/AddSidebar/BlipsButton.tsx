@@ -1,5 +1,7 @@
 import * as React from 'react'
 
+import { BLIPS_BUTTON_ID } from '../../Constants'
+
 export type BlipsButtonProps = {
   onClick: () => void
 }

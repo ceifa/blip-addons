@@ -1,48 +1,15 @@
 import * as React from 'react'
+import { BdsMenuSeparation } from 'blip-ds/dist/blip-ds-react'
 
-import { Settings } from '../../Settings'
-import { Input } from './Components/Input'
-import { Switch } from './Components/Switch'
-import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
-import { GlobalTrackingsForm } from '../SetGlobalTrackings/GlobalTrackingsForm'
+import { Block } from '~/Components'
+import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm'
+import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm'
 
 export type BlipsSidebarProps = {
   onClose: () => void
-  onAdd?: (time: number, shouldKeep: boolean) => void
-  onRemove?: () => void
 }
 
-export const BlipsSidebar = ({
-  onClose,
-  onAdd,
-  onRemove,
-}: BlipsSidebarProps) => {
-  const [waitingTime, setWaitingTime] = React.useState(
-    Settings.lastGlobalInactivityTime
-  )
-
-  const [shouldKeep, setShouldKeep] = React.useState(false)
-  const [error, setError] = React.useState('')
-
-
-  function handleSubmit(e) {
-    if (!waitingTime) {
-      setError('Preencha com um valor entre 1 e 1380')
-      return
-    }
-
-    const time = Number(waitingTime)
-    const isTimeValid = time > 0 && time < 1380
-
-    if (!isTimeValid) {
-      setError('Utilize números entre 1 e 1380')
-      return
-    }
-
-    setError('')
-    onAdd(time, shouldKeep)
-  }
-
+export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
   return (
     <>
       <div
@@ -74,70 +41,11 @@ export const BlipsSidebar = ({
         </div>
 
         <div className="sidebar-content-body">
-          <div className="sidebar-inner-content pa5">
-            <span className="bp-fs-5 bp-c-city ttu b">
-              Adicionar tempo de inatividade global
-            </span>
-
-            <p style={{ color: '#607b99', fontSize: '.875rem', marginTop: 8 }}>
-              Todos os blocos que esperam por uma entrada do usuário terão seu
-              limite de espera setados para o valor abaixo.
-              <br />
-              <b>Você ainda precisa publicar o fluxo</b>
-            </p>
-
-            <div className="mt3">
-              <Input
-                value={waitingTime}
-                onChange={(e) => setWaitingTime((e.target as any).value)}
-                onSubmit={handleSubmit}
-                errorMessage={error}
-                label="Limite de espera (em minutos)"
-                type="number"
-              />
-
-              <div className="flex mt3 pa2">
-                <Switch
-                  isChecked={shouldKeep}
-                  name="overwrite"
-                  onChange={(e) => setShouldKeep(e.target.checked)}
-                />
-
-                <div className="ml2">
-                  <BdsTypo bold="extra-bold" variant="fs-14">
-                    Manter limite de espera se já estiver definido
-                  </BdsTypo>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center mt5">
-                <BdsButton
-                  type="submit"
-                  variant="primary"
-                  onClick={handleSubmit}
-                >
-                  Definir
-                </BdsButton>
-
-                <BdsButton variant="delete" onClick={onRemove}>
-                  Remover*
-                </BdsButton>
-              </div>
-
-              <p
-                style={{
-                  color: '#607b99',
-                  fontSize: '.875rem',
-                  marginTop: 8,
-                }}
-              >
-                * Remove o limite de espera de <b>TODOS</b> os inputs.
-              </p>
-            </div>
-          </div>
-          <div>
-            <GlobalTrackingsForm/>
-          </div>
+          <Block padding={2.5}>
+            <GlobalInactivityForm />
+            <BdsMenuSeparation />
+            <GlobalTrackingsForm />
+          </Block>
         </div>
       </div>
     </>
