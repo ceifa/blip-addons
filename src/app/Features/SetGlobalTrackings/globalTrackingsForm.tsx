@@ -14,6 +14,10 @@ export const GlobalTrackingsForm = () => {
   const [shouldDeleteCurrentExtras, setShouldDeleteCurrentExtras] =
     React.useState(true)
 
+  /**
+  * Set the html tamplate for each global extra
+  *
+  */
   function getGlobalTrackingLine(): any {
     return (
       <div>
@@ -49,20 +53,39 @@ export const GlobalTrackingsForm = () => {
     )
   }
 
+   /**
+   * add a new line in the globalExtra list
+   *
+   */
   function addNewLine(): void {
     setGlobalExtras([...globalExtras, { key: '', value: '' }])
   }
 
+  /**
+  * remove a line in the globalExtra list
+  *
+  * @param index The index of globalExtra list
+  */
   function removeLine(index: number): void {
     setGlobalExtras(globalExtras.filter((_, i) => i !== index))
   }
 
-  function getEmptyExtras(globalExtras): any[] {
+   /**
+   * Get the empties global extras in the list
+   *
+   * @param globalExtras The trackings that will be setted
+   */
+  function getEmptyExtras(globalExtras: any): any[] {
     return globalExtras.filter(
       (currentExtra) => currentExtra.key === '' || currentExtra.value === ''
     )
   }
 
+  /**
+   * Check for empty values in globalExtras list
+   *
+   * @param globalExtras The trackings that will be setted
+   */
   function hasKeyOrValueEmpty(globalExtras: any): boolean {
     const emptyExtras = getEmptyExtras(globalExtras)
     const hasKeyOrValueEmpty = emptyExtras.length > 0
@@ -70,10 +93,21 @@ export const GlobalTrackingsForm = () => {
     return hasKeyOrValueEmpty
   }
 
+  /**
+   * Transform a list with key and value element in a object {key: value}
+   *
+   * @param previousExtra previous value in globalExtras array
+   * @param currentExtra current value in globalExtras array
+   */
   function listToObject(previousExtra: any, currentExtra: any): any {
     return { ...previousExtra, [currentExtra.key]: currentExtra.value }
   }
 
+  /**
+   * Set an error message in the empty lines
+   *
+   * @param globalExtras The trackings that will be setted
+   */
   function setErrorFields(globalExtras: any): string[] {
     const errorMessage = 'Preencha todos os campos'
     const emptyExtrasIndexs = globalExtras.map((extra, index) => {
@@ -81,8 +115,8 @@ export const GlobalTrackingsForm = () => {
         return index
       }
     })
-    let arrayOfErrors = new Array(globalExtras.length)
 
+    let arrayOfErrors = new Array(globalExtras.length)
     emptyExtrasIndexs.forEach((extraIndex) => {
       arrayOfErrors[extraIndex] = errorMessage
     })
@@ -90,6 +124,10 @@ export const GlobalTrackingsForm = () => {
     return arrayOfErrors
   }
 
+  /**
+   * Check the globalExtras and call the SetGlobalTrackings method, to set the global actions
+   *
+   */
   function handleSubmit(): void {
     if (hasKeyOrValueEmpty(globalExtras)) {
       let arrayOfErrors = setErrorFields(globalExtras)
@@ -111,6 +149,10 @@ export const GlobalTrackingsForm = () => {
     setError(new Array(globalExtras.length))
   }
 
+  /**
+   * Call the SetGlobalTrackings method, to remove all the global actions
+   *
+   */
   function onRemove(): void {
     new SetGlobalTrackings().handle({}, true)
   }
