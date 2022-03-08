@@ -8,8 +8,8 @@ import {
   getFlow,
   selectBlock,
   showSuccessToast,
-} from '../../Utils'
-import type { BlipsCopy } from '../../types'
+} from '~/Utils'
+import type { BlipsCopy } from '~/types'
 
 export class PasteBlock extends BaseFeature {
   /**

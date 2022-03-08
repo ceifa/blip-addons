@@ -51,7 +51,7 @@ export const GlobalInactivityForm = () => {
    * Runs the 'RemoveInactivity' feature, thus removing the defined
    * waiting limit time to all blocks with input
    */
-  const handleRemove = new RemoveInactivity().handle
+  const [handleRemove] = React.useState(() => new RemoveInactivity().handle)
 
   return (
     <>
