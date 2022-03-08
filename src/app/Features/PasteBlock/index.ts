@@ -4,7 +4,7 @@ import { BaseFeature } from '../BaseFeature'
 import {
   cleanCopiedStates,
   cleanSelectedNodes,
-  getBlocks,
+  getBotName,
   getFlow,
   selectBlock,
   showSuccessToast,
@@ -46,6 +46,16 @@ export class PasteBlock extends BaseFeature {
     const blipsCopy = JSON.parse(clipboardData)
 
     if (isCopyFromBlips(blipsCopy)) {
+      /**
+       * Don't copy if it's the same bot, as blip automatically deals
+       * with it
+       */
+      const isSameBot = blipsCopy.originBot === getBotName()
+
+      if (isSameBot) {
+        return
+      }
+
       cleanCopiedStates()
       cleanSelectedNodes()
 
@@ -74,13 +84,15 @@ export class PasteBlock extends BaseFeature {
         showSuccessToast('Bloco(s) colado(s) com sucesso')
       }
     }
+
+    this.cachedIds.clear()
   }
 
   /**
    * Returns if the block exists
    */
   public blockExists(id: string) {
-    const existingBlocksId = getBlocks().map((block) => block.id)
+    const existingBlocksId = Object.keys(getFlow())
 
     return existingBlocksId.includes(id)
   }
@@ -127,11 +139,11 @@ export class PasteBlock extends BaseFeature {
         const isId = ['id', '$id', 'stateId'].includes(key)
 
         if (isId) {
-          const isDefaultBlock = this.isDefaultBlock(block[key])
-          const isExistingId = this.blockExists(block[key])
-          const shouldChangeId = isExistingId && !isDefaultBlock
+          const blockId = block[key]
+          const isExistingBlock = this.blockExists(blockId)
+          const isDefaultBlock = this.isDefaultBlock(blockId)
 
-          if (shouldChangeId) {
+          if (isExistingBlock && !isDefaultBlock) {
             block[key] = this.getIdFor(block[key])
           }
         }
@@ -145,7 +157,7 @@ export class PasteBlock extends BaseFeature {
    * @param id The id of the block
    */
   private isDefaultBlock(id: string) {
-    const defaultBlocks = ['onboarding', 'error']
+    const defaultBlocks = ['onboarding', 'fallback']
 
     return defaultBlocks.includes(id)
   }

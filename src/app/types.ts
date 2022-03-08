@@ -31,6 +31,7 @@ export type FeatureRequest = {
 export type BlipsCopy = {
   isCopyFromBlips: boolean
   blocksCode: string
+  originBot: string
 }
 
 export type SettingsUpdate = {
