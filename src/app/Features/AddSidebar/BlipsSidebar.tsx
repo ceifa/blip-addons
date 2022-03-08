@@ -1,9 +1,10 @@
 import * as React from 'react'
 
-import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
-import { Input } from './Components/Input'
 import { Settings } from '../../Settings'
+import { Input } from './Components/Input'
 import { Switch } from './Components/Switch'
+import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
+import { GlobalTrackingsForm } from '../SetGlobalTrackings/GlobalTrackingsForm'
 
 export type BlipsSidebarProps = {
   onClose: () => void
@@ -19,8 +20,10 @@ export const BlipsSidebar = ({
   const [waitingTime, setWaitingTime] = React.useState(
     Settings.lastGlobalInactivityTime
   )
+
   const [shouldKeep, setShouldKeep] = React.useState(false)
   const [error, setError] = React.useState('')
+
 
   function handleSubmit(e) {
     if (!waitingTime) {
@@ -131,6 +134,9 @@ export const BlipsSidebar = ({
                 * Remove o limite de espera de <b>TODOS</b> os inputs.
               </p>
             </div>
+          </div>
+          <div>
+            <GlobalTrackingsForm/>
           </div>
         </div>
       </div>
