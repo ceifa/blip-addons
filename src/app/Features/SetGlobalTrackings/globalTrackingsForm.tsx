@@ -3,7 +3,7 @@ import * as React from 'react'
 import { v4 } from 'uuid'
 
 import { SetGlobalTrackings } from '.'
-import { Settings } from '../../Settings'
+import { setSettings, Settings } from '../../Settings'
 import { Input } from '../AddSidebar/Components/Input'
 import { Switch } from '../AddSidebar/Components/Switch'
 import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
@@ -142,6 +142,8 @@ export const GlobalTrackingsForm = () => {
         listToObject(previousExtra, currentExtra),
       {}
     )
+
+    setSettings({lastGlobalTrackings: globalExtras})
 
     new SetGlobalTrackings().handle(
       globalSettingsWillBeSetted,
