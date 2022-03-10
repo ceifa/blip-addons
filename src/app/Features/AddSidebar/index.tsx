@@ -1,11 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-import { setSettings, Settings } from '../../Settings'
-import { convertToHours, interceptFunction, requestFeature } from '../../Utils'
+import { interceptFunction } from '~/Utils'
 import { BaseFeature } from '../BaseFeature'
-import { RemoveInactivity } from '../RemoveInactivity'
-import { SetInactivity } from '../SetInactivity'
 import { BlipsButton } from './BlipsButton'
 import { BlipsSidebar } from './BlipsSidebar'
 
@@ -28,28 +25,6 @@ export class AddSidebar extends BaseFeature {
   }
 
   /**
-   * Sets the waiting limit time
-   *
-   * @param waitingTime The waiting limit time
-   */
-  private setInactivity(waitingTime: number, shouldOverwrite: boolean) {
-    const hours = convertToHours(waitingTime)
-
-    setSettings({
-      lastGlobalInactivityTime: String(waitingTime),
-    })
-
-    requestFeature(SetInactivity.code, 'run', hours, shouldOverwrite)
-  }
-
-  /**
-   * Remove the inactivity time
-   */
-  public removeInactivity() {
-    requestFeature(RemoveInactivity.code, 'run')
-  }
-
-  /**
    * Opens the sidebar by adding it into the DOM
    */
   private openSidebar = () => {
@@ -59,11 +34,7 @@ export class AddSidebar extends BaseFeature {
 
       blipsSidebar.setAttribute('id', BLIPS_SIDEBAR_ID)
       ReactDOM.render(
-        <BlipsSidebar
-          onClose={this.closeSidebar}
-          onAdd={this.setInactivity}
-          onRemove={this.removeInactivity}
-        />,
+        <BlipsSidebar onClose={this.closeSidebar} />,
         blipsSidebar
       )
 

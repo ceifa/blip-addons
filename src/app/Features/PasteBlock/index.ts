@@ -4,12 +4,13 @@ import { BaseFeature } from '../BaseFeature'
 import {
   cleanCopiedStates,
   cleanSelectedNodes,
+  createNearbyPosition,
   getBotName,
   getFlow,
   selectBlock,
   showSuccessToast,
-} from '../../Utils'
-import type { BlipsCopy } from '../../types'
+} from '~/Utils'
+import type { BlipsCopy } from '~/types'
 
 export class PasteBlock extends BaseFeature {
   /**
@@ -62,6 +63,8 @@ export class PasteBlock extends BaseFeature {
       const blocks = JSON.parse(blipsCopy.blocksCode)
 
       if (blocks.length > 0) {
+        this.normalizeBlocksPosition(blocks)
+
         /**
          * Adds all the blocks to the flow, if the block already
          * exists in canvas, then tranverse the block replacing
@@ -95,6 +98,40 @@ export class PasteBlock extends BaseFeature {
     const existingBlocksId = Object.keys(getFlow())
 
     return existingBlocksId.includes(id)
+  }
+
+  /**
+   * Normalizes the position of the blocks
+   *
+   * @param blocks The blocks
+   */
+  public normalizeBlocksPosition(blocks: any[]) {
+    const allLefts = blocks.map((block) => parseInt(block.$position.left))
+    const allTops = blocks.map((block) => parseInt(block.$position.top))
+
+    const maxLeft = Math.max(...allLefts)
+    const minLeft = Math.min(...allLefts)
+
+    const maxTop = Math.max(...allTops)
+    const minTop = Math.min(...allTops)
+
+    const middleLeft = maxLeft - minLeft / 2
+    const middleTop = maxTop - minTop / 2
+    const nearbyPosition = createNearbyPosition()
+
+    for (const block of blocks) {
+      block.$position.left =
+        parseInt(block.$position.left) -
+        middleLeft +
+        parseInt(nearbyPosition.left) +
+        'px'
+
+      block.$position.top =
+        parseInt(block.$position.top) -
+        middleTop +
+        parseInt(nearbyPosition.top) +
+        'px'
+    }
   }
 
   /**
