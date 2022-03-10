@@ -1,5 +1,5 @@
-import { getBlocks, showSuccessToast, showWarningToast } from '../../Utils'
 import { BaseFeature } from '../BaseFeature'
+import { getBlocks, showSuccessToast, showWarningToast } from '~/Utils'
 
 const SKIP_BLOCKS = ['onboarding', 'fallback', 'error']
 

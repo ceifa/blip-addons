@@ -1,4 +1,9 @@
-import { getBlocks, showSuccessToast, showWarningToast } from '../../Utils'
+import {
+  convertToHours,
+  getBlocks,
+  showSuccessToast,
+  showWarningToast,
+} from '../../Utils'
 import { BaseFeature } from '../BaseFeature'
 
 const SKIP_BLOCKS = ['onboarding', 'fallback', 'error']
@@ -11,7 +16,7 @@ export class SetInactivity extends BaseFeature {
    *
    * @param expirationTime The expiration time
    */
-  public handle(expirationTime: string, shouldKeep: boolean) {
+  public handle(expirationTime: number, shouldKeep: boolean) {
     let blocks = getBlocks()
       .filter(isExpirableBlock)
       .filter(hasInput)
@@ -26,7 +31,7 @@ export class SetInactivity extends BaseFeature {
     for (const block of blocks) {
       const inputAction = getInputAction(block)
 
-      inputAction.input.expiration = expirationTime
+      inputAction.input.expiration = convertToHours(expirationTime)
       ++blocksUpdated
     }
 

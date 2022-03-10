@@ -1,4 +1,4 @@
-import { getBotName } from '../../Utils'
+import { getBotName } from '~/Utils'
 import { BaseFeature } from '../BaseFeature'
 
 const BEHOLDER_TAG = 'take-plugin-bot-beholder'

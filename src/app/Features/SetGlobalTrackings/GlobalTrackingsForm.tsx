@@ -1,11 +1,17 @@
 import * as React from 'react'
-
-import { v4 } from 'uuid'
+import { v4 as uuid } from 'uuid'
 
 import { SetGlobalTrackings } from '.'
 import { setSettings, Settings } from '../../Settings'
-import { Input } from '../AddSidebar/Components/Input'
-import { Switch } from '../AddSidebar/Components/Switch'
+import {
+  Input,
+  Switch,
+  Block,
+  Title,
+  Paragraph,
+  Flex,
+  HorizontalStack,
+} from '../../Components'
 import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
 
 export const GlobalTrackingsForm = () => {
@@ -17,15 +23,15 @@ export const GlobalTrackingsForm = () => {
     React.useState(true)
 
   /**
-  * Set the html tamplate for each global extra
-  *
-  */
+   * Set the html tamplate for each global extra
+   *
+   */
   function getGlobalTrackingLine(): any {
     return (
       <div>
         {globalExtras.map((field, index) => {
           return (
-            <div className="w-100 flex justify-between mb2" key={v4()}>
+            <div className="w-100 flex justify-between mb2" key={uuid()}>
               <Input
                 value={field.key}
                 onChange={(e) => (field.key = e.target.value)}
@@ -55,7 +61,7 @@ export const GlobalTrackingsForm = () => {
     )
   }
 
-   /**
+  /**
    * add a new line in the globalExtra list
    *
    */
@@ -64,15 +70,15 @@ export const GlobalTrackingsForm = () => {
   }
 
   /**
-  * remove a line in the globalExtra list
-  *
-  * @param index The index of globalExtra list
-  */
+   * remove a line in the globalExtra list
+   *
+   * @param index The index of globalExtra list
+   */
   function removeLine(index: number): void {
     setGlobalExtras(globalExtras.filter((_, i) => i !== index))
   }
 
-   /**
+  /**
    * Get the empties global extras in the list
    *
    * @param globalExtras The trackings that will be setted
@@ -118,7 +124,7 @@ export const GlobalTrackingsForm = () => {
       }
     })
 
-    let arrayOfErrors = new Array(globalExtras.length)
+    const arrayOfErrors = new Array(globalExtras.length)
     emptyExtrasIndexs.forEach((extraIndex) => {
       arrayOfErrors[extraIndex] = errorMessage
     })
@@ -132,7 +138,7 @@ export const GlobalTrackingsForm = () => {
    */
   function handleSubmit(): void {
     if (hasKeyOrValueEmpty(globalExtras)) {
-      let arrayOfErrors = setErrorFields(globalExtras)
+      const arrayOfErrors = setErrorFields(globalExtras)
       setError(arrayOfErrors)
       return
     }
@@ -143,7 +149,7 @@ export const GlobalTrackingsForm = () => {
       {}
     )
 
-    setSettings({lastGlobalTrackings: globalExtras})
+    setSettings({ lastGlobalTrackings: globalExtras })
 
     new SetGlobalTrackings().handle(
       globalSettingsWillBeSetted,
@@ -162,36 +168,34 @@ export const GlobalTrackingsForm = () => {
   }
 
   return (
-    <div className="sidebar-inner-content pa5">
-      <span className="bp-fs-5 bp-c-city ttu b">
-        Adicionar trackings globais
-      </span>
+    <Block marginTop={2}>
+      <Title>Adicionar trackings globais</Title>
 
-      <p style={{ color: '#607b99', fontSize: '.875rem', marginTop: 8 }}>
+      <Paragraph>
         Todos os blocos que contem a ação de tracking terá adição de trackings
         globais.
         <br />
         <b>Você ainda precisa publicar o fluxo</b>
-      </p>
+      </Paragraph>
 
-      <div className="mt3">
+      <Block marginTop={2}>
         {getGlobalTrackingLine()}
 
-        <div className="flex mt3 pa2">
+        <Flex marginTop={2}>
           <Switch
             isChecked={shouldDeleteCurrentExtras}
             name="overwrite"
             onChange={(e) => setShouldDeleteCurrentExtras(e.target.checked)}
           />
 
-          <div className="ml2">
+          <Block marginLeft={2}>
             <BdsTypo bold="extra-bold" variant="fs-14">
               Apagar trackings globais definidas
             </BdsTypo>
-          </div>
-        </div>
+          </Block>
+        </Flex>
 
-        <div className="flex justify-between items-center mt5">
+        <HorizontalStack marginTop={2}>
           <BdsButton variant="dashed" onClick={addNewLine}>
             Add Tracking
           </BdsButton>
@@ -203,18 +207,12 @@ export const GlobalTrackingsForm = () => {
           <BdsButton variant="delete" onClick={onRemove}>
             Remover*
           </BdsButton>
-        </div>
+        </HorizontalStack>
 
-        <p
-          style={{
-            color: '#607b99',
-            fontSize: '.875rem',
-            marginTop: 8,
-          }}
-        >
+        <Paragraph>
           * Remove as trackings globais de <b>TODAS</b> as actions.
-        </p>
-      </div>
-    </div>
+        </Paragraph>
+      </Block>
+    </Block>
   )
 }
