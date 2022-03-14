@@ -43,3 +43,10 @@ export type SettingsUpdate = {
 export type Handshake = {
   isHandshake: boolean
 }
+
+export type Snippet = {
+  label: string,
+  kind: any,
+  documentation: string,
+  insertText: string
+}

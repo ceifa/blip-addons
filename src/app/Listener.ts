@@ -34,9 +34,14 @@ window.addEventListener('message', async (message: Message<any>) => {
       if (Feature.canRun) {
         const featureInstance = new Feature()
         // eslint-disable-next-line prefer-spread
-        await featureInstance.handle.apply(featureInstance, args)
-        Feature.hasRun = true
-        Feature.isCleaned = false
+        const handleResult = await featureInstance.handle.apply(
+          featureInstance,
+          args
+        )
+        if (handleResult !== false) {
+          Feature.hasRun = true
+          Feature.isCleaned = false
+        }
       }
 
       return
