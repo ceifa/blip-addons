@@ -14,7 +14,7 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
     <>
       <div
         id="blips-custom-sidebar"
-        className="sidebar-content-component right-entrance-animation position-right builder-sidebar ng-enter"
+        className="sidebar-content-component left-entrance-animation position-left builder-sidebar ng-enter"
       >
         <div className="sidebar-content-header background-text-dark-5 bp-c-white ph5 pt2">
           <div className="sidebar-helper-header">

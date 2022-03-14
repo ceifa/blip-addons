@@ -78,7 +78,7 @@ export function requestFeature(code: string, type: 'cleanup' | 'run', ...args) {
 }
 
 export function getBotName() {
-  return getController().application.shortName
+  return getController().application.name
 }
 
 export function createNearbyPosition() {

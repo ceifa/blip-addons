@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { v4 as uuid } from 'uuid'
+import { BdsButton, BdsIcon, BdsTypo } from 'blip-ds/dist/blip-ds-react'
 
 import { SetGlobalTrackings } from '.'
 import { setSettings, Settings } from '../../Settings'
@@ -11,8 +12,27 @@ import {
   Paragraph,
   Flex,
   HorizontalStack,
-} from '../../Components'
-import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
+  Stack,
+} from '@components'
+
+const EmptyGlboalTrackings = () => {
+  return (
+    <Block
+      borderRadius="5px"
+      borderColor="rgba(0, 0, 0, 0.2)"
+      borderStyle="dashed"
+      borderWidth="1px"
+    >
+      <Stack padding={2}>
+        <BdsIcon size="xxx-large" theme="outline" name="warning" />
+        <Block marginTop={1}>
+          <Title>Ainda não há trackings</Title>
+        </Block>
+        <Paragraph>Você ainda não adicionou nenhuma tracking</Paragraph>
+      </Stack>
+    </Block>
+  )
+}
 
 export const GlobalTrackingsForm = () => {
   const [globalExtras, setGlobalExtras] = React.useState(
@@ -29,6 +49,8 @@ export const GlobalTrackingsForm = () => {
   function getGlobalTrackingLine(): any {
     return (
       <div>
+        {globalExtras.length === 0 && <EmptyGlboalTrackings />}
+
         {globalExtras.map((field, index) => {
           return (
             <div className="w-100 flex justify-between mb2" key={uuid()}>
@@ -40,6 +62,7 @@ export const GlobalTrackingsForm = () => {
                 label="Key"
                 type="text"
               />
+
               <div className="ml2">
                 <Input
                   value={field.value}
@@ -50,6 +73,7 @@ export const GlobalTrackingsForm = () => {
                   type="text"
                 />
               </div>
+
               <i
                 className="self-center icon-close lh-solid cursor-pointer ml2"
                 onClick={() => removeLine(index)}

@@ -12,6 +12,7 @@
       "@features/*": ["src/app/Features/*"],
       "@commands/*": ["src/app/Commands/*"],
       "@components/*": ["src/app/Components/*"],
+      "@components": ["src/app/Components/index.ts"],
       "~/*": ["src/app/*"]
     }
   },
