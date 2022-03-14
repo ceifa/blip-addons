@@ -8,13 +8,10 @@ export type SwitchProps = {
 }
 
 export const Switch = ({ name, onChange, isChecked }: SwitchProps) => {
-  const switchRef = React.useRef(null)
-
   return (
     <BdsSwitch
       name={name}
       refer={name}
-      ref={switchRef}
       checked={isChecked}
       onBdsChange={onChange}
     />
