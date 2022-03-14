@@ -47,7 +47,7 @@ export class AddSidebar extends BaseFeature {
 
       setTimeout(() => {
         customSidebar.classList.add('ng-enter-active')
-      }, 500)
+      }, 200)
     } else {
       return this.closeSidebar()
     }
