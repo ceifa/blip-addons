@@ -32,22 +32,17 @@ window.addEventListener('message', async (message: Message<any>) => {
      * have different settings
      */
     if (type === 'run') {
-      try {
-        if (Feature.canRun) {
-          const featureInstance = new Feature()
-          // eslint-disable-next-line prefer-spread
-          const handleResult = await featureInstance.handle.apply(
-            featureInstance,
-            args
-          )
-          if (handleResult !== false) {
-            Feature.hasRun = true
-            Feature.isCleaned = false
-          }
+      if (Feature.canRun) {
+        const featureInstance = new Feature()
+        // eslint-disable-next-line prefer-spread
+        const handleResult = await featureInstance.handle.apply(
+          featureInstance,
+          args
+        )
+        if (handleResult !== false) {
+          Feature.hasRun = true
+          Feature.isCleaned = false
         }
-      } catch (error) {
-        console.log(Feature)
-        console.log(message.data)
       }
 
       return

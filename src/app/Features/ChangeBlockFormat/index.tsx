@@ -6,8 +6,7 @@ import { ShapeBlockOption } from './ShapeBlockOption'
 import {
   getFlowBlockById,
   getAllFlowBlock,
-  getBlockById,
-  interceptFunction,
+  getBlockById
 } from '~/Utils'
 import { formatShapeBlock } from '~/BlipBlocksFunctions'
 
@@ -18,7 +17,6 @@ const BUILDER_HTML_BLOCK_TAG = 'builder-node'
 
 export class ChangeBlockFormat extends BaseFeature {
   public static shouldRunOnce = true
-  //public ranOnReloadingPage = false
 
   private createBlockOptionsDiv(): any {
     const blipsDiv = document.createElement('div')
@@ -59,7 +57,7 @@ export class ChangeBlockFormat extends BaseFeature {
 
   addOptionToChangeFormatInAllBlocks = () => {
     const blocks = getAllFlowBlock()
-    for (let block of blocks) {
+    for (const block of blocks) {
       this.addChangeFormatOptionOnBlockById(block.id)
     }
   }
@@ -67,13 +65,13 @@ export class ChangeBlockFormat extends BaseFeature {
   private formatAllBlocks() {
     const blocks = getBlocks()
     let flowBlock = {}
-    for (let block of blocks) {
+    for (const block of blocks) {
       if (block.addonsSettings && block.addonsSettings.shape) {
         flowBlock = getFlowBlockById(block.id)
         try {
           formatShapeBlock(block.addonsSettings.shape, flowBlock)
         } catch (error) {
-          
+          console.log("error")
         }
       }
     }
@@ -89,8 +87,6 @@ export class ChangeBlockFormat extends BaseFeature {
     interceptFunction('addDeskState', this.addOptionToChangeFormatInAllBlocks)*/
     return true
   }
-
-  public cleanup() {}
 }
 
 
