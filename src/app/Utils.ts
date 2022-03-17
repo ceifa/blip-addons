@@ -1,5 +1,7 @@
 import type { FeatureRequest } from './types'
 
+const BUILDER_HTML_BLOCK_TAG = 'builder-node'
+
 export function getController() {
   const canvas = document.querySelector('#canvas')
 
@@ -54,8 +56,9 @@ export function interceptFunction(functionName: string, callback: () => void) {
   const functionToWrap = controller[functionName]
 
   controller[functionName] = function keepThis(...args: any[]) {
+    const result = functionToWrap.apply(this, args)
     callback()
-    return functionToWrap.apply(this, args)
+    return result
   }
 }
 
@@ -91,4 +94,12 @@ export function getSpace() {
 
 export function getHandleOnKeyDown() {
   return getController().handleOnKeyDown
+}
+
+export function getFlowBlockById(id: string): any {
+  return document.querySelector(`${BUILDER_HTML_BLOCK_TAG}[id="${id}"]`)
+}
+
+export function getAllFlowBlock(): any {
+  return document.querySelectorAll(`${BUILDER_HTML_BLOCK_TAG}`)
 }

@@ -8,8 +8,6 @@ const BLIPS_BUTTON_ID = 'blips-clean-button'
 export class CleanEnvironment extends BaseFeature {
 
   public static shouldRunOnce = true
-  //public static isUserTriggered = false
-  //public static hasRun = false
 
   private getIconButton() {
     return document.getElementById(BLIPS_BUTTON_ID)
@@ -29,9 +27,6 @@ export class CleanEnvironment extends BaseFeature {
     mainNavBar.style = ''
   }
 
-  /**
-   * Adds the functionality to copy the block
-   */
   public handle() {
     if (!this.getIconButton()) {
       const buttonsList = document.querySelector(
