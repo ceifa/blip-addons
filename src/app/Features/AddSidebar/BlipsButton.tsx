@@ -6,6 +6,7 @@ export type BlipsButtonProps = {
 }
 
 export const BlipsButton = ({ onClick }: BlipsButtonProps) => (
+  <li>
   <BdsTooltip
     className="cursor-pointer"
     position="right-center"
@@ -21,4 +22,5 @@ export const BlipsButton = ({ onClick }: BlipsButtonProps) => (
       />
     </div>
   </BdsTooltip>
+  </li>
 )

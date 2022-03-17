@@ -25,7 +25,7 @@ export class BuilderTitle extends BaseFeature {
   public handle() {
     const botName = getBotName()
 
-    document.title = `${botName} - Blip`
+    document.title = `${botName}`
   }
 
   /**
