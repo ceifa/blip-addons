@@ -84,3 +84,11 @@ export function getBotName() {
 export function createNearbyPosition() {
   return getController().createNearbyPosition()
 }
+
+export function getSpace() {
+  return getController().g2p
+}
+
+export function getHandleOnKeyDown() {
+  return getController().handleOnKeyDown
+}

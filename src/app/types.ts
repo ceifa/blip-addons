@@ -45,8 +45,8 @@ export type Handshake = {
 }
 
 export type Snippet = {
-  label: string,
-  kind: any,
-  documentation: string,
+  label: string
+  kind: any
+  documentation: string
   insertText: string
 }
