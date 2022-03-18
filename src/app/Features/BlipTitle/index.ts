@@ -17,8 +17,6 @@ export class BuilderTitle extends BaseFeature {
     for (const iFrame of iFrames) {
       const source = iFrame.getAttribute('src');
 
-      console.log({ source });
-
       if (source && source.includes(BEHOLDER_TAG)) {
         return true;
       }
@@ -31,8 +29,6 @@ export class BuilderTitle extends BaseFeature {
    * Adds title to builder
    */
   public handle(): void {
-    console.log('rodei');
-
     BuilderTitle.initialTitle = document.title;
 
     const botName = getBotName();
