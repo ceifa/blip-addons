@@ -1,15 +1,15 @@
-import * as React from 'react'
-import { BdsMenuSeparation } from 'blip-ds/dist/blip-ds-react'
+import * as React from 'react';
+import { BdsMenuSeparation } from 'blip-ds/dist/blip-ds-react';
 
-import { Block } from '~/Components'
-import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm'
-import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm'
+import { Block } from '~/Components';
+import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm';
+import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm';
 
 export type BlipsSidebarProps = {
-  onClose: () => void
-}
+  onClose: () => void;
+};
 
-export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
+export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
   return (
     <>
       <div
@@ -49,5 +49,5 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};

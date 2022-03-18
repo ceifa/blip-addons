@@ -1,52 +1,57 @@
-import { BaseCommand } from './Commands/BaseCommand'
+import { BaseFeature } from '@features/BaseFeature';
+import { BaseCommand } from './Commands/BaseCommand';
 
 export type Message<Type = unknown> = {
-  data: Type
-}
+  data: Type;
+};
 
 export type BlipsRequest = {
-  identifier: string
-  isBlipsRequest: boolean
-  commandCode: string
-  args: any[]
-}
+  identifier: string;
+  isBlipsRequest: boolean;
+  commandCode: string;
+  args: any[];
+};
 
 export type BlipsResponse = {
-  isBlipsResponse: boolean
-  identifier: string
-  result: unknown
-}
+  isBlipsResponse: boolean;
+  identifier: string;
+  result: unknown;
+};
 
 export type Command = {
-  new (): BaseCommand
-} & typeof BaseCommand
+  new (): BaseCommand;
+} & typeof BaseCommand;
+
+export type Feature = {
+  new (): BaseFeature;
+} & typeof BaseFeature;
 
 export type FeatureRequest = {
-  code: string
-  type: 'run' | 'cleanup'
-  isFeatureRequest: boolean
-  args: any[]
-}
+  code: string;
+  type: 'run' | 'cleanup';
+  isFeatureRequest: boolean;
+  args: any[];
+};
 
 export type BlipsCopy = {
-  isCopyFromBlips: boolean
-  blocksCode: string
-  originBot: string
-}
+  isCopyFromBlips: boolean;
+  blocksCode: string;
+  originBot: string;
+};
 
 export type SettingsUpdate = {
-  isSettingsUpdate: true
-  newSettings: Record<string, any>
-  isFromClient: boolean
-}
+  isSettingsUpdate: true;
+  newSettings: Record<string, any>;
+  isFromClient: boolean;
+};
 
 export type Handshake = {
-  isHandshake: boolean
-}
+  isHandshake: boolean;
+};
 
 export type Snippet = {
-  label: string
-  kind: any
-  documentation: string
-  insertText: string
-}
+  label: string;
+  kind: any;
+  documentation: string;
+  insertText: string;
+};

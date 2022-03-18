@@ -1,41 +1,46 @@
-import { GetVariable } from './Commands'
-import { Resolver } from './Resolver'
-import { requestFeature } from './Utils'
-import * as Features from './Features'
-import type { BlipsResponse, Handshake, Message, SettingsUpdate } from './types'
-import { setSettings, Settings } from './Settings'
+import { GetVariable } from './Commands';
+import { Resolver } from './Resolver';
+import { requestFeature } from './Utils';
+import * as Features from './Features';
+import type {
+  BlipsResponse,
+  Handshake,
+  Message,
+  SettingsUpdate,
+} from './types';
+import { setSettings, Settings } from './Settings';
 
-const LISTENER_SCRIPT = chrome.runtime.getURL('/js/listener.js')
-const MINIMAL_INTERVAL = 200
-const MAXIMUM_INTERVAL = 1500
+const LISTENER_SCRIPT = chrome.runtime.getURL('/js/listener.js');
+const MINIMAL_INTERVAL = 200;
+const MAXIMUM_INTERVAL = 1500;
 
 export class BlipsExtension {
-  public onReadyCallback: () => any
+  public onReadyCallback: () => any;
 
-  constructor() {
-    this.syncSettings()
-    this.injectScript()
+  public constructor() {
+    this.syncSettings();
+    this.injectScript();
   }
 
   /**
    * Syncs Blips settings
    */
-  private syncSettings() {
+  private syncSettings(): void {
     chrome.storage.sync.get('settings', (result) => {
-      setSettings(result.settings)
-    })
+      setSettings(result.settings);
+    });
   }
 
   /**
    * Injects the script into the page
    */
-  private injectScript() {
-    const script = document.createElement('script')
+  private injectScript(): this {
+    const script = document.createElement('script');
 
-    script.setAttribute('src', LISTENER_SCRIPT)
-    document.body.appendChild(script)
+    script.setAttribute('src', LISTENER_SCRIPT);
+    document.body.appendChild(script);
 
-    return this
+    return this;
   }
 
   /**
@@ -43,17 +48,18 @@ export class BlipsExtension {
    *
    * @param message The message
    */
-  private onMessage(message: Message<BlipsResponse>) {
+  private onMessage(message: Message<BlipsResponse>): void {
     /**
      * Check if it's a blip response and resolves the promise that
      * is waiting
      */
     if (isBlipsResponse(message.data)) {
-      const { identifier, result } = message.data
-      const isWaitingToBeResolved = Resolver.isWaiting(identifier)
+      const { identifier, result } = message.data;
+      const isWaitingToBeResolved = Resolver.isWaiting(identifier);
 
       if (isWaitingToBeResolved) {
-        return Resolver.resolve(identifier, result)
+        Resolver.resolve(identifier, result);
+        return;
       }
     }
 
@@ -62,9 +68,9 @@ export class BlipsExtension {
      * settings
      */
     if (isSettingsUpdate(message.data)) {
-      Object.assign(Settings, message.data.newSettings)
-      chrome.storage.sync.set({ settings: Settings })
-      return
+      Object.assign(Settings, message.data.newSettings);
+      chrome.storage.sync.set({ settings: Settings });
+      return;
     }
 
     /**
@@ -75,11 +81,11 @@ export class BlipsExtension {
         isSettingsUpdate: true,
         newSettings: Settings,
         isFromClient: false,
-      }
+      };
 
-      window.postMessage(settingsUpdate, '*')
+      window.postMessage(settingsUpdate, '*');
 
-      return
+      return;
     }
   }
 
@@ -88,62 +94,62 @@ export class BlipsExtension {
    *
    * @param callback The callback
    */
-  public onBuilderLoad(callback: () => any) {
-    this.onReadyCallback = callback
+  public onBuilderLoad(callback: () => any): void {
+    this.onReadyCallback = callback;
 
     // Starts with the minimal interval
-    let interval = MINIMAL_INTERVAL
+    let interval = MINIMAL_INTERVAL;
 
     setInterval(async () => {
-      const isLoading = await GetVariable.execute('isLoading')
-      const isReady = isLoading === false
+      const isLoading = await GetVariable.execute('isLoading');
+      const isReady = isLoading === false;
 
       if (isReady) {
-        this.onReadyCallback()
+        this.onReadyCallback();
 
         /**
          * Once the 'onReadyCallback' was already executed
          * increases the interval time to reduce CPU and
          * memory usages
          */
-        interval = MAXIMUM_INTERVAL
+        interval = MAXIMUM_INTERVAL;
       } else {
-        this.cleanFeatures()
-        interval = MINIMAL_INTERVAL
+        this.cleanFeatures();
+        interval = MINIMAL_INTERVAL;
       }
-    }, interval)
+    }, interval);
   }
 
   /**
    * Runs all features
    */
-  public runFeatures() {
+  public runFeatures(): void {
     Object.values(Features)
       .filter((Feature) => !Feature.isUserTriggered)
-      .forEach((Feature) => requestFeature(Feature.code, 'run'))
+      .forEach((Feature) => requestFeature(Feature.code, 'run'));
   }
 
   /**
    * Request cleanup of all features
    */
-  public cleanFeatures() {
+  public cleanFeatures(): void {
     Object.values(Features).forEach((Feature) =>
       requestFeature(Feature.code, 'cleanup')
-    )
+    );
   }
 
   /**
    * Starts the Blips extension
    */
-  public start() {
-    window.addEventListener('message', (message) => this.onMessage(message))
+  public start(): this {
+    window.addEventListener('message', (message) => this.onMessage(message));
 
-    return this
+    return this;
   }
 }
 
 const isBlipsResponse = (request: any): request is BlipsResponse =>
-  request.isBlipsResponse
+  request.isBlipsResponse;
 const isSettingsUpdate = (message: any): message is SettingsUpdate =>
-  message.isSettingsUpdate
-const isHandshake = (message: any): message is Handshake => message.isHandshake
+  message.isSettingsUpdate;
+const isHandshake = (message: any): message is Handshake => message.isHandshake;

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import {
   UpperConcave,
   Rectangular,
@@ -8,14 +8,17 @@ import {
   LeftConcave,
   LowerConcave,
   Ellipse,
-} from '@components/Shapes'
+} from '@components/Shapes';
 
 export type ShapeBlockOptionProps = {
-  id: string
-  onClick: (id: string, shape: string) => any
-}
+  id: string;
+  onClick: (id: string, shape: string) => any;
+};
 
-export const ShapeBlockOption = ({ id, onClick }: ShapeBlockOptionProps) => {
+export const ShapeBlockOption = ({
+  id,
+  onClick,
+}: ShapeBlockOptionProps): JSX.Element => {
   return (
     <div>
       <Ellipse onClick={() => onClick(id, 'Ellipse')} />
@@ -29,5 +32,5 @@ export const ShapeBlockOption = ({ id, onClick }: ShapeBlockOptionProps) => {
       />
       <Rectangular onClick={() => onClick(id, 'Rectangular')} />
     </div>
-  )
-}
+  );
+};

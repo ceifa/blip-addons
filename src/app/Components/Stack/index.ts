@@ -1,9 +1,9 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 
 export type Stack = Partial<{
-  marginTop: number
-  padding: number
-}>
+  marginTop: number;
+  padding: number;
+}>;
 
 export const Stack = styled.div(({ marginTop = 0, padding }: Stack) => ({
   display: 'flex',
@@ -12,4 +12,4 @@ export const Stack = styled.div(({ marginTop = 0, padding }: Stack) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   marginTop: `${marginTop}rem`,
-}))
+}));

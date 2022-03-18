@@ -1,46 +1,47 @@
-import { BdsIcon, BdsTooltip } from 'blip-ds/dist/blip-ds-react'
-import * as React from 'react'
+import * as React from 'react';
+import { BdsIcon, BdsTooltip } from 'blip-ds/dist/blip-ds-react';
 
-const INACTIVE_ICON = 'screen-full'
-const ACTIVE_ICON = 'screen-fill'
+const INACTIVE_ICON = 'screen-full';
+const ACTIVE_ICON = 'screen-fill';
 
 export type BlipsCleanButtonProps = {
-  clean: () => void
-  undo: () => void
-}
+  clean: () => void;
+  undo: () => void;
+};
 
-export const CleanButton = ({ clean, undo }: BlipsCleanButtonProps) => {
-  const [isActive, setIsActive] = React.useState(false)
-  const [icon, setIcon] = React.useState(INACTIVE_ICON)
+export const CleanButton = ({
+  clean,
+  undo,
+}: BlipsCleanButtonProps): JSX.Element => {
+  const [isActive, setIsActive] = React.useState(false);
 
-  function onClick() {
-    setIsActive(!isActive)
-    setIcon(isActive ? ACTIVE_ICON : INACTIVE_ICON)
+  const handleClick = (): void => {
+    setIsActive(!isActive);
 
     if (isActive) {
-      clean()
+      clean();
     } else {
-      undo()
+      undo();
     }
-  }
+  };
 
   return (
     <li>
-    <BdsTooltip
-      className="cursor-pointer"
-      position="right-center"
-      tooltipText="Blips"
-      onClick={ onClick }
-    >
-      <div className="builder-icon-bg flex justify-center items-center">
-        <BdsIcon
-          size="medium"
-          class="builder-icon bds-icon bds-icon__size--medium"
-          theme="outline"
-          name={icon}
-        />
-      </div>
-    </BdsTooltip>
+      <BdsTooltip
+        className="cursor-pointer"
+        position="right-center"
+        tooltipText="Blips"
+        onClick={handleClick}
+      >
+        <div className="builder-icon-bg flex justify-center items-center">
+          <BdsIcon
+            size="medium"
+            class="builder-icon bds-icon bds-icon__size--medium"
+            theme="outline"
+            name={isActive ? ACTIVE_ICON : INACTIVE_ICON}
+          />
+        </div>
+      </BdsTooltip>
     </li>
-  )
-}
+  );
+};

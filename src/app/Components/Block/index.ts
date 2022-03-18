@@ -1,17 +1,17 @@
-import styled from '@emotion/styled'
-import { Property } from 'csstype'
+import styled from '@emotion/styled';
+import { Property } from 'csstype';
 
 export type BlockProps = Partial<{
-  marginTop: number
-  marginLeft: number
-  marginRight: number
-  marginBottom: number
-  padding: number
-  borderStyle: Property.BorderStyle
-  borderWidth: Property.BorderWidth
-  borderColor: string
-  borderRadius: Property.BorderRadius
-}>
+  marginTop: number;
+  marginLeft: number;
+  marginRight: number;
+  marginBottom: number;
+  padding: number;
+  borderStyle: Property.BorderStyle;
+  borderWidth: Property.BorderWidth;
+  borderColor: string;
+  borderRadius: Property.BorderRadius;
+}>;
 
 export const Block = styled.div(
   ({
@@ -35,4 +35,4 @@ export const Block = styled.div(
     borderColor,
     borderRadius,
   })
-)
+);

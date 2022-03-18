@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { v4 as uuid } from 'uuid'
-import { BdsButton, BdsIcon, BdsTypo } from 'blip-ds/dist/blip-ds-react'
+import * as React from 'react';
+import { v4 as uuid } from 'uuid';
+import { BdsButton, BdsIcon, BdsTypo } from 'blip-ds/dist/blip-ds-react';
 
-import { SetGlobalTrackings } from '.'
-import { setSettings, Settings } from '../../Settings'
+import { SetGlobalTrackings } from '.';
+import { setSettings, Settings } from '../../Settings';
 import {
   Input,
   Switch,
@@ -13,9 +13,9 @@ import {
   Flex,
   HorizontalStack,
   Stack,
-} from '@components'
+} from '@components';
 
-const EmptyGlboalTrackings = () => {
+const EmptyGlboalTrackings = (): JSX.Element => {
   return (
     <Block
       borderRadius="5px"
@@ -31,22 +31,22 @@ const EmptyGlboalTrackings = () => {
         <Paragraph>Você ainda não adicionou nenhuma tracking</Paragraph>
       </Stack>
     </Block>
-  )
-}
+  );
+};
 
-export const GlobalTrackingsForm = () => {
+export const GlobalTrackingsForm = (): JSX.Element => {
   const [globalExtras, setGlobalExtras] = React.useState(
     Settings.lastGlobalTrackings
-  )
-  const [error, setError] = React.useState([])
+  );
+  const [error, setError] = React.useState([]);
   const [shouldDeleteCurrentExtras, setShouldDeleteCurrentExtras] =
-    React.useState(true)
+    React.useState(true);
 
   /**
    * Set the html tamplate for each global extra
    *
    */
-  function getGlobalTrackingLine(): any {
+  const getGlobalTrackingLine = (): JSX.Element => {
     return (
       <div>
         {globalExtras.length === 0 && <EmptyGlboalTrackings />}
@@ -79,51 +79,51 @@ export const GlobalTrackingsForm = () => {
                 onClick={() => removeLine(index)}
               ></i>
             </div>
-          )
+          );
         })}
       </div>
-    )
-  }
+    );
+  };
 
   /**
    * add a new line in the globalExtra list
    *
    */
-  function addNewLine(): void {
-    setGlobalExtras([...globalExtras, { key: '', value: '' }])
-  }
+  const addNewLine = (): void => {
+    setGlobalExtras([...globalExtras, { key: '', value: '' }]);
+  };
 
   /**
    * remove a line in the globalExtra list
    *
    * @param index The index of globalExtra list
    */
-  function removeLine(index: number): void {
-    setGlobalExtras(globalExtras.filter((_, i) => i !== index))
-  }
+  const removeLine = (index: number): void => {
+    setGlobalExtras(globalExtras.filter((_, i) => i !== index));
+  };
 
   /**
    * Get the empties global extras in the list
    *
    * @param globalExtras The trackings that will be setted
    */
-  function getEmptyExtras(globalExtras: any): any[] {
+  const getEmptyExtras = (globalExtras: any): any[] => {
     return globalExtras.filter(
       (currentExtra) => currentExtra.key === '' || currentExtra.value === ''
-    )
-  }
+    );
+  };
 
   /**
    * Check for empty values in globalExtras list
    *
    * @param globalExtras The trackings that will be setted
    */
-  function hasKeyOrValueEmpty(globalExtras: any): boolean {
-    const emptyExtras = getEmptyExtras(globalExtras)
-    const hasKeyOrValueEmpty = emptyExtras.length > 0
+  const hasKeyOrValueEmpty = (globalExtras: any): boolean => {
+    const emptyExtras = getEmptyExtras(globalExtras);
+    const hasKeyOrValueEmpty = emptyExtras.length > 0;
 
-    return hasKeyOrValueEmpty
-  }
+    return hasKeyOrValueEmpty;
+  };
 
   /**
    * Transform a list with key and value element in a object {key: value}
@@ -131,65 +131,65 @@ export const GlobalTrackingsForm = () => {
    * @param previousExtra previous value in globalExtras array
    * @param currentExtra current value in globalExtras array
    */
-  function listToObject(previousExtra: any, currentExtra: any): any {
-    return { ...previousExtra, [currentExtra.key]: currentExtra.value }
-  }
+  const listToObject = (previousExtra: any, currentExtra: any): any => {
+    return { ...previousExtra, [currentExtra.key]: currentExtra.value };
+  };
 
   /**
    * Set an error message in the empty lines
    *
    * @param globalExtras The trackings that will be setted
    */
-  function setErrorFields(globalExtras: any): string[] {
-    const errorMessage = 'Preencha todos os campos'
+  const setErrorFields = (globalExtras: any): string[] => {
+    const errorMessage = 'Preencha todos os campos';
     const emptyExtrasIndexs = globalExtras.map((extra, index) => {
       if (extra.key === '' || extra.value === '') {
-        return index
+        return index;
       }
-    })
+    });
 
-    const arrayOfErrors = new Array(globalExtras.length)
+    const arrayOfErrors = new Array(globalExtras.length);
     emptyExtrasIndexs.forEach((extraIndex) => {
-      arrayOfErrors[extraIndex] = errorMessage
-    })
+      arrayOfErrors[extraIndex] = errorMessage;
+    });
 
-    return arrayOfErrors
-  }
+    return arrayOfErrors;
+  };
 
   /**
    * Check the globalExtras and call the SetGlobalTrackings method, to set the global actions
    *
    */
-  function handleSubmit(): void {
+  const handleSubmit = (): void => {
     if (hasKeyOrValueEmpty(globalExtras)) {
-      const arrayOfErrors = setErrorFields(globalExtras)
-      setError(arrayOfErrors)
-      return
+      const arrayOfErrors = setErrorFields(globalExtras);
+      setError(arrayOfErrors);
+      return;
     }
 
     const globalSettingsWillBeSetted = globalExtras.reduce(
       (previousExtra, currentExtra) =>
         listToObject(previousExtra, currentExtra),
       {}
-    )
+    );
 
-    setSettings({ lastGlobalTrackings: globalExtras })
+    setSettings({ lastGlobalTrackings: globalExtras });
 
     new SetGlobalTrackings().handle(
       globalSettingsWillBeSetted,
       shouldDeleteCurrentExtras
-    )
+    );
 
-    setError(new Array(globalExtras.length))
-  }
+    setError(new Array(globalExtras.length));
+  };
 
   /**
    * Call the SetGlobalTrackings method, to remove all the global actions
    *
    */
-  function onRemove(): void {
-    new SetGlobalTrackings().handle({}, true)
-  }
+  const onRemove = (): void => {
+    new SetGlobalTrackings().handle({}, true);
+  };
 
   return (
     <Block marginTop={2}>
@@ -238,5 +238,5 @@ export const GlobalTrackingsForm = () => {
         </Paragraph>
       </Block>
     </Block>
-  )
-}
+  );
+};

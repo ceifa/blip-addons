@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react'
+import * as React from 'react';
+import { BdsButton, BdsTypo } from 'blip-ds/dist/blip-ds-react';
 
 import {
   Input,
@@ -9,49 +9,49 @@ import {
   HorizontalStack,
   Flex,
   Block,
-} from '~/Components'
-import { setSettings, Settings } from '~/Settings'
-import { SetInactivity } from '@features/SetInactivity'
-import { RemoveInactivity } from '@features/RemoveInactivity'
+} from '~/Components';
+import { setSettings, Settings } from '~/Settings';
+import { SetInactivity } from '@features/SetInactivity';
+import { RemoveInactivity } from '@features/RemoveInactivity';
 
-export const GlobalInactivityForm = () => {
+export const GlobalInactivityForm = (): JSX.Element => {
   const [waitingTime, setWaitingTime] = React.useState(
     Settings.lastGlobalInactivityTime
-  )
-  const [shouldKeep, setShouldKeep] = React.useState(false)
-  const [error, setError] = React.useState('')
+  );
+  const [shouldKeep, setShouldKeep] = React.useState(false);
+  const [error, setError] = React.useState('');
 
   /**
    * Runs the 'SetInactivity' fature, thus adding the defined
    * waiting limit time to all blocks with input
    */
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     if (!waitingTime) {
-      setError('Preencha com um valor entre 1 e 1380')
-      return
+      setError('Preencha com um valor entre 1 e 1380');
+      return;
     }
 
-    const time = Number(waitingTime)
-    const isTimeValid = time > 0 && time < 1380
+    const time = Number(waitingTime);
+    const isTimeValid = time > 0 && time < 1380;
 
     if (!isTimeValid) {
-      setError('Utilize números entre 1 e 1380')
-      return
+      setError('Utilize números entre 1 e 1380');
+      return;
     }
 
-    setError('')
+    setError('');
     setSettings({
       lastGlobalInactivityTime: waitingTime,
-    })
+    });
 
-    new SetInactivity().handle(time, shouldKeep)
-  }
+    new SetInactivity().handle(time, shouldKeep);
+  };
 
   /**
    * Runs the 'RemoveInactivity' feature, thus removing the defined
    * waiting limit time to all blocks with input
    */
-  const [handleRemove] = React.useState(() => new RemoveInactivity().handle)
+  const [handleRemove] = React.useState(() => new RemoveInactivity().handle);
 
   return (
     <>
@@ -103,5 +103,5 @@ export const GlobalInactivityForm = () => {
         </Paragraph>
       </Block>
     </>
-  )
-}
+  );
+};

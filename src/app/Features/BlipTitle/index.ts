@@ -1,41 +1,53 @@
-import { getBotName } from '~/Utils'
-import { BaseFeature } from '../BaseFeature'
+import { getBotName } from '~/Utils';
+import { BaseFeature } from '../BaseFeature';
 
-const BEHOLDER_TAG = 'take-plugin-bot-beholder'
+const BEHOLDER_TAG = 'take-plugin-bot-beholder';
 
 export class BuilderTitle extends BaseFeature {
-  public static alwaysClean = true
+  public static shouldRunOnce = true;
+  public static shouldAlwaysClean = true;
+  public static initialTitle = 'Blip Portal';
 
   /**
    * Returns if the current page is Beholder
    */
-  public get isBeholder() {
-    const iFrames = Array.from(document.querySelectorAll('iframe'))
+  public get isBeholder(): boolean {
+    const iFrames = Array.from(document.querySelectorAll('iframe'));
 
-    return iFrames.find((iFrame) => {
-      const source = iFrame.getAttribute('src')
+    for (const iFrame of iFrames) {
+      const source = iFrame.getAttribute('src');
 
-      return typeof source === 'string' ? source.includes(BEHOLDER_TAG) : false
-    })
+      console.log({ source });
+
+      if (source && source.includes(BEHOLDER_TAG)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**
    * Adds title to builder
    */
-  public handle() {
-    const botName = getBotName()
+  public handle(): void {
+    console.log('rodei');
 
-    document.title = `${botName}`
+    BuilderTitle.initialTitle = document.title;
+
+    const botName = getBotName();
+
+    document.title = `${botName}`;
   }
 
   /**
    * Adds title to other Blip pages
    */
-  public cleanup() {
+  public cleanup(): void {
     if (this.isBeholder) {
-      document.title = 'Beholder - Blip'
+      document.title = 'Beholder';
     } else {
-      document.title = 'Blip Portal'
+      document.title = BuilderTitle.initialTitle;
     }
   }
 }
