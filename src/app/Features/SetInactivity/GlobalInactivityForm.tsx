@@ -55,7 +55,7 @@ export const GlobalInactivityForm = () => {
 
   return (
     <>
-      <Title>Adicionar tempo de inatividade global REACT</Title>
+      <Title>Adicionar tempo de inatividade global</Title>
 
       <Paragraph>
         Todos os blocos que esperam por uma entrada do usuário terão seu limite

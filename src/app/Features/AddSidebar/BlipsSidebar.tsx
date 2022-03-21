@@ -1,7 +1,16 @@
 import * as React from 'react'
-import { BdsMenuSeparation } from 'blip-ds/dist/blip-ds-react'
+import { BdsIcon, BdsMenuSeparation } from 'blip-ds/dist/blip-ds-react'
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  ChakraProvider,
+} from '@chakra-ui/react'
 
-import { Block } from '~/Components'
+import { Block, Title } from '~/Components'
 import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm'
 import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm'
 
@@ -42,7 +51,29 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
 
         <div className="sidebar-content-body">
           <Block padding={2.5}>
-            <GlobalInactivityForm />
+            <ChakraProvider>
+              <Accordion allowMultiple>
+                <AccordionItem isFocusable={false} borderTop={0}>
+                  <h2>
+                    <Box my={5} textAlign="left">
+                      <AccordionButton _focus={{outline: 'none'}} _hover={{bgColor: 'none'}}>
+                        <BdsIcon
+                          name="arrow-down"
+                          size="x-large"
+                          theme="outline"
+                        />
+                        <Title>Adicionar inatividade global</Title>
+                      </AccordionButton>
+                    </Box>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <GlobalInactivityForm />
+                  </AccordionPanel>
+                </AccordionItem>
+
+               
+              </Accordion>
+            </ChakraProvider>
             <BdsMenuSeparation />
             <GlobalTrackingsForm />
           </Block>
