@@ -1,5 +1,5 @@
-import { BdsIcon, BdsTooltip } from 'blip-ds/dist/blip-ds-react';
 import * as React from 'react';
+import { BdsIcon, BdsTooltip } from 'blip-ds/dist/blip-ds-react';
 
 export type BlipsButtonProps = {
   onClick: () => void;
@@ -10,7 +10,7 @@ export const BlipsButton = ({ onClick }: BlipsButtonProps): JSX.Element => (
     <BdsTooltip
       className="cursor-pointer"
       position="right-center"
-      tooltipText="Blips"
+      tooltipText="Blip Addons"
       onClick={onClick}
     >
       <div className="builder-icon-bg flex justify-center items-center">

@@ -16,13 +16,15 @@ export const CleanButton = ({
   const [isActive, setIsActive] = React.useState(false);
 
   const handleClick = (): void => {
-    setIsActive(!isActive);
+    const shouldClean = !isActive;
 
-    if (isActive) {
+    if (shouldClean) {
       clean();
     } else {
       undo();
     }
+
+    setIsActive(shouldClean);
   };
 
   return (
@@ -30,7 +32,7 @@ export const CleanButton = ({
       <BdsTooltip
         className="cursor-pointer"
         position="right-center"
-        tooltipText="Blips"
+        tooltipText="Limpar ambiente"
         onClick={handleClick}
       >
         <div className="builder-icon-bg flex justify-center items-center">

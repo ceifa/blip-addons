@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import { interceptFunction } from '~/Utils';
 import { BaseFeature } from '../BaseFeature';
-import { BlipsButton } from './BlipsButton';
+import { BlipsButton } from './BlipAddonsButton';
 import { BlipsSidebar } from './BlipsSidebar';
 
 const BLIPS_BUTTON_ID = 'blips-extension-button';
