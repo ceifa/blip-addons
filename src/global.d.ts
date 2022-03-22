@@ -1,4 +1,4 @@
 interface Window {
-  angular: any,
-  monaco: any
+  angular: any;
+  monaco: any;
 }

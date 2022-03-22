@@ -1,5 +1,5 @@
-import { BlipsExtension } from './BlipsExtension'
+import { BlipsExtension } from './BlipsExtension';
 
-const extension = new BlipsExtension().start()
+const extension = new BlipsExtension().start();
 
-extension.onBuilderLoad(extension.runFeatures)
+extension.onBuilderLoad(extension.runFeatures);

@@ -1,14 +1,14 @@
-import * as React from 'react'
-import { BdsInput } from 'blip-ds/dist/blip-ds-react'
+import * as React from 'react';
+import { BdsInput } from 'blip-ds/dist/blip-ds-react';
 
 export type InputProps = {
-  label: string
-  type: any
-  value?: any
-  onChange?: (e) => void
-  onSubmit?: (e) => void
-  errorMessage?: string
-}
+  label: string;
+  type: any;
+  value?: any;
+  onChange?: (e) => void;
+  onSubmit?: (e) => void;
+  errorMessage?: string;
+};
 
 export const Input = ({
   label,
@@ -17,7 +17,7 @@ export const Input = ({
   onChange,
   onSubmit,
   errorMessage,
-}: InputProps) => {
+}: InputProps): JSX.Element => {
   return (
     <div className="relative">
       <BdsInput
@@ -30,5 +30,5 @@ export const Input = ({
         danger={!!errorMessage}
       />
     </div>
-  )
-}
+  );
+};

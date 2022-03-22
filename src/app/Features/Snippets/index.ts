@@ -1,25 +1,30 @@
-import type { Snippet } from '../../types'
-import { BaseFeature } from '@features/BaseFeature'
+import type { Snippet } from '../../types';
+import { BaseFeature } from '@features/BaseFeature';
 
 export class MonacoSnippet extends BaseFeature {
-  public static shouldRunOnce = true
+  public static shouldRunOnce = true;
 
-  public handle() {
-    if (!!window.monaco) {
+  public handle(): boolean {
+    if (window.monaco) {
       window.monaco.languages.registerCompletionItemProvider('javascript', {
-        provideCompletionItems: () => this.GetMonacoSnippets(),
-      })
-      return true
-    } else {
-      return false
+        provideCompletionItems: () => this.getMonacoSnippets(),
+      });
+
+      return true;
     }
+
+    return false;
   }
 
-  private GetMonacoSnippets(): Array<Snippet> {
-    return [this.MultilingueFunction(), this.WhatsappTemplateMessage(), this.RedirectMessage()]
+  private getMonacoSnippets(): Array<Snippet> {
+    return [
+      this.multilingueFunction(),
+      this.whatsappTemplateMessage(),
+      this.redirectMessage(),
+    ];
   }
 
-  private MultilingueFunction(): Snippet {
+  private multilingueFunction(): Snippet {
     return {
       label: 'multilingue',
       kind: window.monaco.languages.CompletionItemKind.Snippet,
@@ -36,10 +41,10 @@ export class MonacoSnippet extends BaseFeature {
         `\treturn messages[language] || messages.default`,
         `}`,
       ].join('\n'),
-    }
+    };
   }
 
-  private WhatsappTemplateMessage(): Snippet {
+  private whatsappTemplateMessage(): Snippet {
     return {
       label: 'template',
       kind: window.monaco.languages.CompletionItemKind.Snippet,
@@ -63,10 +68,10 @@ export class MonacoSnippet extends BaseFeature {
         `\treturn template;`,
         `}`,
       ].join('\n'),
-    }
+    };
   }
 
-  private RedirectMessage(): Snippet {
+  private redirectMessage(): Snippet {
     return {
       label: 'redirect',
       kind: window.monaco.languages.CompletionItemKind.Snippet,
@@ -93,6 +98,6 @@ export class MonacoSnippet extends BaseFeature {
         `\t};`,
         `}`,
       ].join('\n'),
-    }
+    };
   }
 }

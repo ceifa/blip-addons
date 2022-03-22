@@ -7,7 +7,7 @@ const SHAPES = {
   RightConcave: '0 50% 50% 0',
   MainDiagonalConcave: '50% 0 50% 0',
   SecondaryDiagonalConcave: '0 50% 0 50%',
-  default: '0'
+  default: '0',
 }
 
 export function formatShapeBlock(shape: string, block: any) {

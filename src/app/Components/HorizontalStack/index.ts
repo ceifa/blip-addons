@@ -1,8 +1,8 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 
 export type HorizontalStack = Partial<{
-  marginTop: number
-}>
+  marginTop: number;
+}>;
 
 export const HorizontalStack = styled.div(
   ({ marginTop = 0 }: HorizontalStack) => ({
@@ -11,4 +11,4 @@ export const HorizontalStack = styled.div(
     alignItems: 'center',
     marginTop: `${marginTop}rem`,
   })
-)
+);

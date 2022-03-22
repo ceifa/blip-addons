@@ -1,26 +1,23 @@
-import { BaseFeature } from '@features/BaseFeature'
-import { getBlockById, getBotName, showSuccessToast } from '~/Utils'
-import type { BlipsCopy } from '~/types'
+import { BaseFeature } from '@features/BaseFeature';
+import { getBlockById, getBotName, showSuccessToast } from '~/Utils';
+import type { BlipsCopy } from '~/types';
 
 export class CopyBlock extends BaseFeature {
-  /**
-   * Only runs this feature once
-   */
-  public static shouldRunOnce = true
+  public static shouldRunOnce = true;
 
   /**
-   * Handles the copy
+   * Handles the copy of one or more blocks in the Builder
    */
-  private handleCopy = (e) => {
-    const selectedNodesId = this.getSelectedNodesId()
-    const hasSelectedNodes = selectedNodesId.length > 0
-    const isBlockCopy = e.srcElement.id === 'sidebar-title'
+  private handleCopy = (e): void => {
+    const selectedNodesId = this.getSelectedNodesId();
+    const hasSelectedNodes = selectedNodesId.length > 0;
+    const isBlockCopy = e.srcElement.id === 'sidebar-title';
 
     if (hasSelectedNodes && isBlockCopy) {
-      this.copyBlocks(selectedNodesId)
-      showSuccessToast('Bloco(s) copiado(s) com sucesso')
+      this.copyBlocks(selectedNodesId);
+      showSuccessToast('Bloco(s) copiado(s) com sucesso');
     }
-  }
+  };
 
   /**
    * Get the code of the selected blocks and write to the
@@ -28,18 +25,18 @@ export class CopyBlock extends BaseFeature {
    *
    * @param blocksId The blocks ids
    */
-  private copyBlocks(blocksId: any[]) {
-    const selectedBlocks = []
+  private copyBlocks(blocksId: any[]): void {
+    const selectedBlocks = [];
 
     for (const blockId of blocksId) {
-      const block = getBlockById(blockId)
+      const block = getBlockById(blockId);
 
       if (block) {
-        selectedBlocks.push(block)
+        selectedBlocks.push(block);
       }
     }
 
-    this.copyToClipboard(selectedBlocks)
+    this.copyToClipboard(selectedBlocks);
   }
 
   /**
@@ -47,8 +44,8 @@ export class CopyBlock extends BaseFeature {
    *
    * @param content The content
    */
-  private copyToClipboard(content: any) {
-    const blocksCode = JSON.stringify(content)
+  private copyToClipboard(content: any): void {
+    const blocksCode = JSON.stringify(content);
 
     window.navigator.clipboard.writeText(
       JSON.stringify({
@@ -56,29 +53,29 @@ export class CopyBlock extends BaseFeature {
         originBot: getBotName(),
         blocksCode,
       } as BlipsCopy)
-    )
+    );
   }
 
   /**
    * Returns all the selected nodes
    */
-  private getSelectedNodesId() {
-    const selectedNodes = document.querySelectorAll('.selected-node')
+  private getSelectedNodesId(): string[] {
+    const selectedNodes = document.querySelectorAll('.selected-node');
 
-    return Array.from(selectedNodes).map((node) => node.getAttribute('id'))
+    return Array.from(selectedNodes).map((node) => node.getAttribute('id'));
   }
 
   /**
    * Adds the functionality to copy the block
    */
-  public handle() {
-    document.body.addEventListener('copy', this.handleCopy)
+  public handle(): void {
+    document.body.addEventListener('copy', this.handleCopy);
   }
 
   /**
    * Removes the functionality to copy the block
    */
-  public cleanup() {
-    document.body.removeEventListener('copy', this.handleCopy)
+  public cleanup(): void {
+    document.body.removeEventListener('copy', this.handleCopy);
   }
 }
