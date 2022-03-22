@@ -5,7 +5,7 @@ import { BaseFeature } from '@features/BaseFeature';
 import { getBlocks } from '~/Utils';
 import { ShapeBlockOption } from './ShapeBlockOption';
 import { getFlowBlockById, getAllFlowBlock, getBlockById } from '~/Utils';
-import { formatShapeBlock } from '~/BlipBlocksFunctions';
+import { formatShapeBlock, Shapes } from '~/BlipBlocksFunctions';
 
 const BUILDER_HTML_MENU_BLOCK_CLASS = 'builder-node-menu';
 const BUILDER_HTML_MENU_BLOCK_LIST_CLASS = 'builder-node-context-menu';
@@ -24,10 +24,9 @@ export class ChangeBlockFormat extends BaseFeature {
     return blipsDiv;
   }
 
-  public menuOptionElementHandle(id: string, shape: string): void {
+  public menuOptionElementHandle(id: string, shape: Shapes): void {
     const block = getBlockById(id);
     const flowBlock = getFlowBlockById(id);
-
     block.addonsSettings = { ...block.addonsSettings, shape };
 
     formatShapeBlock(shape, flowBlock);

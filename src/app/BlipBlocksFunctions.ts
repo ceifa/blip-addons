@@ -1,15 +1,14 @@
-const SHAPES = {
-  Ellipse: '50%',
-  Rectangular: '0',
-  LeftConcave: '50% 0 0 50%',
-  LowerConcave: '0 0 50% 50%',
-  UpperConcave: '50% 50% 0 0',
-  RightConcave: '0 50% 50% 0',
-  MainDiagonalConcave: '50% 0 50% 0',
-  SecondaryDiagonalConcave: '0 50% 0 50%',
-  default: '0',
+export enum Shapes {
+  ELLIPSE = '50%',
+  RECTANGULAR = '3px',
+  LEFT_CONCAVE = '50% 0 0 50%',
+  LOWER_CONCAVE = '0 0 50% 50%',
+  UPPER_CONCAVE = '50% 50% 0 0',
+  RIGHT_CONCAVE = '0 50% 50% 0',
+  MAIN_DIAGONAL_CONCAVE = '50% 0 50% 0',
+  SECONDARY_DIAGONAL_CONCAVE = '0 50% 0 50%',
 }
 
-export function formatShapeBlock(shape: string, block: any) {
-  block.style.borderRadius = SHAPES[shape] ? SHAPES[shape] : SHAPES.default
-}
+export const formatShapeBlock = (shape: Shapes, block: any): void => {
+  block.style.borderRadius = shape;
+};
