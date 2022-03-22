@@ -4,29 +4,43 @@ import * as ReactDOM from 'react-dom';
 import { interceptFunction } from '~/Utils';
 import { BaseFeature } from '../BaseFeature';
 import { BlipsSidebar } from './BlipsSidebar';
+import { getFlowBlockById, getAllFlowBlock, getBlockById } from '~/Utils';
+import { colorBlockBackground, formatShapeBlock } from '~/BlipBlocksFunctions';
+import { EditBlockOption } from './EditBlockOption';
 
-const BLIPS_BUTTON_ID = 'blips-extension-button';
+import { ChangeBlockFormat } from './ChangeBlockFormat';
+import { ChangeBlockColor } from './ChangeBlockColor';
+
 const BLIPS_SIDEBAR_ID = 'blips-extension-sidebar-block-edit';
+const BUILDER_MAIN_AEREA_ID = 'main-content-area';
+const BUILDER_HTML_MENU_BLOCK_CLASS = 'builder-node-menu';
+const BUILDER_HTML_MENU_BLOCK_LIST_CLASS = 'builder-node-context-menu';
+const DEFALT_CLASS_BUILDER_HTML_MENU_BLOCK_LIST_ELEMENT = 'ph3 pv1 bp-fs-7 tc';
+const BUILDER_HTML_BLOCK_TAG = 'builder-node';
 
 export class EditBlock extends BaseFeature {
   public static shouldRunOnce = true;
+  private id = "";
+  private ChangeBlockFormatrFeature: BaseFeature;
+  private ChangeBlockColorFeature: BaseFeature;
 
   private getSidebar(): HTMLElement {
     return document.getElementById(BLIPS_SIDEBAR_ID);
   }
 
   private openSidebar = (): void => {
+    console.log("Abrindo sidebar com o id " + this.id)
     if (!this.getSidebar()) {
       // Creates and append the sidebar to the dom
       const blipsSidebar = document.createElement('div');
 
       blipsSidebar.setAttribute('id', BLIPS_SIDEBAR_ID);
       ReactDOM.render(
-        <BlipsSidebar onClose={this.closeSidebar} />,
+        <BlipsSidebar id={this.id} onEditBackgorundColor={this.onEditBackgorundColor} onEditTextColor={this.onEditTextColor} onEditShape={this.onEditShape} onClose={this.closeSidebar} />,
         blipsSidebar
       );
 
-      const mainArea = document.getElementById('main-content-area');
+      const mainArea = document.getElementById(BUILDER_MAIN_AEREA_ID);
       mainArea.appendChild(blipsSidebar);
 
       // Waits for a moment and then fades the sidebar in
@@ -41,15 +55,35 @@ export class EditBlock extends BaseFeature {
     }
   };
 
-  /**
-   * Closes the sidebar by removing it from the DOM
-   */
   private closeSidebar = (): void => {
     const sidebar = this.getSidebar();
 
     if (sidebar) {
       sidebar.remove();
     }
+  };
+
+  private onEditBackgorundColor = (id: string, color: string): void => {
+    console.log("Editando o bloco " + id + " Com a cor " + color)
+    const block = getBlockById(id);
+    const flowBlock = getFlowBlockById(id);
+
+    block.addonsSettings = { ...block.addonsSettings, color: color };
+
+    colorBlockBackground(color, flowBlock);
+  };
+
+  private onEditTextColor = (id: string): void => {
+    return;
+  };
+
+  private onEditShape = (id: string, shape: string): void => {
+    console.log("Editando o bloco " + id + " Com o formato " + shape)
+    const block = getBlockById(id);
+    const flowBlock = getFlowBlockById(id);
+    block.addonsSettings = { ...block.addonsSettings, shape };
+
+    formatShapeBlock(shape, flowBlock);
   };
 
   private createBlockOptionsDiv(): any {
@@ -61,13 +95,9 @@ export class EditBlock extends BaseFeature {
     return blipsDiv;
   }
 
-  public menuOptionElementHandle(id: string, shape: string): void {
-    const block = getBlockById(id);
-    const flowBlock = getFlowBlockById(id);
-
-    block.addonsSettings = { ...block.addonsSettings, shape };
-
-    formatShapeBlock(shape, flowBlock);
+  public menuOptionElementHandle = (id: string): void => {
+    this.id = id;
+    this.openSidebar();
   }
 
   private addChangeFormatOptionOnBlockById(id: string): void {
@@ -79,14 +109,14 @@ export class EditBlock extends BaseFeature {
       const menuOptionElement = this.createBlockOptionsDiv();
 
       ReactDOM.render(
-        <ShapeBlockOption id={id} onClick={this.menuOptionElementHandle} />,
+        <EditBlockOption id={id} onClick={this.menuOptionElementHandle}/>,
         menuOptionElement
       );
       menuOptionsList.appendChild(menuOptionElement);
     }
   }
 
-  private addOptionToChangeFormatInAllBlocks = (): void => {
+  private addEditOptionInAllBlocks = (): void => {
     const blocks = getAllFlowBlock();
 
     for (const block of blocks) {
@@ -94,47 +124,21 @@ export class EditBlock extends BaseFeature {
     }
   };
 
-  private formatAllBlocks(): void {
-    const blocks = getBlocks();
-
-    for (const block of blocks) {
-      if (block.addonsSettings && block.addonsSettings.shape) {
-        const flowBlock = getFlowBlockById(block.id);
-
-        formatShapeBlock(block.addonsSettings.shape, flowBlock);
-      }
-    }
-  }
 
   public handle(): boolean {
-    this.formatAllBlocks();
-    this.addOptionToChangeFormatInAllBlocks();
-    if (!this.getIcon()) {
-      const buttonsList = document.querySelector(
-        '.icon-button-list, .builder-icon-button-list'
-      );
-      const blipsDiv = document.createElement('div');
+    this.addEditOptionInAllBlocks();
+    this.ChangeBlockFormatrFeature = new ChangeBlockFormat()
+    this.ChangeBlockColorFeature = new ChangeBlockColor()
+    this.ChangeBlockFormatrFeature.handle();
+    this.ChangeBlockColorFeature.handle();
 
-      blipsDiv.setAttribute('id', BLIPS_BUTTON_ID);
-      ReactDOM.render(<BlipsButton onClick={this.openSidebar} />, blipsDiv);
-      buttonsList.appendChild(blipsDiv);
-
-      return true;
-    }
-
-    return false;
+    return true;
   }
 
   /**
    * Removes the functionality to copy the block
    */
   public cleanup(): void {
-    const blipsButton = document.getElementById(BLIPS_BUTTON_ID);
-
-    if (blipsButton) {
-      blipsButton.remove();
-    }
-
     this.closeSidebar();
   }
 }

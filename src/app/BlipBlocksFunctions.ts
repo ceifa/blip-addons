@@ -18,6 +18,6 @@ export function colorBlockBackground(color: string, block: any) {
   block.style.background = color
 }
 
-export function colorBlockText(color: string, block: any) {
+/*export function colorBlockText(color: string, block: any) {
   block.style.color = color
-}
+}*/

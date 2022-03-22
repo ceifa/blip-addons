@@ -14,7 +14,7 @@ export type BlipsSidebarProps = {
   onClose: () => void
 }
 
-export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
+export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): any => {
   return (
     <>
       <div

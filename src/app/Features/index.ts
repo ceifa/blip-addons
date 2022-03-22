@@ -8,5 +8,4 @@ export * from './RemoveInactivity';
 export * from './SetGlobalTrackings';
 export * from './Snippets';
 export * from './CleanEnvironment';
-export * from './ChangeBlockFormat';
-export * from './ChangeBlockColor';
+export * from './EditBlocks';

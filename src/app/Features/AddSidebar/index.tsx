@@ -62,6 +62,7 @@ export class AddSidebar extends BaseFeature {
     const sidebar = this.getSidebar();
 
     if (sidebar) {
+      sidebar.children .item(0) .classList.add('ng-animate', 'ng-leave', 'ng-leave-active');
       sidebar.remove();
     }
   };
