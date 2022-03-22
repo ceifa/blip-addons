@@ -10,10 +10,10 @@ export type BlipAccordionButtonProps = {
 const ARROW_RIGHT = 'arrow-right'
 const ARROW_DOWN = 'arrow-down'
 
-export const BlipAccordionButton = ({ title }: BlipAccordionButtonProps) => {
+export const BlipAccordionButton = ({ title }: BlipAccordionButtonProps) : JSX.Element=> {
   const [arrowState, setArrowState] = React.useState(ARROW_RIGHT)
 
-  const switchArrowState = () => {
+  const switchArrowState = () : void => {
     if (arrowState === ARROW_RIGHT) {
       setArrowState(ARROW_DOWN)
     } else {
