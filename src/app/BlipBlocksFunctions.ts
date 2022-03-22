@@ -13,3 +13,11 @@ const SHAPES = {
 export function formatShapeBlock(shape: string, block: any) {
   block.style.borderRadius = SHAPES[shape] ? SHAPES[shape] : SHAPES.default
 }
+
+export function colorBlockBackground(color: string, block: any) {
+  block.style.background = color
+}
+
+export function colorBlockText(color: string, block: any) {
+  block.style.color = color
+}
