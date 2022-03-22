@@ -1,15 +1,20 @@
-import * as React from 'react';
-import { BdsMenuSeparation } from 'blip-ds/dist/blip-ds-react';
-
-import { Block } from '~/Components';
-import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm';
-import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm';
+import * as React from 'react'
+import {
+  Block,
+  BlipAccordion,
+  BlipAccordionItem,
+  BlipAccordionHeader,
+  BlipAccordionButton,
+  BlipAccordionBody,
+} from '~/Components'
+import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm'
+import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm'
 
 export type BlipsSidebarProps = {
-  onClose: () => void;
-};
+  onClose: () => void
+}
 
-export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
+export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
   return (
     <>
       <div
@@ -24,7 +29,7 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
               maxLength={50}
               type="text"
               name="nodeName"
-              value="Blips"
+              value="Blip Addons"
               readOnly
             />
 
@@ -42,12 +47,28 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
 
         <div className="sidebar-content-body">
           <Block padding={2.5}>
-            <GlobalInactivityForm />
-            <BdsMenuSeparation />
-            <GlobalTrackingsForm />
+            <BlipAccordion>
+              <BlipAccordionItem borderTop={0}>
+                <BlipAccordionHeader marginBottom={5}>
+                  <BlipAccordionButton title="Adicionar inatividade global" />
+                </BlipAccordionHeader>
+                <BlipAccordionBody>
+                  <GlobalInactivityForm />
+                </BlipAccordionBody>  
+              </BlipAccordionItem>
+
+              <BlipAccordionItem>
+                <BlipAccordionHeader marginTop={5} marginBottom={5}>
+                  <BlipAccordionButton title="Adicionar trackings globais" />
+                </BlipAccordionHeader>
+                <BlipAccordionBody>
+                  <GlobalTrackingsForm />
+                </BlipAccordionBody>
+              </BlipAccordionItem>
+            </BlipAccordion>
           </Block>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
