@@ -192,9 +192,7 @@ export const GlobalTrackingsForm = (): JSX.Element => {
   };
 
   return (
-    <Block marginTop={2}>
-      <Title>Adicionar trackings globais</Title>
-
+    <Block>
       <Paragraph>
         Todos os blocos que contem a ação de tracking terá adição de trackings
         globais.
