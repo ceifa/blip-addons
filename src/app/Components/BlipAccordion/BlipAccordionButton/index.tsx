@@ -1,22 +1,16 @@
 import * as React from 'react'
-import { AccordionButton, CSSObject } from '@chakra-ui/react'
+import { AccordionButton } from '@chakra-ui/react'
 import { Title } from '@components'
 import { BdsIcon } from 'blip-ds/dist/blip-ds-react'
 
 export type BlipAccordionButtonProps = {
-  onFocus?: CSSObject
-  onHover?: CSSObject
   title: string
 }
 
 const ARROW_RIGHT = 'arrow-right'
 const ARROW_DOWN = 'arrow-down'
 
-export const BlipAccordionButton = ({
-  onFocus,
-  onHover,
-  title,
-}: BlipAccordionButtonProps) => {
+export const BlipAccordionButton = ({ title }: BlipAccordionButtonProps) => {
   const [arrowState, setArrowState] = React.useState(ARROW_RIGHT)
 
   const switchArrowState = () => {
@@ -30,13 +24,13 @@ export const BlipAccordionButton = ({
   return (
     <>
       <AccordionButton
-        _focus={onFocus}
-        _hover={onHover}
+        _focus={{ outline: 'none' }}
+        _hover={{ bgColor: 'none' }}
         onClick={switchArrowState}
         paddingY={10.1}
         paddingX={5.1}
       >
-        <BdsIcon name={arrowState} size="x-large" theme="outline"/>
+        <BdsIcon name={arrowState} size="x-large" theme="outline" />
         <Title>{title}</Title>
       </AccordionButton>
     </>

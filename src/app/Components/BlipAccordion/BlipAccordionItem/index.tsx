@@ -2,13 +2,13 @@ import * as React from 'react'
 import { AccordionItem } from '@chakra-ui/react'
 
 export type AccordionItemProps = {
-  isFocusable: boolean
+  isFocusable?: boolean
   borderTop?: number,
   children: any
 }
 
 export const BlipAccordionItem = (
-  { isFocusable, borderTop, children }: AccordionItemProps
+  { isFocusable = false, borderTop, children }: AccordionItemProps
 ) => {
   return (
     <>

@@ -48,26 +48,18 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
         <div className="sidebar-content-body">
           <Block padding={2.5}>
             <BlipAccordion>
-              <BlipAccordionItem isFocusable={false} borderTop={0}>
+              <BlipAccordionItem borderTop={0}>
                 <BlipAccordionHeader marginBottom={5}>
-                  <BlipAccordionButton
-                    title="Adicionar inatividade global"
-                    onFocus={{ outline: 'none' }}
-                    onHover={{ bgColor: 'none' }}
-                  />
+                  <BlipAccordionButton title="Adicionar inatividade global" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
                   <GlobalInactivityForm />
-                </BlipAccordionBody>
+                </BlipAccordionBody>  
               </BlipAccordionItem>
 
-              <BlipAccordionItem isFocusable={false}>
+              <BlipAccordionItem>
                 <BlipAccordionHeader marginTop={5} marginBottom={5}>
-                  <BlipAccordionButton
-                    title="Adicionar trackings globais"
-                    onFocus={{ outline: 'none' }}
-                    onHover={{ bgColor: 'none' }}
-                  />
+                  <BlipAccordionButton title="Adicionar trackings globais" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
                   <GlobalTrackingsForm />
