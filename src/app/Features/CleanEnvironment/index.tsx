@@ -24,7 +24,7 @@ export class CleanEnvironment extends BaseFeature {
 
   private undo = (): void => {
     const mainNavBar = this.getMainNavBar();
-    mainNavBar.style.display = 'initial';
+    mainNavBar.style.display = 'block';
   };
 
   public handle(): boolean {
