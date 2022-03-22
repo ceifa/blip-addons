@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { BdsIcon, BdsTooltip } from 'blip-ds/dist/blip-ds-react';
+import { setSettings, Settings } from '~/Settings';
 
 const INACTIVE_ICON = 'screen-full';
 const ACTIVE_ICON = 'screen-fill';
@@ -13,7 +14,7 @@ export const CleanButton = ({
   clean,
   undo,
 }: BlipsCleanButtonProps): JSX.Element => {
-  const [isActive, setIsActive] = React.useState(false);
+  const [isActive, setIsActive] = React.useState(Settings.isCleanEnviroment);
 
   const handleClick = (): void => {
     const shouldClean = !isActive;
@@ -25,6 +26,7 @@ export const CleanButton = ({
     }
 
     setIsActive(shouldClean);
+    setSettings({ isCleanEnviroment: shouldClean });
   };
 
   return (
