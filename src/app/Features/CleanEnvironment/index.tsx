@@ -19,12 +19,18 @@ export class CleanEnvironment extends BaseFeature {
 
   private clean = (): void => {
     const mainNavBar = this.getMainNavBar();
-    mainNavBar.style.display = 'none';
+
+    if (mainNavBar) {
+      mainNavBar.style.display = 'none';
+    }
   };
 
   private undo = (): void => {
     const mainNavBar = this.getMainNavBar();
-    mainNavBar.style.display = 'block';
+
+    if (mainNavBar) {
+      mainNavBar.style.display = 'block';
+    }
   };
 
   public handle(): boolean {
@@ -52,6 +58,7 @@ export class CleanEnvironment extends BaseFeature {
    */
   public cleanup(): void {
     const blipsButton = document.getElementById(BLIPS_BUTTON_ID);
+    this.undo();
 
     if (blipsButton) {
       blipsButton.remove();
