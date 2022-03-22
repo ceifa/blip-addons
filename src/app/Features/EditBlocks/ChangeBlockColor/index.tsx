@@ -22,7 +22,7 @@ export class ChangeBlockColor extends BaseFeature {
     for (const block of blocks) {
       if (block.addonsSettings && block.addonsSettings.backgroundColor) {
         const flowBlock = getFlowBlockById(block.id);
-        colorBlockBackground(block.addonsSettings.backgroundColor, flowBlock);
+        colorBlockBackground(block.addonsSettings.color, flowBlock);
       }
     }
   }

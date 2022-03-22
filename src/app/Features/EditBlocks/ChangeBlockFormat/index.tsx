@@ -2,13 +2,13 @@ import { BaseFeature } from '@features/BaseFeature';
 import { getBlocks } from '~/Utils';
 export { ShapeBlockOption } from './ShapeBlockOption';
 import { getFlowBlockById, getBlockById } from '~/Utils';
-import { formatShapeBlock } from '~/BlipBlocksFunctions';
+import { formatShapeBlock, Shapes } from '~/BlipBlocksFunctions';
 
 
 export class ChangeBlockFormat extends BaseFeature {
   public static shouldRunOnce = true;
 
-  public menuOptionElementHandle(id: string, shape: string): void {
+  public menuOptionElementHandle(id: string, shape: Shapes): void {
     const block = getBlockById(id);
     const flowBlock = getFlowBlockById(id);
 

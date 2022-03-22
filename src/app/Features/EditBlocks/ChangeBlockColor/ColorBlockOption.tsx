@@ -12,21 +12,16 @@ export const ColorBlockOption = ({
   id,
   onSetColor
 }: ColorBlockOptionProps): JSX.Element => {
-  const [color, setColor] = React.useState({
-    r: '241',
-    g: '112',
-    b: '19',
-    a: '1',
-  });
+  const [color, setColor] = React.useState({hex: "#ffffff"});
 
   const handleChange = (color): void => {
-    setColor(color.rgb);
-    onSetColor(id, color)
+    setColor(color);
+    onSetColor(id, color.hex)
   };
 
   return (
     <div>
-      <SketchPicker color={color} onChange={(color) => handleChange(color)} />
+      <SketchPicker color={color} onChange={handleChange} />
     </div>
   );
 };

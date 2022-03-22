@@ -5,7 +5,7 @@ import { interceptFunction } from '~/Utils';
 import { BaseFeature } from '../BaseFeature';
 import { BlipsSidebar } from './BlipsSidebar';
 import { getFlowBlockById, getAllFlowBlock, getBlockById } from '~/Utils';
-import { colorBlockBackground, formatShapeBlock } from '~/BlipBlocksFunctions';
+import { colorBlockBackground, formatShapeBlock, Shapes } from '~/BlipBlocksFunctions';
 import { EditBlockOption } from './EditBlockOption';
 
 import { ChangeBlockFormat } from './ChangeBlockFormat';
@@ -77,7 +77,7 @@ export class EditBlock extends BaseFeature {
     return;
   };
 
-  private onEditShape = (id: string, shape: string): void => {
+  private onEditShape = (id: string, shape: Shapes): void => {
     console.log("Editando o bloco " + id + " Com o formato " + shape)
     const block = getBlockById(id);
     const flowBlock = getFlowBlockById(id);
