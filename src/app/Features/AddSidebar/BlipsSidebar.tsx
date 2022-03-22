@@ -1,16 +1,12 @@
 import * as React from 'react'
-import { BdsIcon, BdsMenuSeparation } from 'blip-ds/dist/blip-ds-react'
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  ChakraProvider,
-} from '@chakra-ui/react'
-
-import { Block, Title } from '~/Components'
+  Block,
+  BlipAccordion,
+  BlipAccordionItem,
+  BlipAccordionHeader,
+  BlipAccordionButton,
+  BlipAccordionBody,
+} from '~/Components'
 import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm'
 import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm'
 
@@ -33,7 +29,7 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
               maxLength={50}
               type="text"
               name="nodeName"
-              value="Blips"
+              value="Blip Addons"
               readOnly
             />
 
@@ -51,31 +47,33 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps) => {
 
         <div className="sidebar-content-body">
           <Block padding={2.5}>
-            <ChakraProvider>
-              <Accordion allowMultiple>
-                <AccordionItem isFocusable={false} borderTop={0}>
-                  <h2>
-                    <Box my={5} textAlign="left">
-                      <AccordionButton _focus={{outline: 'none'}} _hover={{bgColor: 'none'}}>
-                        <BdsIcon
-                          name="arrow-down"
-                          size="x-large"
-                          theme="outline"
-                        />
-                        <Title>Adicionar inatividade global</Title>
-                      </AccordionButton>
-                    </Box>
-                  </h2>
-                  <AccordionPanel pb={4}>
-                    <GlobalInactivityForm />
-                  </AccordionPanel>
-                </AccordionItem>
+            <BlipAccordion>
+              <BlipAccordionItem isFocusable={false} borderTop={0}>
+                <BlipAccordionHeader marginBottom={5}>
+                  <BlipAccordionButton
+                    title="Adicionar inatividade global"
+                    onFocus={{ outline: 'none' }}
+                    onHover={{ bgColor: 'none' }}
+                  />
+                </BlipAccordionHeader>
+                <BlipAccordionBody>
+                  <GlobalInactivityForm />
+                </BlipAccordionBody>
+              </BlipAccordionItem>
 
-               
-              </Accordion>
-            </ChakraProvider>
-            <BdsMenuSeparation />
-            <GlobalTrackingsForm />
+              <BlipAccordionItem isFocusable={false}>
+                <BlipAccordionHeader marginTop={5} marginBottom={5}>
+                  <BlipAccordionButton
+                    title="Adicionar trackings globais"
+                    onFocus={{ outline: 'none' }}
+                    onHover={{ bgColor: 'none' }}
+                  />
+                </BlipAccordionHeader>
+                <BlipAccordionBody>
+                  <GlobalTrackingsForm />
+                </BlipAccordionBody>
+              </BlipAccordionItem>
+            </BlipAccordion>
           </Block>
         </div>
       </div>
