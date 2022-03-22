@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import { BaseFeature } from '@features/BaseFeature';
 import { CleanButton } from './CleanButton';
+import { Settings } from '~/Settings';
 
 const BLIPS_BUTTON_ID = 'blips-clean-button';
 
@@ -17,14 +18,29 @@ export class CleanEnvironment extends BaseFeature {
     return document.querySelector('.main-navbar-content');
   }
 
+  private getBuilderContainer(): HTMLElement {
+    return document.querySelector('.builder-container');
+  }
+
   private clean = (): void => {
     const mainNavBar = this.getMainNavBar();
-    mainNavBar.style.display = 'none';
+    const builderContainer = this.getBuilderContainer();
+
+    if (builderContainer) {
+      builderContainer.style.height = 'calc(100vh - 56px)';
+    }
+
+    if (mainNavBar) {
+      mainNavBar.style.display = 'none';
+    }
   };
 
   private undo = (): void => {
     const mainNavBar = this.getMainNavBar();
-    mainNavBar.style.display = 'initial';
+
+    if (mainNavBar) {
+      mainNavBar.style.display = 'block';
+    }
   };
 
   public handle(): boolean {
@@ -41,6 +57,10 @@ export class CleanEnvironment extends BaseFeature {
       );
       buttonsList.appendChild(blipsDiv);
 
+      if (Settings.isCleanEnviroment) {
+        this.clean();
+      }
+
       return false;
     }
 
@@ -52,6 +72,7 @@ export class CleanEnvironment extends BaseFeature {
    */
   public cleanup(): void {
     const blipsButton = document.getElementById(BLIPS_BUTTON_ID);
+    this.undo();
 
     if (blipsButton) {
       blipsButton.remove();

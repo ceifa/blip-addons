@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import {
   Block,
   BlipAccordion,
@@ -6,15 +6,15 @@ import {
   BlipAccordionHeader,
   BlipAccordionButton,
   BlipAccordionBody,
-} from '~/Components'
-import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm'
-import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm'
+} from '~/Components';
+import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm';
+import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm';
 
 export type BlipsSidebarProps = {
-  onClose: () => void
-}
+  onClose: () => void;
+};
 
-export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): any => {
+export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
   return (
     <>
       <div
@@ -54,7 +54,7 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): any => {
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
                   <GlobalInactivityForm />
-                </BlipAccordionBody>  
+                </BlipAccordionBody>
               </BlipAccordionItem>
 
               <BlipAccordionItem>
@@ -70,5 +70,5 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): any => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};

@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import {
   UpperConcave,
   Rectangular,
@@ -9,10 +10,11 @@ import {
   LowerConcave,
   Ellipse,
 } from '@components/Shapes';
+import { Shapes } from '~/BlipBlocksFunctions';
 
 export type ShapeBlockOptionProps = {
   id: string;
-  onClick: (id: string, shape: string) => any;
+  onClick: (id: string, shape: Shapes) => any;
 };
 
 export const ShapeBlockOption = ({
@@ -21,16 +23,18 @@ export const ShapeBlockOption = ({
 }: ShapeBlockOptionProps): JSX.Element => {
   return (
     <div>
-      <Ellipse onClick={() => onClick(id, 'Ellipse')} />
-      <UpperConcave onClick={() => onClick(id, 'UpperConcave')} />
-      <LowerConcave onClick={() => onClick(id, 'LowerConcave')} />
-      <RightConcave onClick={() => onClick(id, 'RightConcave')} />
-      <LeftConcave onClick={() => onClick(id, 'LeftConcave')} />
-      <MainDiagonalConcave onClick={() => onClick(id, 'MainDiagonalConcave')} />
-      <SecondaryDiagonalConcave
-        onClick={() => onClick(id, 'SecondaryDiagonalConcave')}
+      <Ellipse onClick={() => onClick(id, Shapes.ELLIPSE)} />
+      <UpperConcave onClick={() => onClick(id, Shapes.UPPER_CONCAVE)} />
+      <LowerConcave onClick={() => onClick(id, Shapes.LOWER_CONCAVE)} />
+      <RightConcave onClick={() => onClick(id, Shapes.RIGHT_CONCAVE)} />
+      <LeftConcave onClick={() => onClick(id, Shapes.LEFT_CONCAVE)} />
+      <MainDiagonalConcave
+        onClick={() => onClick(id, Shapes.MAIN_DIAGONAL_CONCAVE)}
       />
-      <Rectangular onClick={() => onClick(id, 'Rectangular')} />
+      <SecondaryDiagonalConcave
+        onClick={() => onClick(id, Shapes.SECONDARY_DIAGONAL_CONCAVE)}
+      />
+      <Rectangular onClick={() => onClick(id, Shapes.RECTANGULAR)} />
     </div>
   );
 };

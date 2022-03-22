@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import { interceptFunction } from '~/Utils';
 import { BaseFeature } from '../BaseFeature';
-import { BlipsButton } from './BlipsButton';
+import { BlipsButton } from './BlipAddonsButton';
 import { BlipsSidebar } from './BlipsSidebar';
 
 const BLIPS_BUTTON_ID = 'blips-extension-button';
@@ -62,8 +62,13 @@ export class AddSidebar extends BaseFeature {
     const sidebar = this.getSidebar();
 
     if (sidebar) {
-      sidebar.children .item(0) .classList.add('ng-animate', 'ng-leave', 'ng-leave-active');
-      sidebar.remove();
+      sidebar.children
+        .item(0)
+        .classList.add('ng-animate', 'ng-leave', 'ng-leave-active');
+
+      setTimeout(() => {
+        sidebar.remove();
+      }, 200);
     }
   };
 

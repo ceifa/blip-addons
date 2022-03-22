@@ -2,13 +2,13 @@ import type { FeatureRequest } from './types';
 
 const BUILDER_HTML_BLOCK_TAG = 'builder-node';
 
-export const getController = () => {
+export const getController = (): any => {
   const canvas = document.querySelector('#canvas');
 
   return window.angular.element(canvas).controller();
 };
 
-export const getFlow = () => {
+export const getFlow = (): any => {
   return getController().flow;
 };
 
@@ -16,27 +16,27 @@ export const getBlocks = (): any[] => {
   return Object.values(getFlow());
 };
 
-export const getBlockById = (id: string) => {
+export const getBlockById = (id: string): any => {
   return getFlow()[id];
 };
 
-export const showSuccessToast = (message: string) => {
+export const showSuccessToast = (message: string): void => {
   getController().ngToast.success(message);
 };
 
-export const showWarningToast = (message: string) => {
+export const showWarningToast = (message: string): void => {
   getController().ngToast.warning(message);
 };
 
-export const showDangerToast = (message: string) => {
+export const showDangerToast = (message: string): void => {
   getController().ngToast.danger(message);
 };
 
-export const cleanCopiedStates = () => {
+export const cleanCopiedStates = (): void => {
   getController().copiedStates = [];
 };
 
-export const selectBlock = (id: string) => {
+export const selectBlock = (id: string): void => {
   const watchNode = setInterval(() => {
     const node = document.querySelector(`builder-node[id="${id}"]`);
 
@@ -47,14 +47,14 @@ export const selectBlock = (id: string) => {
   });
 };
 
-export const cleanSelectedNodes = () => {
+export const cleanSelectedNodes = (): void => {
   getController().selectedNodes = [];
 };
 
 export const interceptFunction = (
   functionName: string,
   callback: () => void
-) => {
+): void => {
   const controller = getController();
   const functionToWrap = controller[functionName];
 
@@ -65,7 +65,7 @@ export const interceptFunction = (
   };
 };
 
-export const convertToHours = (waitingTime: number) => {
+export const convertToHours = (waitingTime: number): string => {
   const waitingHours = Math.floor(waitingTime / 60);
   const waitingMinutes = waitingTime % 60;
 
@@ -76,7 +76,7 @@ export const requestFeature = (
   code: string,
   type: 'cleanup' | 'run',
   ...args
-) => {
+): void => {
   const message: FeatureRequest = {
     isFeatureRequest: true,
     type,
@@ -87,19 +87,19 @@ export const requestFeature = (
   window.postMessage(message, '*');
 };
 
-export const getBotName = () => {
+export const getBotName = (): string => {
   return getController().application.name;
 };
 
-export const createNearbyPosition = () => {
+export const createNearbyPosition = (): string => {
   return getController().createNearbyPosition();
 };
 
-export const getSpace = () => {
+export const getSpace = (): any => {
   return getController().g2p;
 };
 
-export const getHandleOnKeyDown = () => {
+export const getHandleOnKeyDown = (): any => {
   return getController().handleOnKeyDown;
 };
 

@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export const Rectangular = styled.div`
   background: #3f7de8;
   display: inline-block;
-  border-radius: 50%;
+  border-radius: 3px;
   height: 12px;
   width: 12px;
   margin-right: 1rem;
