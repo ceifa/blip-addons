@@ -16,9 +16,8 @@ import {
   formatShapeBlock,
   Shapes,
   colorBlockText,
-} from '~/BlipBlocksFunctions';
+} from './BlipBlocksFunctions';
 import { EditBlockOption } from './EditBlockOption';
-
 import { ChangeBlockFormat } from './ChangeBlockFormat';
 import { ChangeBlockColor } from './ChangeBlockColor';
 import { ChangeTextBlockColor } from './ChangeTextColor';

@@ -1,17 +1,33 @@
 import * as React from 'react';
-import { Block, BlipAccordion, BlipAccordionItem, BlipAccordionHeader, BlipAccordionButton, BlipAccordionBody } from '~/Components';
+import {
+  Block,
+  BlipAccordion,
+  BlipAccordionItem,
+  BlipAccordionHeader,
+  BlipAccordionButton,
+  BlipAccordionBody,
+} from '~/Components';
+import { getBlockById } from '~/Utils';
 import { ColorBlockOption } from './ChangeBlockColor';
 import { ShapeBlockOption } from './ChangeBlockFormat';
 
 export type BlipsSidebarProps = {
-  id: string,
-  onEditBackgorundColor: (id: string, color: string) => void,
-  onEditTextColor: (id: string, color: string) => void,
-  onEditShape: (id: string, shape: string) => void,
+  id: string;
+  onEditBackgorundColor: (id: string, color: string) => void;
+  onEditTextColor: (id: string, color: string) => void;
+  onEditShape: (id: string, shape: string) => void;
   onClose: () => void;
 };
 
-export const BlipsSidebar = ({ id, onEditBackgorundColor, onEditTextColor, onEditShape, onClose }: BlipsSidebarProps): JSX.Element => {
+export const BlipsSidebar = ({
+  id,
+  onEditBackgorundColor,
+  onEditTextColor,
+  onEditShape,
+  onClose,
+}: BlipsSidebarProps): JSX.Element => {
+  const thisBlock = getBlockById(id);
+
   return (
     <>
       <div
@@ -50,8 +66,8 @@ export const BlipsSidebar = ({ id, onEditBackgorundColor, onEditTextColor, onEdi
                   <BlipAccordionButton title="Alterar formato do Bloco" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
-                  <ShapeBlockOption id={id} onClick={onEditShape}/>
-                </BlipAccordionBody>  
+                  <ShapeBlockOption id={id} onClick={onEditShape} />
+                </BlipAccordionBody>
               </BlipAccordionItem>
 
               <BlipAccordionItem>
@@ -59,16 +75,24 @@ export const BlipsSidebar = ({ id, onEditBackgorundColor, onEditTextColor, onEdi
                   <BlipAccordionButton title="Alterar cor do bloco" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
-                  <ColorBlockOption id={id} onSetColor={onEditBackgorundColor}/>
+                  <ColorBlockOption
+                    defaultColor={thisBlock.addonsSettings?.backgroundColor}
+                    id={id}
+                    onSetColor={onEditBackgorundColor}
+                  />
                 </BlipAccordionBody>
               </BlipAccordionItem>
 
-            <BlipAccordionItem>
+              <BlipAccordionItem>
                 <BlipAccordionHeader marginTop={5} marginBottom={5}>
                   <BlipAccordionButton title="Alterar cor do titulo do bloco" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
-                  <ColorBlockOption id={id} onSetColor={onEditTextColor}/>
+                  <ColorBlockOption
+                    defaultColor={thisBlock.addonsSettings?.textColor}
+                    id={id}
+                    onSetColor={onEditTextColor}
+                  />
                 </BlipAccordionBody>
               </BlipAccordionItem>
             </BlipAccordion>
@@ -76,5 +100,5 @@ export const BlipsSidebar = ({ id, onEditBackgorundColor, onEditTextColor, onEdi
         </div>
       </div>
     </>
-  )
+  );
 };
