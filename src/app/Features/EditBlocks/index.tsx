@@ -4,8 +4,19 @@ import * as ReactDOM from 'react-dom';
 import { interceptFunction } from '~/Utils';
 import { BaseFeature } from '../BaseFeature';
 import { BlipsSidebar } from './BlipsSidebar';
-import { getFlowBlockById, getAllFlowBlock, getBlockById, getContrastColor, hexToRgb } from '~/Utils';
-import { colorBlockBackground, formatShapeBlock, Shapes, colorBlockText } from '~/BlipBlocksFunctions';
+import {
+  getFlowBlockById,
+  getAllFlowBlock,
+  getBlockById,
+  getContrastColor,
+  hexToRgb,
+} from '~/Utils';
+import {
+  colorBlockBackground,
+  formatShapeBlock,
+  Shapes,
+  colorBlockText,
+} from '~/BlipBlocksFunctions';
 import { EditBlockOption } from './EditBlockOption';
 
 import { ChangeBlockFormat } from './ChangeBlockFormat';
@@ -21,7 +32,7 @@ const BUILDER_HTML_BLOCK_TAG = 'builder-node';
 
 export class EditBlock extends BaseFeature {
   public static shouldRunOnce = true;
-  private id = "";
+  private id = '';
   private ChangeBlockFormatrFeature: BaseFeature;
   private ChangeBlockColorFeature: BaseFeature;
   private ChangeTextBlockColorFeature: BaseFeature;
@@ -37,7 +48,13 @@ export class EditBlock extends BaseFeature {
 
       blipsSidebar.setAttribute('id', BLIPS_SIDEBAR_ID);
       ReactDOM.render(
-        <BlipsSidebar id={this.id} onEditBackgorundColor={this.onEditBackgorundColor} onEditTextColor={this.onEditTextColor} onEditShape={this.onEditShape} onClose={this.closeSidebar} />,
+        <BlipsSidebar
+          id={this.id}
+          onEditBackgorundColor={this.onEditBackgorundColor}
+          onEditTextColor={this.onEditTextColor}
+          onEditShape={this.onEditShape}
+          onClose={this.closeSidebar}
+        />,
         blipsSidebar
       );
 
@@ -71,8 +88,8 @@ export class EditBlock extends BaseFeature {
     block.addonsSettings = { ...block.addonsSettings, backgroundColor: color };
 
     colorBlockBackground(color, flowBlock);
-    const currentTextColor = hexToRgb(color)
-    const newTextColor = getContrastColor(currentTextColor)
+    const currentTextColor = hexToRgb(color);
+    const newTextColor = getContrastColor(currentTextColor);
     colorBlockText(newTextColor, flowBlock);
   };
 
@@ -105,7 +122,7 @@ export class EditBlock extends BaseFeature {
   public menuOptionElementHandle = (id: string): void => {
     this.id = id;
     this.openSidebar();
-  }
+  };
 
   private addChangeFormatOptionOnBlockById(id: string): void {
     const menuOptionsList = document.querySelector(
@@ -113,13 +130,17 @@ export class EditBlock extends BaseFeature {
     );
 
     if (menuOptionsList) {
-      const menuOptionElement = this.createBlockOptionsDiv();
+      const editOption = menuOptionsList.querySelector('.edit-block-option');
 
-      ReactDOM.render(
-        <EditBlockOption id={id} onClick={this.menuOptionElementHandle}/>,
-        menuOptionElement
-      );
-      menuOptionsList.appendChild(menuOptionElement);
+      if (!editOption) {
+        const menuOptionElement = this.createBlockOptionsDiv();
+
+        ReactDOM.render(
+          <EditBlockOption id={id} onClick={this.menuOptionElementHandle} />,
+          menuOptionElement
+        );
+        menuOptionsList.appendChild(menuOptionElement);
+      }
     }
   }
 
@@ -131,15 +152,17 @@ export class EditBlock extends BaseFeature {
     }
   };
 
-
   public handle(): boolean {
     this.addEditOptionInAllBlocks();
-    this.ChangeBlockFormatrFeature = new ChangeBlockFormat()
-    this.ChangeBlockColorFeature = new ChangeBlockColor()
-    this.ChangeTextBlockColorFeature = new ChangeTextBlockColor()
+    this.ChangeBlockFormatrFeature = new ChangeBlockFormat();
+    this.ChangeBlockColorFeature = new ChangeBlockColor();
+    this.ChangeTextBlockColorFeature = new ChangeTextBlockColor();
     this.ChangeBlockFormatrFeature.handle();
     this.ChangeBlockColorFeature.handle();
     this.ChangeTextBlockColorFeature.handle();
+
+    interceptFunction('addContentState', () => this.handle());
+    interceptFunction('duplicateStateObject', () => this.handle());
 
     return true;
   }

@@ -10,7 +10,7 @@ export const EditBlockOption = ({
   onClick,
 }: EditBlockOptionProps): JSX.Element => {
   return (
-    <div>
+    <div className="edit-block-option">
       <span onClick={() => onClick(id)}>Editar</span>
     </div>
   );
