@@ -28,6 +28,7 @@ const BUILDER_HTML_MENU_BLOCK_CLASS = 'builder-node-menu';
 const BUILDER_HTML_MENU_BLOCK_LIST_CLASS = 'builder-node-context-menu';
 const DEFALT_CLASS_BUILDER_HTML_MENU_BLOCK_LIST_ELEMENT = 'ph3 pv1 bp-fs-7 tc';
 const BUILDER_HTML_BLOCK_TAG = 'builder-node';
+const DELETE_OPTION_BLOCK_POSITION = 2;
 
 export class EditBlock extends BaseFeature {
   public static shouldRunOnce = true;
@@ -138,7 +139,7 @@ export class EditBlock extends BaseFeature {
           <EditBlockOption id={id} onClick={this.menuOptionElementHandle} />,
           menuOptionElement
         );
-        menuOptionsList.appendChild(menuOptionElement);
+        menuOptionsList.insertBefore(menuOptionElement, menuOptionsList.children[DELETE_OPTION_BLOCK_POSITION])
       }
     }
   }
