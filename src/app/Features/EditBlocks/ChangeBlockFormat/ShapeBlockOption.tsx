@@ -1,4 +1,13 @@
 import * as React from 'react';
+import { BdsButton } from 'blip-ds/dist/blip-ds-react';
+import EllipseIcon from "../../../../styles/Ellipse.svg";
+import UpperConcaveIcon from "../../../../styles/Ellipse.svg";
+import LowerConcaveIcon from "../../../../styles/Ellipse.svg";
+import RightConcaveIcon from "../../../../styles/Ellipse.svg";
+import LeftConcaveIcon from "../../../../styles/Ellipse.svg";
+import MainDiagonalConcaveIcon from "../../../../styles/Ellipse.svg";
+import SecondaryDiagonalConcaveIcon from "../../../../styles/Ellipse.svg";
+import RectangularIcon from "../../../../styles/Ellipse.svg";
 
 import {
   UpperConcave,
@@ -10,7 +19,7 @@ import {
   LowerConcave,
   Ellipse,
 } from '@components/Shapes';
-import { Shapes } from '~/BlipBlocksFunctions';
+import { Shapes } from '../BlipBlocksFunctions';
 
 export type ShapeBlockOptionProps = {
   id: string;
@@ -23,7 +32,7 @@ export const ShapeBlockOption = ({
 }: ShapeBlockOptionProps): JSX.Element => {
   return (
     <div>
-      <Ellipse onClick={() => onClick(id, Shapes.ELLIPSE)} />
+      <BdsButton variant='ghost' onClick={() => onClick(id, Shapes.ELLIPSE)}> hehe <BdsButton/>
       <UpperConcave onClick={() => onClick(id, Shapes.UPPER_CONCAVE)} />
       <LowerConcave onClick={() => onClick(id, Shapes.LOWER_CONCAVE)} />
       <RightConcave onClick={() => onClick(id, Shapes.RIGHT_CONCAVE)} />
@@ -36,5 +45,5 @@ export const ShapeBlockOption = ({
       />
       <Rectangular onClick={() => onClick(id, Shapes.RECTANGULAR)} />
     </div>
-  );
+  )
 };

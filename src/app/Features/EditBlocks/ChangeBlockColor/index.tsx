@@ -2,7 +2,7 @@ import { BaseFeature } from '@features/BaseFeature';
 import { getBlocks } from '~/Utils';
 export { ColorBlockOption } from './ColorBlockOption';
 import { getFlowBlockById, getBlockById } from '~/Utils';
-import { colorBlockBackground } from '~/BlipBlocksFunctions';
+import { colorBlockBackground } from '../BlipBlocksFunctions';
 
 export class ChangeBlockColor extends BaseFeature {
   public static shouldRunOnce = true;

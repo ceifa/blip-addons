@@ -20,4 +20,7 @@ export const colorBlockText = (color: string, block: any): void => {
 
 export const formatShapeBlock = (shape: Shapes, block: any): void => {
   block.style.borderRadius = shape;
+  if(shape === Shapes.ELLIPSE){
+    block.style.padding = '16px'
+  }
 };

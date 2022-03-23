@@ -2,7 +2,7 @@ import { BaseFeature } from '@features/BaseFeature';
 import { getBlocks } from '~/Utils';
 export { ShapeBlockOption } from './ShapeBlockOption';
 import { getFlowBlockById, getBlockById } from '~/Utils';
-import { formatShapeBlock, Shapes } from '~/BlipBlocksFunctions';
+import { formatShapeBlock, Shapes } from '../BlipBlocksFunctions';
 
 
 export class ChangeBlockFormat extends BaseFeature {
