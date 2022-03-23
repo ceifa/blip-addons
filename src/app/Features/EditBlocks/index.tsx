@@ -4,12 +4,13 @@ import * as ReactDOM from 'react-dom';
 import { interceptFunction } from '~/Utils';
 import { BaseFeature } from '../BaseFeature';
 import { BlipsSidebar } from './BlipsSidebar';
-import { getFlowBlockById, getAllFlowBlock, getBlockById } from '~/Utils';
-import { colorBlockBackground, formatShapeBlock, Shapes } from '~/BlipBlocksFunctions';
+import { getFlowBlockById, getAllFlowBlock, getBlockById, getContrastColor, hexToRgb } from '~/Utils';
+import { colorBlockBackground, formatShapeBlock, Shapes, colorBlockText } from '~/BlipBlocksFunctions';
 import { EditBlockOption } from './EditBlockOption';
 
 import { ChangeBlockFormat } from './ChangeBlockFormat';
 import { ChangeBlockColor } from './ChangeBlockColor';
+import { ChangeTextBlockColor } from './ChangeTextColor';
 
 const BLIPS_SIDEBAR_ID = 'blips-extension-sidebar-block-edit';
 const BUILDER_MAIN_AEREA_ID = 'main-content-area';
@@ -23,13 +24,13 @@ export class EditBlock extends BaseFeature {
   private id = "";
   private ChangeBlockFormatrFeature: BaseFeature;
   private ChangeBlockColorFeature: BaseFeature;
+  private ChangeTextBlockColorFeature: BaseFeature;
 
   private getSidebar(): HTMLElement {
     return document.getElementById(BLIPS_SIDEBAR_ID);
   }
 
   private openSidebar = (): void => {
-    console.log("Abrindo sidebar com o id " + this.id)
     if (!this.getSidebar()) {
       // Creates and append the sidebar to the dom
       const blipsSidebar = document.createElement('div');
@@ -64,21 +65,27 @@ export class EditBlock extends BaseFeature {
   };
 
   private onEditBackgorundColor = (id: string, color: string): void => {
-    console.log("Editando o bloco " + id + " Com a cor " + color)
     const block = getBlockById(id);
     const flowBlock = getFlowBlockById(id);
 
-    block.addonsSettings = { ...block.addonsSettings, color: color };
+    block.addonsSettings = { ...block.addonsSettings, backgroundColor: color };
 
     colorBlockBackground(color, flowBlock);
+    const currentTextColor = hexToRgb(color)
+    const newTextColor = getContrastColor(currentTextColor)
+    colorBlockText(newTextColor, flowBlock);
   };
 
-  private onEditTextColor = (id: string): void => {
-    return;
+  private onEditTextColor = (id: string, color: string): void => {
+    const block = getBlockById(id);
+    const flowBlock = getFlowBlockById(id);
+
+    block.addonsSettings = { ...block.addonsSettings, textColor: color };
+
+    colorBlockText(color, flowBlock);
   };
 
   private onEditShape = (id: string, shape: Shapes): void => {
-    console.log("Editando o bloco " + id + " Com o formato " + shape)
     const block = getBlockById(id);
     const flowBlock = getFlowBlockById(id);
     block.addonsSettings = { ...block.addonsSettings, shape };
@@ -129,8 +136,10 @@ export class EditBlock extends BaseFeature {
     this.addEditOptionInAllBlocks();
     this.ChangeBlockFormatrFeature = new ChangeBlockFormat()
     this.ChangeBlockColorFeature = new ChangeBlockColor()
+    this.ChangeTextBlockColorFeature = new ChangeTextBlockColor()
     this.ChangeBlockFormatrFeature.handle();
     this.ChangeBlockColorFeature.handle();
+    this.ChangeTextBlockColorFeature.handle();
 
     return true;
   }

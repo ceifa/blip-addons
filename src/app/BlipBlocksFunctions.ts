@@ -14,9 +14,10 @@ export const colorBlockBackground = (color: string, block: any): void => {
   block.style.background = color
 }
 
-/*export function colorBlockText(color: string, block: any) {
+export const colorBlockText = (color: string, block: any): void => {
   block.style.color = color
-}*/
+}
+
 export const formatShapeBlock = (shape: Shapes, block: any): void => {
   block.style.borderRadius = shape;
 };

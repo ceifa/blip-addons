@@ -62,6 +62,15 @@ export const BlipsSidebar = ({ id, onEditBackgorundColor, onEditTextColor, onEdi
                   <ColorBlockOption id={id} onSetColor={onEditBackgorundColor}/>
                 </BlipAccordionBody>
               </BlipAccordionItem>
+
+            <BlipAccordionItem>
+                <BlipAccordionHeader marginTop={5} marginBottom={5}>
+                  <BlipAccordionButton title="Alterar cor do titulo do bloco" />
+                </BlipAccordionHeader>
+                <BlipAccordionBody>
+                  <ColorBlockOption id={id} onSetColor={onEditTextColor}/>
+                </BlipAccordionBody>
+              </BlipAccordionItem>
             </BlipAccordion>
           </Block>
         </div>

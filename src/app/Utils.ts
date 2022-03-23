@@ -110,3 +110,31 @@ export const getFlowBlockById = (id: string): any => {
 export const getAllFlowBlock = (): any => {
   return document.querySelectorAll(`${BUILDER_HTML_BLOCK_TAG}`);
 };
+
+export const rgbToHex = (r: any, g: any, b: any): any => '#' + [r, g, b].map(x => {
+  const hex = x.toString(16)
+  return hex.length === 1 ? '0' + hex : hex
+}).join('')
+
+export const hexToRgb = (hex): any => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+export const getContrastColor = (color: any): string => {
+  const brightness = 1;
+
+  const r = color.r;
+  const g = color.g;
+  const b = color.b;
+
+  const ir = Math.floor((255-r)*brightness);
+  const ig = Math.floor((255-g)*brightness);
+  const ib = Math.floor((255-b)*brightness);
+
+  return rgbToHex(ir, ig, ib)
+}

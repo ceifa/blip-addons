@@ -1,34 +1,34 @@
 import { BaseFeature } from '@features/BaseFeature';
 import { getBlocks } from '~/Utils';
-export { ColorBlockOption } from './ColorBlockOption';
+export { TextBlockColorOption } from './TextBlockColorOption';
 import { getFlowBlockById, getBlockById } from '~/Utils';
-import { colorBlockBackground } from '~/BlipBlocksFunctions';
+import { colorBlockText } from '~/BlipBlocksFunctions';
 
-export class ChangeBlockColor extends BaseFeature {
+export class ChangeTextBlockColor extends BaseFeature {
   public static shouldRunOnce = true;
 
   public menuOptionElementHandle(id: string, color: string): void {
     const block = getBlockById(id);
     const flowBlock = getFlowBlockById(id);
 
-    block.addonsSettings = { ...block.addonsSettings, backgroundColor: color };
+    block.addonsSettings = { ...block.addonsSettings, textColor: color };
 
-    colorBlockBackground(color, flowBlock);
+    colorBlockText(color, flowBlock);
   }
 
-  private colorAllBlocks(): void {
+  private colorAllTextBlocks(): void {
     const blocks = getBlocks();
 
     for (const block of blocks) {
-      if (block.addonsSettings && block.addonsSettings.backgroundColor) {
+      if (block.addonsSettings && block.addonsSettings.textColor) {
         const flowBlock = getFlowBlockById(block.id);
-        colorBlockBackground(block.addonsSettings.backgroundColor, flowBlock);
+        colorBlockText(block.addonsSettings.textColor, flowBlock);
       }
     }
   }
 
   public handle(): boolean {
-    this.colorAllBlocks();
+    this.colorAllTextBlocks();
     return true;
   }
 }

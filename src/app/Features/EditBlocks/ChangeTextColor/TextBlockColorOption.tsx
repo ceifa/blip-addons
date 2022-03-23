@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { SketchPicker } from 'react-color';
 
-export type ColorBlockOptionProps = {
+export type TextColorBlockOptionProps = {
   id: string,
   onSetColor: (id: string, color: string) => void;
 };
 
-export const ColorBlockOption = ({
+export const TextBlockColorOption = ({
   id,
   onSetColor
-}: ColorBlockOptionProps): JSX.Element => {
+}: TextColorBlockOptionProps): JSX.Element => {
   const [color, setColor] = React.useState({hex: "#ffffff"});
 
   const handleChange = (color): void => {
