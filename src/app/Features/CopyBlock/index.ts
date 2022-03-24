@@ -4,6 +4,7 @@ import type { BlipsCopy } from '~/types';
 
 export class CopyBlock extends BaseFeature {
   public static shouldRunOnce = true;
+  private static wasAdded = false;
 
   /**
    * Handles the copy of one or more blocks in the Builder
@@ -11,7 +12,7 @@ export class CopyBlock extends BaseFeature {
   private handleCopy = (e): void => {
     const selectedNodesId = this.getSelectedNodesId();
     const hasSelectedNodes = selectedNodesId.length > 0;
-    const isBlockCopy = e.srcElement.id === 'sidebar-title';
+    const isBlockCopy = e.srcElement.tagName !== 'TEXTAREA';
 
     if (hasSelectedNodes && isBlockCopy) {
       this.copyBlocks(selectedNodesId);
@@ -69,7 +70,11 @@ export class CopyBlock extends BaseFeature {
    * Adds the functionality to copy the block
    */
   public handle(): void {
-    document.body.addEventListener('copy', this.handleCopy);
+    if (!CopyBlock.wasAdded) {
+      document.body.addEventListener('copy', this.handleCopy);
+
+      CopyBlock.wasAdded = true;
+    }
   }
 
   /**
