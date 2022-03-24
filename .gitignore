@@ -4,3 +4,4 @@ config/
 v17/
 .Vs
 yarn-error.log
+.idea/

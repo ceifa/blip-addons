@@ -1,5 +1,5 @@
-import { BaseFeature } from '../BaseFeature'
-import { getBlocks, showSuccessToast, showWarningToast } from '../../Utils'
+import { BaseFeature } from '../BaseFeature';
+import { getBlocks, showSuccessToast, showWarningToast } from '~/Utils';
 
 export class SetGlobalTrackings extends BaseFeature {
   public static isUserTriggered = true
@@ -34,10 +34,9 @@ export class SetGlobalTrackings extends BaseFeature {
 }
 
 const getActionsWithTrackingEvent = (blocks: any): any => {
-  const blocksWithTrackingAction = blocks.flatMap((block) =>
+  return blocks.flatMap((block) =>
     getAllActions(block).filter(isTracking)
   )
-  return blocksWithTrackingAction
 }
 const isTracking = (action: any): boolean => action.type === 'TrackEvent'
 const getAllActions = (block: any): any => [

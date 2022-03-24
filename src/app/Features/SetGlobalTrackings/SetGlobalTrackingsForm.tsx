@@ -3,28 +3,19 @@ import { v4 as uuid } from 'uuid';
 import { BdsButton, BdsIcon, BdsTypo } from 'blip-ds/dist/blip-ds-react';
 
 import { SetGlobalTrackings } from '.';
-import { setSettings, Settings } from '../../Settings';
-import {
-  Input,
-  Switch,
-  Block,
-  Title,
-  Paragraph,
-  Flex,
-  HorizontalStack,
-  Stack,
-} from '@components';
+import { setSettings, Settings } from '~/Settings';
+import { Block, Flex, HorizontalStack, Input, Paragraph, Stack, Switch, Title } from '@components';
 
 const EmptyGlboalTrackings = (): JSX.Element => {
   return (
     <Block
-      borderRadius="5px"
-      borderColor="rgba(0, 0, 0, 0.2)"
-      borderStyle="dashed"
-      borderWidth="1px"
+      borderRadius='5px'
+      borderColor='rgba(0, 0, 0, 0.2)'
+      borderStyle='dashed'
+      borderWidth='1px'
     >
       <Stack padding={2}>
-        <BdsIcon size="xxx-large" theme="outline" name="warning" />
+        <BdsIcon size='xxx-large' theme='outline' name='warning' />
         <Block marginTop={1}>
           <Title>Ainda não há trackings</Title>
         </Block>
@@ -34,9 +25,9 @@ const EmptyGlboalTrackings = (): JSX.Element => {
   );
 };
 
-export const GlobalTrackingsForm = (): JSX.Element => {
+export const SetGlobalTrackingsForm = (): JSX.Element => {
   const [globalExtras, setGlobalExtras] = React.useState(
-    Settings.lastGlobalTrackings
+    Settings.lastGlobalTrackings,
   );
   const [error, setError] = React.useState([]);
   const [shouldDeleteCurrentExtras, setShouldDeleteCurrentExtras] =
@@ -53,31 +44,31 @@ export const GlobalTrackingsForm = (): JSX.Element => {
 
         {globalExtras.map((field, index) => {
           return (
-            <div className="w-100 flex justify-between mb2" key={uuid()}>
+            <div className='w-100 flex justify-between mb2' key={uuid()}>
               <Input
                 value={field.key}
                 onChange={(e) => (field.key = e.target.value)}
                 onSubmit={handleSubmit}
                 errorMessage={error[index]}
-                label="Key"
-                type="text"
+                label='Key'
+                type='text'
               />
 
-              <div className="ml2">
+              <div className='ml2'>
                 <Input
                   value={field.value}
                   onChange={(e) => (field.value = e.target.value)}
                   onSubmit={handleSubmit}
                   errorMessage={error[index]}
-                  label="Value"
-                  type="text"
+                  label='Value'
+                  type='text'
                 />
               </div>
 
               <i
-                className="self-center icon-close lh-solid cursor-pointer ml2"
+                className='self-center icon-close lh-solid cursor-pointer ml2'
                 onClick={() => removeLine(index)}
-              ></i>
+              />
             </div>
           );
         })}
@@ -99,6 +90,7 @@ export const GlobalTrackingsForm = (): JSX.Element => {
    * @param index The index of globalExtra list
    */
   const removeLine = (index: number): void => {
+    setError([]);
     setGlobalExtras(globalExtras.filter((_, i) => i !== index));
   };
 
@@ -109,7 +101,7 @@ export const GlobalTrackingsForm = (): JSX.Element => {
    */
   const getEmptyExtras = (globalExtras: any): any[] => {
     return globalExtras.filter(
-      (currentExtra) => currentExtra.key === '' || currentExtra.value === ''
+      (currentExtra) => currentExtra.key === '' || currentExtra.value === '',
     );
   };
 
@@ -120,9 +112,8 @@ export const GlobalTrackingsForm = (): JSX.Element => {
    */
   const hasKeyOrValueEmpty = (globalExtras: any): boolean => {
     const emptyExtras = getEmptyExtras(globalExtras);
-    const hasKeyOrValueEmpty = emptyExtras.length > 0;
 
-    return hasKeyOrValueEmpty;
+    return emptyExtras.length > 0;
   };
 
   /**
@@ -170,25 +161,17 @@ export const GlobalTrackingsForm = (): JSX.Element => {
     const globalSettingsWillBeSetted = globalExtras.reduce(
       (previousExtra, currentExtra) =>
         listToObject(previousExtra, currentExtra),
-      {}
+      {},
     );
 
     setSettings({ lastGlobalTrackings: globalExtras });
 
     new SetGlobalTrackings().handle(
       globalSettingsWillBeSetted,
-      shouldDeleteCurrentExtras
+      shouldDeleteCurrentExtras,
     );
 
     setError(new Array(globalExtras.length));
-  };
-
-  /**
-   * Call the SetGlobalTrackings method, to remove all the global actions
-   *
-   */
-  const onRemove = (): void => {
-    new SetGlobalTrackings().handle({}, true);
   };
 
   return (
@@ -206,34 +189,26 @@ export const GlobalTrackingsForm = (): JSX.Element => {
         <Flex marginTop={2}>
           <Switch
             isChecked={shouldDeleteCurrentExtras}
-            name="overwrite"
+            name='overwrite'
             onChange={(e) => setShouldDeleteCurrentExtras(e.target.checked)}
           />
 
           <Block marginLeft={2}>
-            <BdsTypo bold="extra-bold" variant="fs-14">
+            <BdsTypo bold='extra-bold' variant='fs-14'>
               Apagar trackings globais definidas
             </BdsTypo>
           </Block>
         </Flex>
 
         <HorizontalStack marginTop={2}>
-          <BdsButton variant="dashed" onClick={addNewLine}>
+          <BdsButton variant='dashed' onClick={addNewLine}>
             Add Tracking
           </BdsButton>
 
-          <BdsButton type="submit" variant="primary" onClick={handleSubmit}>
+          <BdsButton type='submit' variant='primary' onClick={handleSubmit}>
             Definir
           </BdsButton>
-
-          <BdsButton variant="delete" onClick={onRemove}>
-            Remover*
-          </BdsButton>
         </HorizontalStack>
-
-        <Paragraph>
-          * Remove as trackings globais de <b>TODAS</b> as actions.
-        </Paragraph>
       </Block>
     </Block>
   );
