@@ -4,6 +4,8 @@ import * as ReactDOM from 'react-dom';
 import { BaseFeature } from '@features/BaseFeature';
 import { CleanButton } from './CleanButton';
 import { Settings } from '~/Settings';
+import { HomeItem } from './HomeItem';
+import { HOME_ITEM_ID } from '~/Constants';
 
 const BLIPS_BUTTON_ID = 'blips-clean-button';
 
@@ -14,7 +16,7 @@ export class CleanEnvironment extends BaseFeature {
     return document.getElementById(BLIPS_BUTTON_ID);
   }
 
-  private getMainNavBar(): HTMLElement {
+  private getMainNavbar(): HTMLElement {
     return document.querySelector('.main-navbar-content');
   }
 
@@ -22,25 +24,72 @@ export class CleanEnvironment extends BaseFeature {
     return document.querySelector('.builder-container');
   }
 
-  private clean = (): void => {
-    const mainNavBar = this.getMainNavBar();
-    const builderContainer = this.getBuilderContainer();
+  private getSubheader(): HTMLElement {
+    return document.querySelector('.main-subheader');
+  }
 
-    if (builderContainer) {
-      builderContainer.style.height = 'calc(100vh - 56px)';
-    }
-
-    if (mainNavBar) {
-      mainNavBar.style.display = 'none';
-    }
+  private cleanEnvironment = (): void => {
+    this.fixContainer();
+    this.addHomeItem();
+    this.hideNavbar();
   };
 
-  private undo = (): void => {
-    const mainNavBar = this.getMainNavBar();
+  private showNavbar(): void {
+    const mainNavbar = this.getMainNavbar();
+    const hasNavbar = !!mainNavbar;
 
-    if (mainNavBar) {
-      mainNavBar.style.display = 'block';
+    if (hasNavbar) {
+      mainNavbar.style.display = 'block';
     }
+  }
+
+  private hideNavbar(): void {
+    const mainNavbar = this.getMainNavbar();
+    const hasNavbar = !!mainNavbar;
+
+    if (hasNavbar) {
+      mainNavbar.style.display = 'none';
+    }
+  }
+
+  private fixContainer(): void {
+    const builderContainer = this.getBuilderContainer();
+    const hasBuilderContaner = !!builderContainer;
+
+    if (hasBuilderContaner) {
+      builderContainer.style.height = 'calc(100vh - 56px)';
+    }
+  }
+
+  private addHomeItem(): void {
+    const subheader = this.getSubheader();
+    const hasSubheader = !!subheader;
+
+    if (hasSubheader) {
+      const isHomeNotAdded = !document.getElementById(HOME_ITEM_ID);
+
+      if (isHomeNotAdded) {
+        const homeItem = document.createElement('div');
+
+        homeItem.classList.add('horizontal-menu-item');
+        ReactDOM.render(<HomeItem />, homeItem);
+        subheader.prepend(homeItem);
+      }
+    }
+  }
+
+  private removeHomeItem(): void {
+    const homeItem = document.getElementById(HOME_ITEM_ID);
+    const hasHomeItem = !!homeItem;
+
+    if (hasHomeItem) {
+      homeItem.remove();
+    }
+  }
+
+  private undo = (): void => {
+    this.showNavbar();
+    this.removeHomeItem();
   };
 
   public handle(): boolean {
@@ -52,13 +101,13 @@ export class CleanEnvironment extends BaseFeature {
 
       blipsDiv.setAttribute('id', BLIPS_BUTTON_ID);
       ReactDOM.render(
-        <CleanButton clean={this.clean} undo={this.undo} />,
+        <CleanButton clean={this.cleanEnvironment} undo={this.undo} />,
         blipsDiv
       );
       buttonsList.appendChild(blipsDiv);
 
       if (Settings.isCleanEnviroment) {
-        this.clean();
+        this.cleanEnvironment();
       }
 
       return false;
