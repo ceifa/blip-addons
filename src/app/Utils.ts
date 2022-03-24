@@ -91,7 +91,7 @@ export const getBotName = (): string => {
   return getController().application.name;
 };
 
-export const createNearbyPosition = (): string => {
+export const createNearbyPosition = (): { left: string; top: string } => {
   return getController().createNearbyPosition();
 };
 

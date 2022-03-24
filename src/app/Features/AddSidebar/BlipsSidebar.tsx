@@ -8,7 +8,8 @@ import {
   BlipAccordionBody,
 } from '~/Components';
 import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm';
-import { GlobalTrackingsForm } from '@features/SetGlobalTrackings/GlobalTrackingsForm';
+import { SetGlobalTrackingsForm } from '@features/SetGlobalTrackings/SetGlobalTrackingsForm';
+import { RemoveGlobalTrackingsForm } from '@features/RemoveGlobalTrackings/RemoveGlobalTrackingsForm';
 
 export type BlipsSidebarProps = {
   onClose: () => void;
@@ -62,7 +63,16 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
                   <BlipAccordionButton title="Adicionar trackings globais" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
-                  <GlobalTrackingsForm />
+                  <SetGlobalTrackingsForm />
+                </BlipAccordionBody>
+              </BlipAccordionItem>
+
+              <BlipAccordionItem>
+                <BlipAccordionHeader marginTop={5} marginBottom={5}>
+                  <BlipAccordionButton title="Remover trackings globais" />
+                </BlipAccordionHeader>
+                <BlipAccordionBody>
+                  <RemoveGlobalTrackingsForm />
                 </BlipAccordionBody>
               </BlipAccordionItem>
             </BlipAccordion>
