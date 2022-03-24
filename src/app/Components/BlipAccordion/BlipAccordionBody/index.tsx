@@ -1,10 +1,16 @@
-import * as React from 'react'
-import { AccordionPanel } from '@chakra-ui/react'
+import * as React from 'react';
+import { AccordionPanel, Box } from '@chakra-ui/react';
 
-export const BlipAccordionBody = (props: any) => {
+export type BlipAccordionBodyProps = {
+  children: React.ReactChild | React.ReactChild[];
+};
+
+export const BlipAccordionBody = ({
+  children,
+}: BlipAccordionBodyProps): JSX.Element => {
   return (
     <AccordionPanel>
-        {props.children}
+      <Box marginBottom={15}>{children}</Box>
     </AccordionPanel>
-  )
-}
+  );
+};

@@ -29,6 +29,10 @@ module.exports = {
         loader: 'esbuild-loader',
         options: { loader: 'tsx', target: 'es2015' },
       },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      },
     ],
   },
 };

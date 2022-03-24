@@ -1,14 +1,16 @@
-import * as React from 'react'
-import { ChakraProvider, Accordion } from '@chakra-ui/react'
+import * as React from 'react';
+import { Accordion } from '@chakra-ui/react';
 
-export const BlipAccordion = (props: any) => {
+export type BlipAccordionProps = {
+  children: React.ReactChild | React.ReactChild[];
+};
+
+export const BlipAccordion = ({
+  children,
+}: BlipAccordionProps): JSX.Element => {
   return (
     <>
-      <ChakraProvider>
-        <Accordion allowMultiple>
-          {props.children}
-        </Accordion>
-      </ChakraProvider>
+      <Accordion allowMultiple>{children}</Accordion>
     </>
-  )
-}
+  );
+};

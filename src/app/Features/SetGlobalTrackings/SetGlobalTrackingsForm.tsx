@@ -4,18 +4,27 @@ import { BdsButton, BdsIcon, BdsTypo } from 'blip-ds/dist/blip-ds-react';
 
 import { SetGlobalTrackings } from '.';
 import { setSettings, Settings } from '~/Settings';
-import { Block, Flex, HorizontalStack, Input, Paragraph, Stack, Switch, Title } from '@components';
+import {
+  Block,
+  Flex,
+  HorizontalStack,
+  Input,
+  Paragraph,
+  Stack,
+  Switch,
+  Title,
+} from '@components';
 
 const EmptyGlboalTrackings = (): JSX.Element => {
   return (
     <Block
-      borderRadius='5px'
-      borderColor='rgba(0, 0, 0, 0.2)'
-      borderStyle='dashed'
-      borderWidth='1px'
+      borderRadius="5px"
+      borderColor="rgba(0, 0, 0, 0.2)"
+      borderStyle="dashed"
+      borderWidth="1px"
     >
       <Stack padding={2}>
-        <BdsIcon size='xxx-large' theme='outline' name='warning' />
+        <BdsIcon size="xxx-large" theme="outline" name="warning" />
         <Block marginTop={1}>
           <Title>Ainda não há trackings</Title>
         </Block>
@@ -27,7 +36,7 @@ const EmptyGlboalTrackings = (): JSX.Element => {
 
 export const SetGlobalTrackingsForm = (): JSX.Element => {
   const [globalExtras, setGlobalExtras] = React.useState(
-    Settings.lastGlobalTrackings,
+    Settings.lastGlobalTrackings
   );
   const [error, setError] = React.useState([]);
   const [shouldDeleteCurrentExtras, setShouldDeleteCurrentExtras] =
@@ -44,29 +53,29 @@ export const SetGlobalTrackingsForm = (): JSX.Element => {
 
         {globalExtras.map((field, index) => {
           return (
-            <div className='w-100 flex justify-between mb2' key={uuid()}>
+            <div className="w-100 flex justify-between mb2" key={uuid()}>
               <Input
                 value={field.key}
                 onChange={(e) => (field.key = e.target.value)}
                 onSubmit={handleSubmit}
                 errorMessage={error[index]}
-                label='Key'
-                type='text'
+                label="Key"
+                type="text"
               />
 
-              <div className='ml2'>
+              <div className="ml2">
                 <Input
                   value={field.value}
                   onChange={(e) => (field.value = e.target.value)}
                   onSubmit={handleSubmit}
                   errorMessage={error[index]}
-                  label='Value'
-                  type='text'
+                  label="Value"
+                  type="text"
                 />
               </div>
 
               <i
-                className='self-center icon-close lh-solid cursor-pointer ml2'
+                className="self-center icon-close lh-solid cursor-pointer ml2"
                 onClick={() => removeLine(index)}
               />
             </div>
@@ -101,7 +110,7 @@ export const SetGlobalTrackingsForm = (): JSX.Element => {
    */
   const getEmptyExtras = (globalExtras: any): any[] => {
     return globalExtras.filter(
-      (currentExtra) => currentExtra.key === '' || currentExtra.value === '',
+      (currentExtra) => currentExtra.key === '' || currentExtra.value === ''
     );
   };
 
@@ -161,14 +170,14 @@ export const SetGlobalTrackingsForm = (): JSX.Element => {
     const globalSettingsWillBeSetted = globalExtras.reduce(
       (previousExtra, currentExtra) =>
         listToObject(previousExtra, currentExtra),
-      {},
+      {}
     );
 
     setSettings({ lastGlobalTrackings: globalExtras });
 
     new SetGlobalTrackings().handle(
       globalSettingsWillBeSetted,
-      shouldDeleteCurrentExtras,
+      shouldDeleteCurrentExtras
     );
 
     setError(new Array(globalExtras.length));
@@ -183,29 +192,29 @@ export const SetGlobalTrackingsForm = (): JSX.Element => {
         <b>Você ainda precisa publicar o fluxo</b>
       </Paragraph>
 
-      <Block marginTop={2}>
+      <Block marginTop={2} marginBottom={2}>
         {getGlobalTrackingLine()}
 
         <Flex marginTop={2}>
           <Switch
             isChecked={shouldDeleteCurrentExtras}
-            name='overwrite'
+            name="overwrite"
             onChange={(e) => setShouldDeleteCurrentExtras(e.target.checked)}
           />
 
           <Block marginLeft={2}>
-            <BdsTypo bold='extra-bold' variant='fs-14'>
+            <BdsTypo bold="extra-bold" variant="fs-14">
               Apagar trackings globais definidas
             </BdsTypo>
           </Block>
         </Flex>
 
         <HorizontalStack marginTop={2}>
-          <BdsButton variant='dashed' onClick={addNewLine}>
+          <BdsButton variant="dashed" onClick={addNewLine}>
             Add Tracking
           </BdsButton>
 
-          <BdsButton type='submit' variant='primary' onClick={handleSubmit}>
+          <BdsButton type="submit" variant="primary" onClick={handleSubmit}>
             Definir
           </BdsButton>
         </HorizontalStack>
