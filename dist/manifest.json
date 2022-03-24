@@ -1,16 +1,16 @@
 {
-  "name": "Blips",
+  "name": "Blip Addons",
   "version": "0.0.1",
   "manifest_version": 3,
   "description": "Collection of Blip utilities",
-  "homepage_url": "https://github.com/jotaajunior/blips-extension",
+  "homepage_url": "https://github.com/jotaajunior/blip-addons",
   "icons": {
     "32": "icons/icon32.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
   "action": {
-    "default_title": "Blips",
+    "default_title": "Blip Addons",
     "default_popup": "popup.html"
   },
   "default_locale": "en",
