@@ -15,6 +15,7 @@ import type { BlipsCopy } from '~/types';
 export class PasteBlock extends BaseFeature {
   public static shouldRunOnce = true;
   private cachedIds = new Map<string, string>();
+  private static wasAdded = false;
 
   /**
    * Returns a new uuid for the id
@@ -31,7 +32,7 @@ export class PasteBlock extends BaseFeature {
     return newId;
   }
 
-  private handlePaste(event: ClipboardEvent): void {
+  private handlePaste = (event: ClipboardEvent): void => {
     const flow = getFlow();
     const clipboardData = event.clipboardData.getData('text');
     const blipsCopy = JSON.parse(clipboardData);
@@ -79,7 +80,7 @@ export class PasteBlock extends BaseFeature {
     }
 
     this.cachedIds.clear();
-  }
+  };
 
   /**
    * Returns if the block exists
@@ -192,15 +193,19 @@ export class PasteBlock extends BaseFeature {
   /**
    * Adds the functionality of pasting the block
    */
-  public handle = (): void => {
-    document.body.addEventListener('paste', this.handlePaste.bind(this));
-  };
+  public handle(): void {
+    if (!PasteBlock.wasAdded) {
+      document.body.addEventListener('paste', this.handlePaste);
+
+      PasteBlock.wasAdded = true;
+    }
+  }
 
   /**
    * Removes the functionality of pasting the block
    */
   public cleanup(): void {
-    document.body.removeEventListener('paste', this.handlePaste.bind(this));
+    document.body.removeEventListener('paste', this.handlePaste);
   }
 }
 
