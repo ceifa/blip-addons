@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import { interceptFunction } from '~/Utils';
 import { BaseFeature } from '../BaseFeature';
-import { BlipsSidebar } from './BlipsSidebar';
+import { BlockStyleSidebar } from './BlockStyleSidebar';
 import {
   getFlowBlockById,
   getAllFlowBlock,
@@ -33,13 +33,16 @@ const DELETE_OPTION_BLOCK_POSITION = 2;
 export class EditBlock extends BaseFeature {
   public static shouldRunOnce = true;
   private id = '';
-  private ChangeBlockFormatrFeature: BaseFeature;
-  private ChangeBlockColorFeature: BaseFeature;
-  private ChangeTextBlockColorFeature: BaseFeature;
 
   private getSidebar(): HTMLElement {
     return document.getElementById(BLIPS_SIDEBAR_ID);
   }
+
+  private restoreBlockStyle = (): void => {
+    const block = getFlowBlockById(this.id);
+
+    formatShapeBlock(Shapes.DEFAULT, block);
+  };
 
   private openSidebar = (): void => {
     if (!this.getSidebar()) {
@@ -48,12 +51,13 @@ export class EditBlock extends BaseFeature {
 
       blipsSidebar.setAttribute('id', BLIPS_SIDEBAR_ID);
       ReactDOM.render(
-        <BlipsSidebar
+        <BlockStyleSidebar
           id={this.id}
           onEditBackgorundColor={this.onEditBackgorundColor}
           onEditTextColor={this.onEditTextColor}
           onEditShape={this.onEditShape}
           onClose={this.closeSidebar}
+          onRestore={this.restoreBlockStyle}
         />,
         blipsSidebar
       );
@@ -84,12 +88,12 @@ export class EditBlock extends BaseFeature {
   private onEditBackgorundColor = (id: string, color: string): void => {
     const block = getBlockById(id);
     const flowBlock = getFlowBlockById(id);
+    const currentTextColor = hexToRgb(color);
+    const newTextColor = getContrastColor(currentTextColor);
 
     block.addonsSettings = { ...block.addonsSettings, backgroundColor: color };
 
     colorBlockBackground(color, flowBlock);
-    const currentTextColor = hexToRgb(color);
-    const newTextColor = getContrastColor(currentTextColor);
     colorBlockText(newTextColor, flowBlock);
   };
 
@@ -105,6 +109,7 @@ export class EditBlock extends BaseFeature {
   private onEditShape = (id: string, shape: Shapes): void => {
     const block = getBlockById(id);
     const flowBlock = getFlowBlockById(id);
+
     block.addonsSettings = { ...block.addonsSettings, shape };
 
     formatShapeBlock(shape, flowBlock);
@@ -139,7 +144,10 @@ export class EditBlock extends BaseFeature {
           <EditBlockOption id={id} onClick={this.menuOptionElementHandle} />,
           menuOptionElement
         );
-        menuOptionsList.insertBefore(menuOptionElement, menuOptionsList.children[DELETE_OPTION_BLOCK_POSITION])
+        menuOptionsList.insertBefore(
+          menuOptionElement,
+          menuOptionsList.children[DELETE_OPTION_BLOCK_POSITION]
+        );
       }
     }
   }
@@ -154,12 +162,10 @@ export class EditBlock extends BaseFeature {
 
   public handle(): boolean {
     this.addEditOptionInAllBlocks();
-    this.ChangeBlockFormatrFeature = new ChangeBlockFormat();
-    this.ChangeBlockColorFeature = new ChangeBlockColor();
-    this.ChangeTextBlockColorFeature = new ChangeTextBlockColor();
-    this.ChangeBlockFormatrFeature.handle();
-    this.ChangeBlockColorFeature.handle();
-    this.ChangeTextBlockColorFeature.handle();
+
+    new ChangeBlockFormat().handle();
+    new ChangeBlockColor().handle();
+    new ChangeTextBlockColor().handle();
 
     interceptFunction('addContentState', () => this.handle());
     interceptFunction('duplicateStateObject', () => this.handle());

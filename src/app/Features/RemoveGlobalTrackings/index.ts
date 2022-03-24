@@ -2,7 +2,7 @@ import { BaseFeature } from '../BaseFeature';
 import { getBlocks, showSuccessToast, showWarningToast } from '~/Utils';
 
 export class RemoveGlobalTrackings extends BaseFeature {
-  public static isUserTriggered = true
+  public static isUserTriggered = true;
 
   /**
    * Remove the all defined global tracking in all the blocks
@@ -14,9 +14,10 @@ export class RemoveGlobalTrackings extends BaseFeature {
     const blocksWithTrackingAction = getActionsWithTrackingEvent(blocks);
 
     let blocksUpdated = 0;
-    let wasBlockUpdated = false;
 
     for (const blockWithTracking of blocksWithTrackingAction) {
+      let wasBlockUpdated = false;
+
       for (const extra of customExtras) {
         if (blockWithTracking.settings.extras[extra.key]) {
           wasBlockUpdated = true;
@@ -38,12 +39,10 @@ export class RemoveGlobalTrackings extends BaseFeature {
 }
 
 const getActionsWithTrackingEvent = (blocks: any): any => {
-  return blocks.flatMap((block) =>
-    getAllActions(block).filter(isTracking)
-  );
-}
-const isTracking = (action: any): boolean => action.type === 'TrackEvent'
+  return blocks.flatMap((block) => getAllActions(block).filter(isTracking));
+};
+const isTracking = (action: any): boolean => action.type === 'TrackEvent';
 const getAllActions = (block: any): any => [
   ...block.$enteringCustomActions,
   ...block.$leavingCustomActions,
-]
+];

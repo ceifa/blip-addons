@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import {
   Block,
   BlipAccordion,
@@ -47,10 +48,10 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
         </div>
 
         <div className="sidebar-content-body">
-          <Block padding={2.5}>
+          <Block paddingX={2.5} paddingY={1}>
             <BlipAccordion>
               <BlipAccordionItem borderTop={0}>
-                <BlipAccordionHeader marginBottom={5}>
+                <BlipAccordionHeader isFirst>
                   <BlipAccordionButton title="Adicionar inatividade global" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
@@ -59,7 +60,7 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
               </BlipAccordionItem>
 
               <BlipAccordionItem>
-                <BlipAccordionHeader marginTop={5} marginBottom={5}>
+                <BlipAccordionHeader marginTop={5}>
                   <BlipAccordionButton title="Adicionar trackings globais" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
@@ -68,7 +69,7 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
               </BlipAccordionItem>
 
               <BlipAccordionItem>
-                <BlipAccordionHeader marginTop={5} marginBottom={5}>
+                <BlipAccordionHeader marginTop={5}>
                   <BlipAccordionButton title="Remover trackings globais" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>

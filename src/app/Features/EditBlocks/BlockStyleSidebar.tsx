@@ -1,3 +1,4 @@
+import { BdsButton } from 'blip-ds/dist/blip-ds-react';
 import * as React from 'react';
 import {
   Block,
@@ -6,6 +7,7 @@ import {
   BlipAccordionHeader,
   BlipAccordionButton,
   BlipAccordionBody,
+  Flex,
 } from '~/Components';
 import { getBlockById } from '~/Utils';
 import { ColorBlockOption } from './ChangeBlockColor';
@@ -17,14 +19,16 @@ export type BlipsSidebarProps = {
   onEditTextColor: (id: string, color: string) => void;
   onEditShape: (id: string, shape: string) => void;
   onClose: () => void;
+  onRestore: () => void;
 };
 
-export const BlipsSidebar = ({
+export const BlockStyleSidebar = ({
   id,
   onEditBackgorundColor,
   onEditTextColor,
   onEditShape,
   onClose,
+  onRestore,
 }: BlipsSidebarProps): JSX.Element => {
   const thisBlock = getBlockById(id);
 
@@ -42,7 +46,7 @@ export const BlipsSidebar = ({
               maxLength={50}
               type="text"
               name="nodeName"
-              value="Configurações do Bloco"
+              value="Estilos do Bloco"
               readOnly
             />
 
@@ -59,10 +63,10 @@ export const BlipsSidebar = ({
         </div>
 
         <div className="sidebar-content-body">
-          <Block padding={2.5}>
+          <Block paddingX={2.5} paddingY={1}>
             <BlipAccordion>
               <BlipAccordionItem borderTop={0}>
-                <BlipAccordionHeader marginBottom={5}>
+                <BlipAccordionHeader isFirst marginBottom={5}>
                   <BlipAccordionButton title="Alterar formato do Bloco" />
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
@@ -97,6 +101,19 @@ export const BlipsSidebar = ({
               </BlipAccordionItem>
             </BlipAccordion>
           </Block>
+
+          <Flex
+            style={{
+              marginTop: '1rem',
+              paddingLeft: '2.5rem',
+              paddingRight: '2.5rem',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <BdsButton type="submit" variant="delete" onClick={onRestore}>
+              Restaurar estilos padrão do bloco
+            </BdsButton>
+          </Flex>
         </div>
       </div>
     </>

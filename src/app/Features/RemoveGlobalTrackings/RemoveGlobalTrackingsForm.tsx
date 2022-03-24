@@ -1,20 +1,27 @@
 import * as React from 'react';
 import { v4 as uuid } from 'uuid';
 import { BdsButton, BdsIcon } from 'blip-ds/dist/blip-ds-react';
-import { Block, HorizontalStack, Input, Paragraph, Stack, Title } from '@components';
+import {
+  Block,
+  HorizontalStack,
+  Input,
+  Paragraph,
+  Stack,
+  Title,
+} from '@components';
 import { RemoveGlobalTrackings, SetGlobalTrackings } from '~/Features';
 import { setSettings, Settings } from '~/Settings';
 
 const EmptyGlobalTrackings = (): JSX.Element => {
   return (
     <Block
-      borderRadius='5px'
-      borderColor='rgba(0, 0, 0, 0.2)'
-      borderStyle='dashed'
-      borderWidth='1px'
+      borderRadius="5px"
+      borderColor="rgba(0, 0, 0, 0.2)"
+      borderStyle="dashed"
+      borderWidth="1px"
     >
       <Stack padding={2}>
-        <BdsIcon size='xxx-large' theme='outline' name='warning' />
+        <BdsIcon size="xxx-large" theme="outline" name="warning" />
         <Block marginTop={1}>
           <Title>Ainda não há trackings</Title>
         </Block>
@@ -25,7 +32,9 @@ const EmptyGlobalTrackings = (): JSX.Element => {
 };
 
 export const RemoveGlobalTrackingsForm = (): JSX.Element => {
-  const [globalExtras, setGlobalExtras] = React.useState(Settings.lastRemovedGlobalTrackings);
+  const [globalExtras, setGlobalExtras] = React.useState(
+    Settings.lastRemovedGlobalTrackings
+  );
   const [error, setError] = React.useState([]);
 
   /**
@@ -39,20 +48,20 @@ export const RemoveGlobalTrackingsForm = (): JSX.Element => {
 
         {globalExtras.map((field, index) => {
           return (
-            <div className='flex items-center mb2' key={uuid()}>
-              <div className='w-90'>
+            <div className="flex items-center mb2" key={uuid()}>
+              <div className="w-90">
                 <Input
                   value={field.key}
                   onChange={(e) => (field.key = e.target.value)}
                   onSubmit={handleSubmit}
                   errorMessage={error[index]}
-                  label='Key'
-                  type='text'
+                  label="Key"
+                  type="text"
                 />
               </div>
-              <div className='flex'>
+              <div className="flex">
                 <i
-                  className='self-center icon-close lh-solid cursor-pointer ml2'
+                  className="self-center icon-close lh-solid cursor-pointer ml2"
                   onClick={() => removeLine(index)}
                 />
               </div>
@@ -87,9 +96,7 @@ export const RemoveGlobalTrackingsForm = (): JSX.Element => {
    * @param globalExtras The trackings that will be removed
    */
   const getEmptyExtras = (globalExtras: any): any[] => {
-    return globalExtras.filter(
-      (currentExtra) => currentExtra.key === '',
-    );
+    return globalExtras.filter((currentExtra) => currentExtra.key === '');
   };
 
   /**
@@ -138,9 +145,7 @@ export const RemoveGlobalTrackingsForm = (): JSX.Element => {
 
     setError(new Array(globalExtras.length));
 
-    new RemoveGlobalTrackings().handle(
-      globalExtras,
-    );
+    new RemoveGlobalTrackings().handle(globalExtras);
   };
 
   /**
@@ -154,7 +159,8 @@ export const RemoveGlobalTrackingsForm = (): JSX.Element => {
   return (
     <Block>
       <Paragraph>
-        Todos os blocos terão as tracking especificadas removidas das ações de registro.
+        Todos os blocos terão as tracking especificadas removidas das ações de
+        registro.
         <br />
         <b>Você ainda precisa publicar o fluxo</b>
       </Paragraph>
@@ -163,17 +169,17 @@ export const RemoveGlobalTrackingsForm = (): JSX.Element => {
         {getGlobalTrackingLine()}
 
         <HorizontalStack marginTop={2}>
-          <BdsButton size='tall' variant='dashed' onClick={addNewLine}>
+          <BdsButton size="tall" variant="dashed" onClick={addNewLine}>
             Add Tracking
           </BdsButton>
         </HorizontalStack>
 
         <HorizontalStack marginTop={2}>
-          <BdsButton type='submit' variant='primary' onClick={handleSubmit}>
+          <BdsButton type="submit" variant="primary" onClick={handleSubmit}>
             Remover
           </BdsButton>
 
-          <BdsButton variant='delete' onClick={onRemove}>
+          <BdsButton variant="delete" onClick={onRemove}>
             Remover Todas *
           </BdsButton>
         </HorizontalStack>

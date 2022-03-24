@@ -11,6 +11,10 @@ export type BlockProps = Partial<{
   borderWidth: Property.BorderWidth;
   borderColor: string;
   borderRadius: Property.BorderRadius;
+  textAlign: Property.TextAlign;
+  width: Property.Width;
+  paddingY: number;
+  paddingX: number;
 }>;
 
 export const Block = styled.div(
@@ -20,19 +24,28 @@ export const Block = styled.div(
     marginLeft = 0,
     marginRight = 0,
     padding = 0,
+    paddingY = 0,
+    paddingX = 0,
     borderStyle,
     borderWidth,
     borderColor,
     borderRadius,
+    textAlign,
+    width,
   }: BlockProps) => ({
     marginTop: `${marginTop}rem`,
     marginBottom: `${marginBottom}rem`,
     marginLeft: `${marginLeft}rem`,
     marginRight: `${marginRight}rem`,
-    padding: `${padding}rem`,
+    paddingTop: `${paddingY || padding}rem`,
+    paddingBottom: `${paddingY || padding}rem`,
+    paddingLeft: `${paddingX || padding}rem`,
+    paddingRight: `${paddingX || padding}rem`,
     borderStyle,
     borderWidth,
     borderColor,
     borderRadius,
+    textAlign,
+    width,
   })
 );
