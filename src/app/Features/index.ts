@@ -9,3 +9,4 @@ export * from './SetGlobalTrackings';
 export * from './Snippets';
 export * from './CleanEnvironment';
 export * from './EditBlocks';
+export * from './RemoveGlobalTrackings';

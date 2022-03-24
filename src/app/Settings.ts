@@ -3,6 +3,7 @@ import { SettingsUpdate } from './types';
 export const Settings = {
   lastGlobalInactivityTime: '5',
   lastGlobalTrackings: [],
+  lastRemovedGlobalTrackings: [],
   isCleanEnviroment: false,
 };
 

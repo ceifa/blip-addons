@@ -192,9 +192,9 @@ export class PasteBlock extends BaseFeature {
   /**
    * Adds the functionality of pasting the block
    */
-  public handle(): void {
+  public handle = (): void => {
     document.body.addEventListener('paste', this.handlePaste.bind(this));
-  }
+  };
 
   /**
    * Removes the functionality of pasting the block

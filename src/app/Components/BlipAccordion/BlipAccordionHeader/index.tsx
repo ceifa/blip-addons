@@ -11,7 +11,7 @@ export const BlipAccordionHeader = ({
   children,
   marginBottom,
   marginTop,
-}: BlipAccordionHeaderProps) => {
+}: BlipAccordionHeaderProps) : JSX.Element => {
   return (
     <>
       <h2>
