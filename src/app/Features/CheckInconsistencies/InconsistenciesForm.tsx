@@ -7,15 +7,16 @@ import {
   } from '~/Components';
 
 import { setSettings, Settings } from '~/Settings';
-import { CheckInconsistencies } from '@features/CheckInconsistencies';
+import { TrackingsInconsistencies } from '@features/CheckInconsistencies/Trackings';
+
 
 export const InconsistenciesForm = (): JSX.Element => {
-
+  const [inconsistencies, setInconsistencies] = React.useState([]);
   /**
    * Runs the 'CheckInconsistencies' fature, thus check for Inconsistencies on the flow
    */
   const handle = (): void => {
-    new CheckInconsistencies().handle();
+    new TrackingsInconsistencies().handle(false);
   };
 
   /*

@@ -1,17 +1,17 @@
-import { BaseFeature } from '../BaseFeature';
+import { BaseFeature } from '../../BaseFeature';
 import { getBlocks, showSuccessToast, showWarningToast } from '~/Utils';
 import { ConditionViewModel } from '~/types';
 
 const TRACKING_ACTION_NAME = 'TrackEvent';
 const EMPTY_STRING = '';
 
-export class CheckInconsistencies extends BaseFeature {
-  public static isUserTriggered = true;
-
+export class TrackingsInconsistencies extends BaseFeature {
+  // public static isUserTriggered = true
+  // public static shouldRunOnce = true;
   /**
    * Check for Inconsistencies on the flow
    */
-  public handle(): void {
+  public handle(hasToSetVariable: boolean): any[] {
     const blocks = getBlocks();
     let trackingActions = [];
     const trackingsWithProblems = [];
@@ -25,7 +25,9 @@ export class CheckInconsistencies extends BaseFeature {
         for (const action of trackingActions) {
           if (actionCanBeNull(action, hasInputExpiration)) {
             trackingsWithProblems.push(action);
-            setVariableExistingCondition(action);
+            if(hasToSetVariable) {
+              setVariableExistingCondition(action);
+            }
           }
         }
       }
@@ -36,7 +38,10 @@ export class CheckInconsistencies extends BaseFeature {
     } else {
       showSuccessToast(`Não foi encontrada nenhuma inconsistência no fluxo`);
     }
+
+    return trackingsWithProblems;
   }
+
 }
 
 const actionCanBeNull = (action: any, hasInputExpiration: boolean): boolean => {
