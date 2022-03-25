@@ -1,22 +1,23 @@
 import * as React from 'react';
 import { BdsButton } from 'blip-ds/dist/blip-ds-react';
 
-import {
-    Paragraph,
-    Block,
-  } from '~/Components';
+import { Paragraph, Block, List } from '~/Components';
 
-import { setSettings, Settings } from '~/Settings';
+//import { setSettings, Settings } from '~/Settings';
 import { TrackingsInconsistencies } from '@features/CheckInconsistencies/Trackings';
+import { CheckLoopsOnFlow } from '@features/CheckInconsistencies/LoopsAndMaxBlocks';
 
+const MAX_STATES_WITHOUT_INPUT = 35;
 
 export const InconsistenciesForm = (): JSX.Element => {
   const [inconsistencies, setInconsistencies] = React.useState([]);
+  const [loopBlocksMessage, setLoopBlocksMessage] = React.useState();
   /**
    * Runs the 'CheckInconsistencies' fature, thus check for Inconsistencies on the flow
    */
   const handle = (): void => {
     new TrackingsInconsistencies().handle(false);
+    setLoopBlocksMessage(new CheckLoopsOnFlow().handle());
   };
 
   /*
@@ -24,20 +25,26 @@ export const InconsistenciesForm = (): JSX.Element => {
   */
   return (
     <>
-      <Paragraph>
-        Este recurso irá procurar por registros de eventos que podem ter a action vazia.
-        <br />
-        <b>Você ainda precisa publicar o fluxo</b>
-      </Paragraph>
+      <Paragraph>Este recurso irá procurar por</Paragraph>
+      <br />
+      <ul style={{fontSize: "0.875rem", marginTop: "0.5rem", color: "#607b99"}}>
+        <li>Registros de eventos que podem ter a action vazia</li>
+        <li>Loops no fluxo</li>
+        <li>
+          Cascata de blocos com mais de {MAX_STATES_WITHOUT_INPUT} blocos sem
+          entrada do usuário
+        </li>
+      </ul>
 
       <Block marginTop={2}>
-          <BdsButton type="submit" variant="primary" onClick={handle}>
-            Verificar
-          </BdsButton>
+        <BdsButton type="submit" variant="primary" onClick={handle}>
+          Verificar
+        </BdsButton>
 
-        <Paragraph>
-          * Remove o limite de espera de <b>TODOS</b> os inputs.
-        </Paragraph>
+        <Block paddingX={2.5} paddingY={1}>
+          <Paragraph>Loops no Fluxo</Paragraph>
+          {loopBlocksMessage}
+        </Block>
       </Block>
     </>
   );
