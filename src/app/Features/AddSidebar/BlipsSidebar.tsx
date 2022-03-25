@@ -8,10 +8,10 @@ import {
   BlipAccordionButton,
   BlipAccordionBody,
 } from '~/Components';
-import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm';
-import { SetGlobalTrackingsForm } from '@features/SetGlobalTrackings/SetGlobalTrackingsForm';
-import { RemoveGlobalTrackingsForm } from '@features/RemoveGlobalTrackings/RemoveGlobalTrackingsForm';
-import { InconsistenciesForm } from '@features/CheckInconsistencies/InconsistenciesForm';
+import { GlobalInactivityForm } from '~/Features/SetInactivity/GlobalInactivityForm';
+import { SetGlobalTrackingsForm } from '~/Features/SetGlobalTrackings/SetGlobalTrackingsForm';
+import { RemoveGlobalTrackingsForm } from '~/Features/RemoveGlobalTrackings/RemoveGlobalTrackingsForm';
+import { InconsistenciesForm } from '~/Features/CheckInconsistencies/InconsistenciesForm';
 
 export type BlipsSidebarProps = {
   onClose: () => void;

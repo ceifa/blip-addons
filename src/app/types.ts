@@ -1,5 +1,5 @@
 import { BaseFeature } from '@features/BaseFeature';
-import { BaseCommand } from './Commands/BaseCommand';
+import { BaseCommand } from '@commands/BaseCommand';
 
 export type Message<Type = unknown> = {
   data: Type;
@@ -55,3 +55,10 @@ export type Snippet = {
   documentation: string;
   insertText: string;
 };
+
+export type ConditionViewModel = {
+  comparison: string;
+  source: string;
+  values: any[];
+  variable: string;
+}
