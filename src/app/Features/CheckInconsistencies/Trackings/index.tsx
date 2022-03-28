@@ -1,5 +1,5 @@
 import { BaseFeature } from '../../BaseFeature';
-import { getBlocks } from '~/Utils';
+import { getBlocks, showSuccessToast } from '~/Utils';
 import { ConditionViewModel } from '~/types';
 import { Paragraph } from '@components';
 import * as React from 'react';
@@ -51,6 +51,7 @@ export class TrackingsInconsistencies extends BaseFeature {
 
   private handleSubmit = (): void => {
     this.handle(true);
+    showSuccessToast('Trackings Corrigidas!');
   };
 
   private getTrackingMessage = (list: string[]): any => {
