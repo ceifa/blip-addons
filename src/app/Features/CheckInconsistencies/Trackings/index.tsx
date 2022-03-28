@@ -1,5 +1,5 @@
 import { BaseFeature } from '../../BaseFeature';
-import { getBlocks, showSuccessToast } from '~/Utils';
+import { getBlocks } from '~/Utils';
 import { ConditionViewModel } from '~/types';
 import { Paragraph } from '@components';
 import * as React from 'react';
@@ -7,6 +7,7 @@ import { BdsButton } from 'blip-ds/dist/blip-ds-react';
 
 const TRACKING_ACTION_NAME = 'TrackEvent';
 const EMPTY_STRING = '';
+const EMPTY_REACT_TEMPLATE = <></>;
 
 export class TrackingsInconsistencies extends BaseFeature {
   // public static isUserTriggered = true
@@ -34,21 +35,27 @@ export class TrackingsInconsistencies extends BaseFeature {
       }
     }
 
-    if (trackingsWithProblems.length > 0) {
-      return (this.getTrackingMessage(trackingsWithProblems));
-    } else {
-      return (showSuccessToast(`Não foi encontrada nenhuma inconsistência de tracking no fluxo`));
+    if (trackingsWithProblems.length > 0 && !hasToSetVariable) {
+      return {
+        trackingMessage: this.getTrackingMessage(trackingsWithProblems),
+        hasTrackings: true
+      };
+    }
+    else {
+      return {
+        trackingMessage: EMPTY_REACT_TEMPLATE,
+        hasTrackings: false
+      };
     }
   }
 
   private handleSubmit = (): void => {
     this.handle(true);
-  }
+  };
 
   private getTrackingMessage = (list: string[]): any => {
     return (
       <>
-        <Paragraph>Foi encontrado os seguintes blocos com inconsistências:</Paragraph>
         <h4>Trackings</h4>
         {this.getHtmlList(list)}
 
@@ -58,18 +65,19 @@ export class TrackingsInconsistencies extends BaseFeature {
           <br />Você pode arrumar esses fluxos automaticamente apertando no botão abaixo.
         </Paragraph>
 
-        <BdsButton type="submit" variant="primary" onClick={this.handleSubmit}>
+        <BdsButton type='submit' variant='primary' onClick={this.handleSubmit}>
           Definir
         </BdsButton>
       </>
     );
   };
 
-  private getHtmlList = (list: string[]): any => {
+  private getHtmlList = (list: any[]): any => {
+    console.log(list)
     return (
-      <ul style={{fontSize: "0.875rem", marginTop: "0.5rem", color: "#607b99"}}>
+      <ul style={{ fontSize: '0.875rem', marginTop: '0.5rem', color: '#607b99' }}>
         {list.map((text, index) => (
-          <li key={index}>{text['$title']}</li>
+          <li key={index}>{text["$title"]}</li>
         ))}
       </ul>
     );
@@ -77,7 +85,7 @@ export class TrackingsInconsistencies extends BaseFeature {
 }
 
 const actionCanBeNull = (action: any): boolean => {
-  const conditionVariable = getTrackingActionVariable(action)
+  const conditionVariable = getTrackingActionVariable(action);
 
   if (hasConditionVariable(conditionVariable)) {
     const processedConditionVariable = conditionVariable.replace('}}', '').replace('{{', '');
