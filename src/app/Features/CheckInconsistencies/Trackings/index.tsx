@@ -1,6 +1,9 @@
 import { BaseFeature } from '../../BaseFeature';
-import { getBlocks, showSuccessToast, showWarningToast } from '~/Utils';
+import { getBlocks, showSuccessToast } from '~/Utils';
 import { ConditionViewModel } from '~/types';
+import { Paragraph } from '@components';
+import * as React from 'react';
+import { BdsButton } from 'blip-ds/dist/blip-ds-react';
 
 const TRACKING_ACTION_NAME = 'TrackEvent';
 const EMPTY_STRING = '';
@@ -11,21 +14,19 @@ export class TrackingsInconsistencies extends BaseFeature {
   /**
    * Check for Inconsistencies on the flow
    */
-  public handle(hasToSetVariable: boolean): any[] {
+  public handle(hasToSetVariable: boolean): any {
     const blocks = getBlocks();
     let trackingActions = [];
     const trackingsWithProblems = [];
-    let hasInputExpiration;
 
     for (const block of blocks) {
       trackingActions = getTrackingEventActions(block);
 
       if (hasTrackEvent(trackingActions)) {
-        hasInputExpiration = hasExpirationInput(block);
         for (const action of trackingActions) {
-          if (actionCanBeNull(action, hasInputExpiration)) {
+          if (actionCanBeNull(action)) {
             trackingsWithProblems.push(action);
-            if(hasToSetVariable) {
+            if (hasToSetVariable) {
               setVariableExistingCondition(action);
             }
           }
@@ -34,27 +35,63 @@ export class TrackingsInconsistencies extends BaseFeature {
     }
 
     if (trackingsWithProblems.length > 0) {
-      showWarningToast('Foi encontrado algum registro de evento que pode ser nulo');
+      return (this.getTrackingMessage(trackingsWithProblems));
     } else {
-      showSuccessToast(`Não foi encontrada nenhuma inconsistência no fluxo`);
+      return (showSuccessToast(`Não foi encontrada nenhuma inconsistência de tracking no fluxo`));
     }
-
-    return trackingsWithProblems;
   }
 
+  private handleSubmit = (): void => {
+    this.handle(true);
+  }
+
+  private getTrackingMessage = (list: string[]): any => {
+    return (
+      <>
+        <Paragraph>Foi encontrado os seguintes blocos com inconsistências:</Paragraph>
+        <h4>Trackings</h4>
+        {this.getHtmlList(list)}
+
+        <Paragraph>
+          * Você deve alterar as condições de execução de trackings destes blocos para
+          evitar o possíveis erros.
+          <br />Você pode arrumar esses fluxos automaticamente apertando no botão abaixo.
+        </Paragraph>
+
+        <BdsButton type="submit" variant="primary" onClick={this.handleSubmit}>
+          Definir
+        </BdsButton>
+      </>
+    );
+  };
+
+  private getHtmlList = (list: string[]): any => {
+    return (
+      <ul style={{fontSize: "0.875rem", marginTop: "0.5rem", color: "#607b99"}}>
+        {list.map((text, index) => (
+          <li key={index}>{text['$title']}</li>
+        ))}
+      </ul>
+    );
+  };
 }
 
-const actionCanBeNull = (action: any, hasInputExpiration: boolean): boolean => {
-  const conditionVariable = getTrackingActionVariable(action);
+const actionCanBeNull = (action: any): boolean => {
+  const conditionVariable = getTrackingActionVariable(action)
+
   if (hasConditionVariable(conditionVariable)) {
+    const processedConditionVariable = conditionVariable.replace('}}', '').replace('{{', '');
+
     if (action.conditions.length === 0) {
       return true;
     }
-    if (conditionVariable === 'input.content' && hasInputExpiration) {
-      return !!action.conditions.find((x) => x.source === 'input');
-    } else {
-      return !!action.conditions.find((x) => x.variable === conditionVariable);
+
+    if (processedConditionVariable === 'input.content' && !!action.conditions.find((x) => x.source === 'input')) {
+      return false;
     }
+
+    return !action.conditions.find((x) => x.variable === processedConditionVariable);
+
   } else {
     return false;
   }
@@ -90,7 +127,7 @@ const getTrackingActionVariable = (action: any): string => {
   const trackingActionVariable = onlyVariableRegex.exec(action.settings.action);
 
   if (trackingActionVariable) {
-    return trackingActionVariable[0].toLowerCase();
+    return trackingActionVariable[0];
   }
 
   return EMPTY_STRING;
@@ -99,7 +136,3 @@ const getTrackingActionVariable = (action: any): string => {
 const hasTrackEvent = (trackingActions: any): boolean => trackingActions.length !== 0;
 const isTracking = (action: any): boolean => action.type === TRACKING_ACTION_NAME;
 const hasConditionVariable = (conditionVariable: any): boolean => conditionVariable !== EMPTY_STRING;
-const hasExpirationInput = (block): boolean => {
-  const inputAction = block.$contentActions.find((contentAction) => contentAction['input']);
-  return inputAction && !!inputAction.input.expiration;
-};

@@ -1,22 +1,21 @@
 import * as React from 'react';
 import { BdsButton } from 'blip-ds/dist/blip-ds-react';
 
-import { Paragraph, Block, List } from '~/Components';
+import { Paragraph, Block } from '~/Components';
 
-//import { setSettings, Settings } from '~/Settings';
 import { TrackingsInconsistencies } from '@features/CheckInconsistencies/Trackings';
 import { CheckLoopsOnFlow } from '@features/CheckInconsistencies/LoopsAndMaxBlocks';
 
 const MAX_STATES_WITHOUT_INPUT = 35;
 
 export const InconsistenciesForm = (): JSX.Element => {
-  const [inconsistencies, setInconsistencies] = React.useState([]);
+  const [trackingsInconsistencies, setTrackingsInconsistencies] = React.useState();
   const [loopBlocksMessage, setLoopBlocksMessage] = React.useState();
   /**
    * Runs the 'CheckInconsistencies' fature, thus check for Inconsistencies on the flow
    */
   const handle = (): void => {
-    new TrackingsInconsistencies().handle(false);
+    setTrackingsInconsistencies(new TrackingsInconsistencies().handle(false));
     setLoopBlocksMessage(new CheckLoopsOnFlow().handle());
   };
 
@@ -44,6 +43,10 @@ export const InconsistenciesForm = (): JSX.Element => {
         <Block paddingX={2.5} paddingY={1}>
           <Paragraph>Loops no Fluxo</Paragraph>
           {loopBlocksMessage}
+        </Block>
+
+        <Block paddingX={2.5} paddingY={1}>
+          {trackingsInconsistencies}
         </Block>
       </Block>
     </>
