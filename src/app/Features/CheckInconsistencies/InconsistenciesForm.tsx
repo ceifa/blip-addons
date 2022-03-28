@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { BdsButton } from 'blip-ds/dist/blip-ds-react';
 
-import { Paragraph, Block, List } from '~/Components';
+import { Paragraph, Block } from '~/Components';
 
-//import { setSettings, Settings } from '~/Settings';
 import { TrackingsInconsistencies } from '@features/CheckInconsistencies/Trackings';
 import { CheckLoopsOnFlow } from '@features/CheckInconsistencies/LoopsAndMaxBlocks';
+import { showSuccessToast, showWarningToast } from '~/Utils';
 
 const MAX_STATES_WITHOUT_INPUT = 35;
 
@@ -17,7 +17,15 @@ export const InconsistenciesForm = (): JSX.Element => {
    */
   const handle = (): void => {
     new TrackingsInconsistencies().handle(false);
-    setLoopBlocksMessage(new CheckLoopsOnFlow().handle());
+    const { loopMessage, hasLoop } = new CheckLoopsOnFlow().handle();
+    setLoopBlocksMessage(loopMessage);
+    setInconsistencies(hasLoop);
+
+    if(hasLoop){
+      showWarningToast('Foi encontrada alguma inconsistência no fluxo.')
+    } else {
+      showSuccessToast('Não foi encontrada nenhuma inconsistência no fluxo.')
+    }
   };
 
   /*
@@ -26,7 +34,6 @@ export const InconsistenciesForm = (): JSX.Element => {
   return (
     <>
       <Paragraph>Este recurso irá procurar por</Paragraph>
-      <br />
       <ul style={{fontSize: "0.875rem", marginTop: "0.5rem", color: "#607b99"}}>
         <li>Registros de eventos que podem ter a action vazia</li>
         <li>Loops no fluxo</li>
@@ -40,11 +47,10 @@ export const InconsistenciesForm = (): JSX.Element => {
         <BdsButton type="submit" variant="primary" onClick={handle}>
           Verificar
         </BdsButton>
+      </Block>
 
-        <Block paddingX={2.5} paddingY={1}>
-          <Paragraph>Loops no Fluxo</Paragraph>
+      <Block paddingY={1}>
           {loopBlocksMessage}
-        </Block>
       </Block>
     </>
   );
