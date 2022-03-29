@@ -8,9 +8,10 @@ import {
   BlipAccordionButton,
   BlipAccordionBody,
 } from '~/Components';
-import { GlobalInactivityForm } from '@features/SetInactivity/GlobalInactivityForm';
-import { SetGlobalTrackingsForm } from '@features/SetGlobalTrackings/SetGlobalTrackingsForm';
-import { RemoveGlobalTrackingsForm } from '@features/RemoveGlobalTrackings/RemoveGlobalTrackingsForm';
+import { GlobalInactivityForm } from '~/Features/SetInactivity/GlobalInactivityForm';
+import { SetGlobalTrackingsForm } from '~/Features/SetGlobalTrackings/SetGlobalTrackingsForm';
+import { RemoveGlobalTrackingsForm } from '~/Features/RemoveGlobalTrackings/RemoveGlobalTrackingsForm';
+import { InconsistenciesForm } from '~/Features/CheckInconsistencies/InconsistenciesForm';
 
 export type BlipsSidebarProps = {
   onClose: () => void;
@@ -74,6 +75,15 @@ export const BlipsSidebar = ({ onClose }: BlipsSidebarProps): JSX.Element => {
                 </BlipAccordionHeader>
                 <BlipAccordionBody>
                   <RemoveGlobalTrackingsForm />
+                </BlipAccordionBody>
+              </BlipAccordionItem>
+
+              <BlipAccordionItem>
+                <BlipAccordionHeader marginTop={5}>
+                  <BlipAccordionButton title="Verificar inconsistências no fluxo" />
+                </BlipAccordionHeader>
+                <BlipAccordionBody>
+                  <InconsistenciesForm />
                 </BlipAccordionBody>
               </BlipAccordionItem>
             </BlipAccordion>
