@@ -43,7 +43,6 @@ export const PRESET_COLORS = [
   '#80E3EB',
   '#00C6D7',
   '#167491',
-  '#0747A6',
   '#FFFFFF',
   '#E7EDF4',
   '#F3F6FA',
@@ -53,5 +52,5 @@ export const PRESET_COLORS = [
   '#D2DFE6',
   '#233049',
   '#202C44',
-  '#3A4A65'
+  '#3A4A65',
 ];
