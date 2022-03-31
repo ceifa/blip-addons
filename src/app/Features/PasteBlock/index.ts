@@ -11,6 +11,12 @@ import {
   showSuccessToast,
 } from '~/Utils';
 import type { BlipsCopy } from '~/types';
+import { ChangeBlockColor } from '@features/EditBlocks/ChangeBlockColor';
+import { ChangeBlockFormat } from '@features/EditBlocks/ChangeBlockFormat';
+import { ChangeTextBlockColor } from '@features/EditBlocks/ChangeTextColor';
+
+// Safe interval in which the DOM has already been updated
+const SAFE_INTERVAL = 60;
 
 export class PasteBlock extends BaseFeature {
   public static shouldRunOnce = true;
@@ -76,6 +82,12 @@ export class PasteBlock extends BaseFeature {
         }
 
         showSuccessToast('Bloco(s) colado(s) com sucesso');
+
+        setTimeout(() => {
+          new ChangeBlockFormat().handle();
+          new ChangeBlockColor().handle();
+          new ChangeTextBlockColor().handle();
+        }, SAFE_INTERVAL);
       }
     }
 
