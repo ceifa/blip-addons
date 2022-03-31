@@ -89,8 +89,23 @@ export const requestFeature = (
   window.postMessage(message, '*');
 };
 
-export const getBotName = (): string => {
-  return getController().application.name;
+export const getBotName = (): string | false => {
+  const controller = getController();
+
+  if (controller) {
+    const botName = controller.application.name;
+    return botName;
+  }
+
+  const botName = document.querySelector(
+    '.bot-name:nth-child(1)'
+  ) as HTMLElement;
+
+  if (botName) {
+    return botName.innerText;
+  }
+
+  return false;
 };
 
 export const createNearbyPosition = (): { left: string; top: string } => {
