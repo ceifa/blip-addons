@@ -43,7 +43,9 @@ export class BuilderTitle extends BaseFeature {
     if (this.isBeholder) {
       document.title = 'Beholder';
     } else {
-      document.title = BuilderTitle.initialTitle;
+      const botName = getBotName();
+
+      document.title = botName || BuilderTitle.initialTitle;
     }
   }
 }
