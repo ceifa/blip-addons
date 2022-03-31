@@ -6,7 +6,7 @@ const BEHOLDER_TAG = 'take-plugin-bot-beholder';
 export class BuilderTitle extends BaseFeature {
   public static shouldRunOnce = true;
   public static shouldAlwaysClean = true;
-  public static initialTitle = 'Blip Portal';
+  public static defaultTitle = 'Blip Portal';
 
   /**
    * Returns if the current page is Beholder
@@ -29,8 +29,6 @@ export class BuilderTitle extends BaseFeature {
    * Adds title to builder
    */
   public handle(): void {
-    BuilderTitle.initialTitle = document.title;
-
     const botName = getBotName();
 
     document.title = `${botName}`;
@@ -45,7 +43,7 @@ export class BuilderTitle extends BaseFeature {
     } else {
       const botName = getBotName();
 
-      document.title = botName || BuilderTitle.initialTitle;
+      document.title = botName || BuilderTitle.defaultTitle;
     }
   }
 }
