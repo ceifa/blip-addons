@@ -131,7 +131,7 @@ export class EditBlock extends BaseFeature {
 
   private addChangeFormatOptionOnBlockById(id: string): void {
     const menuOptionsList = document.querySelector(
-      `${BUILDER_HTML_BLOCK_TAG}[id="${id}"] .${BUILDER_HTML_MENU_BLOCK_CLASS} .${BUILDER_HTML_MENU_BLOCK_LIST_CLASS}`
+      `${BUILDER_HTML_BLOCK_TAG}[id="${id}"]:not(.subflow-block) .${BUILDER_HTML_MENU_BLOCK_CLASS} .${BUILDER_HTML_MENU_BLOCK_LIST_CLASS}`
     );
 
     if (menuOptionsList) {
@@ -169,6 +169,7 @@ export class EditBlock extends BaseFeature {
 
     interceptFunction('addContentState', () => this.handle());
     interceptFunction('duplicateStateObject', () => this.handle());
+    interceptFunction('addDeskState', () => this.handle());
 
     return true;
   }
