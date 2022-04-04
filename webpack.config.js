@@ -1,4 +1,5 @@
-const path = require('path')
+const path = require('path');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -18,6 +19,7 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    plugins: [new TsconfigPathsPlugin()],
   },
 
   module: {
@@ -27,6 +29,10 @@ module.exports = {
         loader: 'esbuild-loader',
         options: { loader: 'tsx', target: 'es2015' },
       },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      },
     ],
   },
-}
+};

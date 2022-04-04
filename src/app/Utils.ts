@@ -1,82 +1,163 @@
-import type { FeatureRequest } from './types'
+import type { FeatureRequest } from './types';
 
-export function getController() {
-  const canvas = document.querySelector('#canvas')
+const BUILDER_HTML_BLOCK_TAG = 'builder-node';
 
-  return window.angular.element(canvas).controller()
-}
+export const getController = (): any => {
+  const canvas = document.querySelector('#canvas');
 
-export function getFlow() {
-  return getController().flow
-}
+  return window.angular.element(canvas).controller();
+};
 
-export function getBlocks(): any[] {
-  return Object.values(getFlow())
-}
+export const getFlow = (): any => {
+  return getController().flow;
+};
 
-export function getBlockById(id: string) {
-  return getFlow()[id]
-}
+export const getBlocks = (): any[] => {
+  return Object.values(getFlow());
+};
 
-export function showSuccessToast(message: string) {
-  getController().ngToast.success(message)
-}
+export const getBlockById = (id: string): any => {
+  return getFlow()[id];
+};
 
-export function showWarningToast(message: string) {
-  getController().ngToast.warning(message)
-}
+export const showSuccessToast = (message: string): void => {
+  getController().ngToast.success(message);
+};
 
-export function showDangerToast(message: string) {
-  getController().ngToast.danger(message)
-}
+export const showWarningToast = (message: string): void => {
+  getController().ngToast.warning(message);
+};
 
-export function cleanCopiedStates() {
-  getController().copiedStates = []
-}
+export const showDangerToast = (message: string): void => {
+  getController().ngToast.danger(message);
+};
 
-export function selectBlock(id: string) {
+export const cleanCopiedStates = (): void => {
+  getController().copiedStates = [];
+};
+
+export const selectBlock = (id: string): void => {
   const watchNode = setInterval(() => {
-    const node = document.querySelector(`builder-node[id="${id}"]`)
+    const node = document.querySelector(`builder-node[id="${id}"]`);
 
     if (node) {
-      getController().selectNode(node)
-      clearInterval(watchNode)
+      getController().selectNode(node);
+      clearInterval(watchNode);
     }
-  })
-}
+  });
+};
 
-export function cleanSelectedNodes() {
-  getController().selectedNodes = []
-}
+export const cleanSelectedNodes = (): void => {
+  getController().selectedNodes = [];
+};
 
-export function interceptFunction(functionName: string, callback: () => void) {
-  const controller = getController()
-  const functionToWrap = controller[functionName]
+export const interceptFunction = (
+  functionName: string,
+  callback: () => void
+): void => {
+  const controller = getController();
+  const functionToWrap = controller[functionName];
 
   controller[functionName] = function keepThis(...args: any[]) {
-    callback()
-    return functionToWrap.apply(this, args)
-  }
-}
+    const result = functionToWrap.apply(this, args);
 
-export function convertToHours(waitingTime: number) {
-  const waitingHours = Math.floor(waitingTime / 60)
-  const waitingMinutes = waitingTime % 60
+    setTimeout(() => callback());
 
-  return `${waitingHours}:${waitingMinutes}`
-}
+    return result;
+  };
+};
 
-export function requestFeature(code: string, type: 'cleanup' | 'run', ...args) {
+export const convertToHours = (waitingTime: number): string => {
+  const waitingHours = Math.floor(waitingTime / 60);
+  const waitingMinutes = waitingTime % 60;
+
+  return `${waitingHours}:${waitingMinutes}`;
+};
+
+export const requestFeature = (
+  code: string,
+  type: 'cleanup' | 'run',
+  ...args
+): void => {
   const message: FeatureRequest = {
     isFeatureRequest: true,
     type,
     code,
     args,
+  };
+
+  window.postMessage(message, '*');
+};
+
+export const getBotName = (): string | false => {
+  const controller = getController();
+
+  if (controller) {
+    const botName = controller.application.name;
+    return botName;
   }
 
-  window.postMessage(message, '*')
-}
+  const botName = document.querySelector(
+    '.bot-name:nth-child(1)'
+  ) as HTMLElement;
 
-export function getBotName() {
-  return getController().application.shortName
-}
+  if (botName) {
+    return botName.innerText;
+  }
+
+  return false;
+};
+
+export const createNearbyPosition = (): { left: string; top: string } => {
+  return getController().createNearbyPosition();
+};
+
+export const getSpace = (): any => {
+  return getController().g2p;
+};
+
+export const getHandleOnKeyDown = (): any => {
+  return getController().handleOnKeyDown;
+};
+
+export const getFlowBlockById = (id: string): any => {
+  return document.querySelector(`${BUILDER_HTML_BLOCK_TAG}[id="${id}"]`);
+};
+
+export const getAllFlowBlock = (): any => {
+  return document.querySelectorAll(`${BUILDER_HTML_BLOCK_TAG}`);
+};
+
+export const rgbToHex = (r: any, g: any, b: any): any =>
+  '#' +
+  [r, g, b]
+    .map((x) => {
+      const hex = x.toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    })
+    .join('');
+
+export const hexToRgb = (hex): any => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
+};
+
+export const getContrastColor = (color: any): string => {
+  const brightness = 1;
+
+  const r = color.r;
+  const g = color.g;
+  const b = color.b;
+
+  const ir = Math.floor((255 - r) * brightness);
+  const ig = Math.floor((255 - g) * brightness);
+  const ib = Math.floor((255 - b) * brightness);
+
+  return rgbToHex(ir, ig, ib);
+};

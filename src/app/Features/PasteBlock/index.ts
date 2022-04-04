@@ -1,76 +1,76 @@
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
 
-import { BaseFeature } from '../BaseFeature'
+import { BaseFeature } from '../BaseFeature';
 import {
   cleanCopiedStates,
   cleanSelectedNodes,
+  createNearbyPosition,
   getBotName,
   getFlow,
   selectBlock,
   showSuccessToast,
-} from '../../Utils'
-import type { BlipsCopy } from '../../types'
+} from '~/Utils';
+import type { BlipsCopy } from '~/types';
+import { ChangeBlockColor } from '@features/EditBlocks/ChangeBlockColor';
+import { ChangeBlockFormat } from '@features/EditBlocks/ChangeBlockFormat';
+import { ChangeTextBlockColor } from '@features/EditBlocks/ChangeTextColor';
+
+// Safe interval in which the DOM has already been updated
+const SAFE_INTERVAL = 60;
 
 export class PasteBlock extends BaseFeature {
-  /**
-   * This feature should only be executed once
-   */
-  public static shouldRunOnce = true
-
-  /**
-   * Map of cached ids
-   */
-  private cachedIds = new Map<string, string>()
+  public static shouldRunOnce = true;
+  private cachedIds = new Map<string, string>();
+  private static wasAdded = false;
 
   /**
    * Returns a new uuid for the id
    *
    * @param id The id
    */
-  private getIdFor(id: string) {
+  private getIdFor(id: string): string {
     if (this.cachedIds.has(id)) {
-      return this.cachedIds.get(id)
+      return this.cachedIds.get(id);
     }
 
-    const newId = uuid()
-    this.cachedIds.set(id, newId)
-    return newId
+    const newId = uuid();
+    this.cachedIds.set(id, newId);
+    return newId;
   }
 
-  /**
-   * Handles the copy
-   */
-  private async handlePaste(event: ClipboardEvent) {
-    const flow = getFlow()
-    const clipboardData = event.clipboardData.getData('text')
-    const blipsCopy = JSON.parse(clipboardData)
+  private handlePaste = (event: ClipboardEvent): void => {
+    const flow = getFlow();
+    const clipboardData = event.clipboardData.getData('text');
+    const blipsCopy = JSON.parse(clipboardData);
 
     if (isCopyFromBlips(blipsCopy)) {
       /**
        * Don't copy if it's the same bot, as blip automatically deals
        * with it
        */
-      const isSameBot = blipsCopy.originBot === getBotName()
+      const isSameBot = blipsCopy.originBot === getBotName();
 
       if (isSameBot) {
-        return
+        return;
       }
 
-      cleanCopiedStates()
-      cleanSelectedNodes()
+      cleanCopiedStates();
+      cleanSelectedNodes();
 
-      const blocks = JSON.parse(blipsCopy.blocksCode)
+      const blocks = JSON.parse(blipsCopy.blocksCode);
 
       if (blocks.length > 0) {
+        this.normalizeBlocksPosition(blocks);
+
         /**
          * Adds all the blocks to the flow, if the block already
          * exists in canvas, then tranverse the block replacing
          * the ids
          */
         for (const block of blocks) {
-          this.transverseBlock(block)
-          flow[block.id] = block
-          selectBlock(block.id)
+          this.transverseBlock(block);
+          flow[block.id] = block;
+          selectBlock(block.id);
         }
 
         /**
@@ -78,23 +78,63 @@ export class PasteBlock extends BaseFeature {
          * to check if they're still valid
          */
         for (const block of blocks) {
-          this.treatBlock(block)
+          this.treatBlock(block);
         }
 
-        showSuccessToast('Bloco(s) colado(s) com sucesso')
+        showSuccessToast('Bloco(s) colado(s) com sucesso');
+
+        setTimeout(() => {
+          new ChangeBlockFormat().handle();
+          new ChangeBlockColor().handle();
+          new ChangeTextBlockColor().handle();
+        }, SAFE_INTERVAL);
       }
     }
 
-    this.cachedIds.clear()
-  }
+    this.cachedIds.clear();
+  };
 
   /**
    * Returns if the block exists
    */
-  public blockExists(id: string) {
-    const existingBlocksId = Object.keys(getFlow())
+  public hasBlock(id: string): boolean {
+    const existingBlocksId = Object.keys(getFlow());
 
-    return existingBlocksId.includes(id)
+    return existingBlocksId.includes(id);
+  }
+
+  /**
+   * Normalizes the position of the blocks
+   *
+   * @param blocks The blocks
+   */
+  public normalizeBlocksPosition(blocks: any[]): void {
+    const allLefts = blocks.map((block) => parseInt(block.$position.left));
+    const allTops = blocks.map((block) => parseInt(block.$position.top));
+
+    const maxLeft = Math.max(...allLefts);
+    const minLeft = Math.min(...allLefts);
+
+    const maxTop = Math.max(...allTops);
+    const minTop = Math.min(...allTops);
+
+    const middleLeft = maxLeft - minLeft / 2;
+    const middleTop = maxTop - minTop / 2;
+    const nearbyPosition = createNearbyPosition();
+
+    for (const block of blocks) {
+      block.$position.left =
+        parseInt(block.$position.left) -
+        middleLeft +
+        parseInt(nearbyPosition.left) +
+        'px';
+
+      block.$position.top =
+        parseInt(block.$position.top) -
+        middleTop +
+        parseInt(nearbyPosition.top) +
+        'px';
+    }
   }
 
   /**
@@ -103,21 +143,21 @@ export class PasteBlock extends BaseFeature {
    *
    * @param block The block
    */
-  private treatBlock(block: any) {
-    const outputs = [...block.$conditionOutputs, block.$defaultOutput]
-    let isInvalid = false
+  private treatBlock(block: any): void {
+    const outputs = [...block.$conditionOutputs, block.$defaultOutput];
+    let isInvalid = false;
 
     for (const output of outputs) {
-      if (!this.blockExists(output.stateId)) {
-        isInvalid = true
-        output.$invalid = true
-        delete output.stateId
+      if (!this.hasBlock(output.stateId)) {
+        isInvalid = true;
+        output.$invalid = true;
+        delete output.stateId;
       }
     }
 
     if (isInvalid) {
-      block.$invalid = true
-      block.invalidOutputs = true
+      block.$invalid = true;
+      block.invalidOutputs = true;
     }
   }
 
@@ -126,25 +166,25 @@ export class PasteBlock extends BaseFeature {
    *
    * @param block The block
    */
-  public transverseBlock(block: any) {
-    const keys = Object.keys(block)
+  public transverseBlock(block: any): void {
+    const keys = Object.keys(block);
 
     for (const key of keys) {
       const isNestedObject =
-        typeof block[key] === 'object' && block[key] != null
+        typeof block[key] === 'object' && block[key] != null;
 
       if (isNestedObject) {
-        this.transverseBlock(block[key])
+        this.transverseBlock(block[key]);
       } else {
-        const isId = ['id', '$id', 'stateId'].includes(key)
+        const isId = ['id', '$id', 'stateId'].includes(key);
 
         if (isId) {
-          const blockId = block[key]
-          const isExistingBlock = this.blockExists(blockId)
-          const isDefaultBlock = this.isDefaultBlock(blockId)
+          const blockId = block[key];
+          const isExistingBlock = this.hasBlock(blockId);
+          const isDefaultBlock = this.isDefaultBlock(blockId);
 
           if (isExistingBlock && !isDefaultBlock) {
-            block[key] = this.getIdFor(block[key])
+            block[key] = this.getIdFor(block[key]);
           }
         }
       }
@@ -156,25 +196,30 @@ export class PasteBlock extends BaseFeature {
    *
    * @param id The id of the block
    */
-  private isDefaultBlock(id: string) {
-    const defaultBlocks = ['onboarding', 'fallback']
+  private isDefaultBlock(id: string): boolean {
+    const defaultBlocks = ['onboarding', 'fallback'];
 
-    return defaultBlocks.includes(id)
+    return defaultBlocks.includes(id);
   }
 
   /**
    * Adds the functionality of pasting the block
    */
-  public handle() {
-    document.body.addEventListener('paste', this.handlePaste.bind(this))
+  public handle(): void {
+    if (!PasteBlock.wasAdded) {
+      document.body.addEventListener('paste', this.handlePaste);
+
+      PasteBlock.wasAdded = true;
+    }
   }
 
   /**
    * Removes the functionality of pasting the block
    */
-  public cleanup() {
-    document.body.removeEventListener('paste', this.handlePaste.bind(this))
+  public cleanup(): void {
+    document.body.removeEventListener('paste', this.handlePaste);
   }
 }
 
-const isCopyFromBlips = (data: any): data is BlipsCopy => !!data.isCopyFromBlips
+const isCopyFromBlips = (data: any): data is BlipsCopy =>
+  !!data.isCopyFromBlips;

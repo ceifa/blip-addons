@@ -1,37 +1,39 @@
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
+import { constantCase } from 'constant-case';
 
-import { constantCase } from 'constant-case'
-import { BlipsRequest } from '../types'
-import { Resolver } from '../Resolver'
+import { BlipsRequest } from '../types';
+import { Resolver } from '../Resolver';
 
 export abstract class BaseCommand {
   /**
    * Indicates wether the command is ready
    */
-  public static isReady = false
+  public static isReady = false;
 
-  constructor() {}
+  public constructor() {
+    // ...
+  }
 
   /**
    * The code of the command
    */
-  public static get code() {
-    return constantCase(this.name)
+  public static get code(): string {
+    return constantCase(this.name);
   }
 
   /**
    * Handles the command and evaluates the result
    */
-  public abstract handle(...args: any[]): any | Promise<any>
+  public abstract handle(...args: any[]): any | Promise<any>;
 
   /**
    * Executes the command
    */
-  public static async execute(...args: any[]) {
+  public static async execute(...args: any[]): Promise<unknown> {
     return new Promise((resolve) => {
-      const identifier = uuid()
+      const identifier = uuid();
 
-      Resolver.register(identifier, resolve)
+      Resolver.register(identifier, resolve);
 
       window.postMessage(
         {
@@ -41,7 +43,7 @@ export abstract class BaseCommand {
           args,
         } as BlipsRequest,
         '*'
-      )
-    })
+      );
+    });
   }
 }

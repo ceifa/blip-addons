@@ -1,6 +1,6 @@
-import * as RawCommands from './Commands'
-import * as RawFeatures from './Features'
-import { Settings } from './Settings'
+import * as RawCommands from './Commands';
+import * as RawFeatures from './Features';
+import { Settings } from './Settings';
 import type {
   Message,
   BlipsRequest,
@@ -8,14 +8,15 @@ import type {
   Command,
   FeatureRequest,
   SettingsUpdate,
-} from './types'
+  Feature,
+} from './types';
 
-const Commands = Object.values(RawCommands)
-const Features = Object.values(RawFeatures)
-const sendMessage = (message: any) => window.postMessage(message, '*')
+const Commands = Object.values(RawCommands);
+const Features = Object.values(RawFeatures);
+const sendMessage = (message: any): void => window.postMessage(message, '*');
 
 // Sends handshake to extension
-sendMessage({ isHandshake: true })
+sendMessage({ isHandshake: true });
 
 window.addEventListener('message', async (message: Message<any>) => {
   /**
@@ -23,8 +24,8 @@ window.addEventListener('message', async (message: Message<any>) => {
    * `handle` or `cleanup` functions
    */
   if (isFeatureRequest(message.data)) {
-    const { code, type, args } = message.data
-    const Feature = getFeature(code)
+    const { code, type, args } = message.data;
+    const Feature = getFeature(code);
 
     /**
      * Runs the feature and update its states, as features may
@@ -32,14 +33,19 @@ window.addEventListener('message', async (message: Message<any>) => {
      */
     if (type === 'run') {
       if (Feature.canRun) {
-        const featureInstance = new Feature()
+        const featureInstance = new Feature();
         // eslint-disable-next-line prefer-spread
-        await featureInstance.handle.apply(featureInstance, args)
-        Feature.hasRun = true
-        Feature.isCleaned = false
+        const handleResult = await featureInstance.handle.apply(
+          featureInstance,
+          args
+        );
+        if (handleResult !== false) {
+          Feature.hasRun = true;
+          Feature.isCleaned = false;
+        }
       }
 
-      return
+      return;
     }
 
     /**
@@ -47,14 +53,15 @@ window.addEventListener('message', async (message: Message<any>) => {
      * to undo the changes when user leaves the page.
      */
     if (type === 'cleanup') {
-      const shouldRun = Feature.shouldAlwaysClean || !Feature.isCleaned
+      const shouldRun = Feature.shouldAlwaysClean || !Feature.isCleaned;
 
       if (shouldRun) {
-        await new Feature().cleanup()
-        Feature.isCleaned = true
+        await new Feature().cleanup();
+        Feature.hasRun = false;
+        Feature.isCleaned = true;
       }
 
-      return
+      return;
     }
   }
 
@@ -63,18 +70,18 @@ window.addEventListener('message', async (message: Message<any>) => {
    * command and responds
    */
   if (isBlipsRequest(message.data)) {
-    const Command: Command = getCommand(message.data.commandCode)
+    const Command: Command = getCommand(message.data.commandCode);
 
-    if (isCommand(Command)) {
-      const { identifier, args } = message.data
-      const result = await new Command().handle(...args)
+    if (Command) {
+      const { identifier, args } = message.data;
+      const result = await new Command().handle(...args);
 
       sendResponse({
         identifier,
         result,
-      })
+      });
 
-      return
+      return;
     }
   }
 
@@ -82,24 +89,25 @@ window.addEventListener('message', async (message: Message<any>) => {
    * Check if a settings update request from server
    */
   if (isSettingsUpdate(message.data)) {
-    const isFromServer = !message.data.isFromClient
+    const isFromServer = !message.data.isFromClient;
 
     if (isFromServer) {
-      Object.assign(Settings, message.data.newSettings)
+      Object.assign(Settings, message.data.newSettings);
     }
 
-    return
+    return;
   }
-})
+});
 
 const isFeatureRequest = (request: any): request is FeatureRequest =>
-  !!request.isFeatureRequest
+  !!request.isFeatureRequest;
 const isBlipsRequest = (request: any): request is BlipsRequest =>
-  !!request.isBlipsRequest
-const isCommand = (command: Command) => command
-const sendResponse = (message: Omit<BlipsResponse, 'isBlipsResponse'>) =>
-  sendMessage({ isBlipsResponse: true, ...message })
-const getFeature = (code) => Features.find((Feature) => Feature.code === code)
-const getCommand = (code) => Commands.find((Command) => Command.code === code)
+  !!request.isBlipsRequest;
+const sendResponse = (message: Omit<BlipsResponse, 'isBlipsResponse'>): void =>
+  sendMessage({ isBlipsResponse: true, ...message });
+const getFeature = (code): Feature =>
+  Features.find((Feature) => Feature.code === code);
+const getCommand = (code): Command =>
+  Commands.find((Command) => Command.code === code);
 const isSettingsUpdate = (message: any): message is SettingsUpdate =>
-  message.isSettingsUpdate
+  message.isSettingsUpdate;
