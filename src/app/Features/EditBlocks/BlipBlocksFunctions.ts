@@ -1,3 +1,5 @@
+import { getBlockById } from '~/Utils';
+
 export enum Shapes {
   ELLIPSE = '50%',
   RECTANGULAR = '3px',
@@ -22,6 +24,9 @@ export const formatShapeBlock = (shape: Shapes, block: any): void => {
   block.style.borderRadius = shape;
 
   if (shape === Shapes.DEFAULT) {
+    const blockJson = getBlockById(block.id);
+    delete blockJson.addonsSettings;
+
     block.style.background = null;
     block.style.color = null;
     block.style.borderRadius = null;
