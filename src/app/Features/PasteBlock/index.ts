@@ -16,7 +16,7 @@ import { ChangeBlockFormat } from '@features/EditBlocks/ChangeBlockFormat';
 import { ChangeTextBlockColor } from '@features/EditBlocks/ChangeTextColor';
 
 // Safe interval in which the DOM has already been updated
-const SAFE_INTERVAL = 60;
+const SAFE_INTERVAL = 200;
 
 export class PasteBlock extends BaseFeature {
   public static shouldRunOnce = true;
