@@ -1,11 +1,4 @@
 body {
-  min-width: 400px;
-  min-height: 400px;
-}
-
-.popup-padded {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  width: 400px;
+  height: 400px;
 }
