@@ -56,9 +56,12 @@ window.addEventListener('message', async (message: Message<any>) => {
       const shouldRun = Feature.shouldAlwaysClean || !Feature.isCleaned;
 
       if (shouldRun) {
-        await new Feature().cleanup();
-        Feature.hasRun = false;
-        Feature.isCleaned = true;
+        const hasCleaned = await new Feature().cleanup();
+
+        if (hasCleaned !== false) {
+          Feature.hasRun = false;
+          Feature.isCleaned = true;
+        }
       }
 
       return;

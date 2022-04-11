@@ -8,7 +8,6 @@ const FILTER_ID = '#blip-addons-filter';
 
 export class FilterBots extends BaseFeature {
   public static shouldRunOnce = true;
-  public static shouldAlwaysClean = true;
 
   private getHeader(): HTMLElement {
     return document.querySelector('.move-bots-button-container');
@@ -77,8 +76,8 @@ export class FilterBots extends BaseFeature {
     }
   }
 
-  public cleanup(): void {
-    console.log('Rodando');
+  public cleanup(): any {
+    console.log('Rodando v3');
 
     const header = this.getHeader();
 
@@ -98,6 +97,10 @@ export class FilterBots extends BaseFeature {
         ReactDOM.render(<Filter onChange={this.handleChange} />, filter);
         header.appendChild(filter);
       }
+
+      return true;
     }
+
+    return false;
   }
 }
