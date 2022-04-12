@@ -1,3 +1,11 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+import {
+  ConfirmationAlert,
+  ConfirmationAlertProps,
+} from '@features/RemoveGlobalTrackings/ConfirmationAlert';
+import { OVERLAY_ID } from './Constants';
 import type { FeatureRequest } from './types';
 
 const BUILDER_HTML_BLOCK_TAG = 'builder-node';
@@ -160,4 +168,42 @@ export const getContrastColor = (color: any): string => {
   const ib = Math.floor((255 - b) * brightness);
 
   return rgbToHex(ir, ig, ib);
+};
+
+export const createOverlay = (): HTMLElement => {
+  let overlay = document.getElementById(OVERLAY_ID);
+
+  if (overlay) {
+    return overlay;
+  }
+
+  overlay = document.createElement('div');
+
+  overlay.id = OVERLAY_ID;
+  overlay.style.position = 'absolute';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.top = '0';
+
+  return overlay;
+};
+
+export const createConfirmationAlert = (
+  props: ConfirmationAlertProps
+): void => {
+  const overlay = createOverlay();
+  const alert = document.createElement('div');
+
+  ReactDOM.render(<ConfirmationAlert {...props} />, alert);
+
+  overlay.appendChild(alert);
+  document.body.appendChild(overlay);
+};
+
+export const removeOverlay = (): void => {
+  const overlay = document.getElementById(OVERLAY_ID);
+
+  if (overlay) {
+    document.getElementById(OVERLAY_ID).remove();
+  }
 };

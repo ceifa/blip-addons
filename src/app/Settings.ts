@@ -5,10 +5,18 @@ export const Settings = {
   lastGlobalTrackings: [],
   lastRemovedGlobalTrackings: [],
   isCleanEnviroment: false,
+  prodKey: 'prd,prod',
+  hmgKey: 'hmg',
+  betaKey: 'beta',
+  devKey: 'dev',
+};
+
+export const mergeSettings = (newSettings: Partial<typeof Settings>): void => {
+  Object.assign(Settings, newSettings);
 };
 
 export const setSettings = (newSettings: Partial<typeof Settings>): void => {
-  Object.assign(Settings, newSettings);
+  mergeSettings(newSettings);
 
   const settingsUpdate: SettingsUpdate = {
     isSettingsUpdate: true,

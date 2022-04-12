@@ -8,7 +8,7 @@ import type {
   Message,
   SettingsUpdate,
 } from './types';
-import { setSettings, Settings } from './Settings';
+import { mergeSettings, setSettings, Settings } from './Settings';
 
 const LISTENER_SCRIPT = chrome.runtime.getURL('/js/listener.js');
 const MINIMAL_INTERVAL = 200;
@@ -68,7 +68,7 @@ export class BlipsExtension {
      * settings
      */
     if (isSettingsUpdate(message.data)) {
-      Object.assign(Settings, message.data.newSettings);
+      mergeSettings(message.data.newSettings);
       chrome.storage.sync.set({ settings: Settings });
       return;
     }

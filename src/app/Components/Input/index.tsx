@@ -8,6 +8,7 @@ export type InputProps = {
   onChange?: (e) => void;
   onSubmit?: (e) => void;
   errorMessage?: string;
+  helperMessage?: string;
 };
 
 export const Input = ({
@@ -17,6 +18,7 @@ export const Input = ({
   onChange,
   onSubmit,
   errorMessage,
+  helperMessage,
 }: InputProps): JSX.Element => {
   return (
     <div className="relative">
@@ -28,6 +30,7 @@ export const Input = ({
         label={label}
         errorMessage={errorMessage}
         danger={!!errorMessage}
+        helperMessage={helperMessage}
       />
     </div>
   );

@@ -28,12 +28,12 @@ export abstract class BaseFeature {
   /**
    * The code for handling the feature
    */
-  public abstract handle(...args: any[]): void;
+  public abstract handle(...args: any[]): any;
 
   /**
    * The code for cleaning up the feature
    */
-  public cleanup(): void {
+  public cleanup(): any {
     // ...
   }
 }
