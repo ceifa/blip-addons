@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { v4 as uuid } from 'uuid';
 import { BdsButton, BdsIcon } from 'blip-ds/dist/blip-ds-react';
 import {
@@ -11,6 +12,8 @@ import {
 } from '@components';
 import { RemoveGlobalTrackings, SetGlobalTrackings } from '~/Features';
 import { setSettings, Settings } from '~/Settings';
+import { ConfirmationAlert } from './ConfirmationAlert';
+import { createConfirmationAlert, removeOverlay } from '~/Utils';
 
 const EmptyGlobalTrackings = (): JSX.Element => {
   return (
@@ -130,6 +133,20 @@ export const RemoveGlobalTrackingsForm = (): JSX.Element => {
     return arrayOfErrors;
   };
 
+  const OVERLAY_ID = 'blip-addons-overlay';
+
+  const createOverlay = (): HTMLElement => {
+    const overlay = document.createElement('div');
+
+    overlay.id = OVERLAY_ID;
+    overlay.style.position = 'absolute';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.top = '0';
+
+    return overlay;
+  };
+
   /**
    * Check the globalExtras and call the RemoveGlobalTrackings method, to remove the global actions
    *
@@ -142,10 +159,15 @@ export const RemoveGlobalTrackingsForm = (): JSX.Element => {
     }
 
     setSettings({ lastRemovedGlobalTrackings: globalExtras });
-
     setError(new Array(globalExtras.length));
 
-    new RemoveGlobalTrackings().handle(globalExtras);
+    createConfirmationAlert({
+      onCancel: removeOverlay,
+      onConfirm: () => {
+        new RemoveGlobalTrackings().handle(globalExtras);
+        removeOverlay();
+      },
+    });
   };
 
   /**
@@ -153,7 +175,13 @@ export const RemoveGlobalTrackingsForm = (): JSX.Element => {
    *
    */
   const onRemove = (): void => {
-    new SetGlobalTrackings().handle({}, true);
+    createConfirmationAlert({
+      onCancel: removeOverlay,
+      onConfirm: () => {
+        new SetGlobalTrackings().handle({}, true);
+        removeOverlay();
+      },
+    });
   };
 
   return (

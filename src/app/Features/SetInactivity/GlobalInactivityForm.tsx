@@ -12,6 +12,7 @@ import {
 import { setSettings, Settings } from '~/Settings';
 import { SetInactivity } from '@features/SetInactivity';
 import { RemoveInactivity } from '@features/RemoveInactivity';
+import { createConfirmationAlert, removeOverlay } from '~/Utils';
 
 export const GlobalInactivityForm = (): JSX.Element => {
   const [waitingTime, setWaitingTime] = React.useState(
@@ -43,14 +44,28 @@ export const GlobalInactivityForm = (): JSX.Element => {
       lastGlobalInactivityTime: waitingTime,
     });
 
-    new SetInactivity().handle(time, shouldKeep);
+    createConfirmationAlert({
+      onCancel: removeOverlay,
+      onConfirm: () => {
+        new SetInactivity().handle(time, shouldKeep);
+        removeOverlay();
+      },
+    });
   };
 
   /**
    * Runs the 'RemoveInactivity' feature, thus removing the defined
    * waiting limit time to all blocks with input
    */
-  const [handleRemove] = React.useState(() => new RemoveInactivity().handle);
+  const handleRemove = (): void => {
+    createConfirmationAlert({
+      onCancel: () => removeOverlay(),
+      onConfirm: () => {
+        new RemoveInactivity().handle();
+        removeOverlay();
+      },
+    });
+  };
 
   return (
     <>
