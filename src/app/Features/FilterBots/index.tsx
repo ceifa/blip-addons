@@ -73,8 +73,6 @@ export class FilterBots extends BaseFeature {
   }
 
   public cleanup(): any {
-    console.log('Rodando v3');
-
     const header = this.getHeader();
 
     if (header) {
