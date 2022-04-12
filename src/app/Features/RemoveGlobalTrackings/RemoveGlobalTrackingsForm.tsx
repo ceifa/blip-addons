@@ -12,7 +12,6 @@ import {
 } from '@components';
 import { RemoveGlobalTrackings, SetGlobalTrackings } from '~/Features';
 import { setSettings, Settings } from '~/Settings';
-import { ConfirmationAlert } from './ConfirmationAlert';
 import { createConfirmationAlert, removeOverlay } from '~/Utils';
 
 const EmptyGlobalTrackings = (): JSX.Element => {

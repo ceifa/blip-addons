@@ -1,5 +1,10 @@
 import { BaseFeature } from '../../BaseFeature';
-import { getBlocks, showSuccessToast } from '~/Utils';
+import {
+  createConfirmationAlert,
+  getBlocks,
+  removeOverlay,
+  showSuccessToast,
+} from '~/Utils';
 import { ConditionViewModel } from '~/types';
 import { Paragraph } from '@components';
 import * as React from 'react';
@@ -49,7 +54,14 @@ export class TrackingsInconsistencies extends BaseFeature {
   }
 
   private handleSubmit = (): void => {
-    this.handle(true);
+    createConfirmationAlert({
+      onCancel: () => removeOverlay(),
+      onConfirm: () => {
+        this.handle(true);
+        removeOverlay();
+      },
+    });
+
     showSuccessToast('Trackings Corrigidas!');
   };
 

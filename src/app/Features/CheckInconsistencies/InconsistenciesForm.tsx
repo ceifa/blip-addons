@@ -11,22 +11,24 @@ const MAX_STATES_WITHOUT_INPUT = 35;
 
 export const InconsistenciesForm = (): JSX.Element => {
   const [loopBlocksMessage, setLoopBlocksMessage] = React.useState();
-  const [trackingInconsistenceMessage, setTrackingInconsistenceMessage] = React.useState();
+  const [trackingInconsistenceMessage, setTrackingInconsistenceMessage] =
+    React.useState();
   /**
    * Runs the 'CheckInconsistencies' fature, thus check for Inconsistencies on the flow
    */
-  const handle = (): void => {
+  const handleInconsistencies = (): void => {
     new TrackingsInconsistencies().handle(false);
     const { loopMessage, hasLoop } = new CheckLoopsOnFlow().handle();
-    const { trackingMessage, hasTrackings } =  new TrackingsInconsistencies().handle(false);
+    const { trackingMessage, hasTrackings } =
+      new TrackingsInconsistencies().handle(false);
 
     setLoopBlocksMessage(loopMessage);
     setTrackingInconsistenceMessage(trackingMessage);
 
-    if(hasLoop || hasTrackings){
-      showWarningToast('Foi encontrada alguma inconsistência no fluxo.')
+    if (hasLoop || hasTrackings) {
+      showWarningToast('Foi encontrada alguma inconsistência no fluxo.');
     } else {
-      showSuccessToast('Não foi encontrada nenhuma inconsistência no fluxo.')
+      showSuccessToast('Não foi encontrada nenhuma inconsistência no fluxo.');
     }
   };
 
@@ -36,7 +38,9 @@ export const InconsistenciesForm = (): JSX.Element => {
   return (
     <>
       <Paragraph>Este recurso irá procurar por</Paragraph>
-      <ul style={{fontSize: "0.875rem", marginTop: "0.5rem", color: "#607b99"}}>
+      <ul
+        style={{ fontSize: '0.875rem', marginTop: '0.5rem', color: '#607b99' }}
+      >
         <li>Registros de eventos que podem ter a action vazia</li>
         <li>Loops no fluxo</li>
         <li>
@@ -46,18 +50,18 @@ export const InconsistenciesForm = (): JSX.Element => {
       </ul>
 
       <Block marginTop={2}>
-        <BdsButton type="submit" variant="primary" onClick={handle}>
+        <BdsButton
+          type="submit"
+          variant="primary"
+          onClick={handleInconsistencies}
+        >
           Verificar
         </BdsButton>
       </Block>
 
-      <Block paddingY={1}>
-          {loopBlocksMessage}
-      </Block>
+      <Block paddingY={1}>{loopBlocksMessage}</Block>
 
-      <Block paddingY={1}>
-          {trackingInconsistenceMessage}
-      </Block>
+      <Block paddingY={1}>{trackingInconsistenceMessage}</Block>
     </>
   );
 };
