@@ -8,12 +8,17 @@ import {
 
 import { KeywordsConfig } from './pages/KeywordConfig';
 import { Flex } from '@components/Flex';
+import { SnippetsConfig } from './pages/SnippetsConfig';
 
 const Pages = {
   keywordConfig: {
     title: 'Configuração de palavra chave',
     component: <KeywordsConfig />,
   },
+  SnippetsConfig: {
+    title: 'Configuração dos snippets',
+    component: <SnippetsConfig />,
+  }
 };
 
 type Page = keyof typeof Pages | 'home';
@@ -41,6 +46,14 @@ export const App = (): JSX.Element => {
               onClick={goTo('keywordConfig')}
             >
               Configurar palavras-chaves de filtro
+            </BdsButton>
+
+            <BdsButton
+              icon="filter"
+              variant="secondary"
+              onClick={goTo('SnippetsConfig')}
+            >
+              Configurar Snippets
             </BdsButton>
           </div>
         </div>

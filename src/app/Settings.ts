@@ -9,6 +9,7 @@ export const Settings = {
   hmgKey: 'hmg',
   betaKey: 'beta',
   devKey: 'dev',
+  personalSnippets: []
 };
 
 export const mergeSettings = (newSettings: Partial<typeof Settings>): void => {
