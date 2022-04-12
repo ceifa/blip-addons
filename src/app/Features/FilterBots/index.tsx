@@ -4,10 +4,10 @@ import * as ReactDOM from 'react-dom';
 import { BaseFeature } from '@features/BaseFeature';
 import { Filter } from './Filter';
 
-const FILTER_ID = '#blip-addons-filter';
+const FILTER_ID = 'blip-addons-filter';
 
 export class FilterBots extends BaseFeature {
-  public static shouldRunOnce = true;
+  public static shouldAlwaysClean = true;
 
   private getHeader(): HTMLElement {
     return document.querySelector('.move-bots-button-container');
@@ -28,20 +28,14 @@ export class FilterBots extends BaseFeature {
   }
 
   private matchesAny(source: string, patterns: RegExp[]): boolean {
-    for (const pattern of patterns) {
-      if (pattern.test(source)) {
-        return true;
-      }
-    }
-
-    return false;
+    return patterns.some((pattern) => pattern.test(source));
   }
 
   private getRegexes(keywords: string): RegExp[] {
     return keywords
       .split(',')
       .map((keyword) => keyword.trim())
-      .map((keyword) => new RegExp(`\\b${keyword}\\b`, 'gi'));
+      .map((keyword) => new RegExp(`\\b${keyword}\\b`, 'i'));
   }
 
   private handleChange = (e: any): void => {
@@ -49,7 +43,9 @@ export class FilterBots extends BaseFeature {
     const contacts = this.allContacts;
 
     for (const contact of contacts) {
-      const contactName = contact.querySelector('.contact-name').innerHTML;
+      const contactName = (
+        contact.querySelector('.contact-name span') as HTMLElement
+      ).innerText;
 
       contact.style.display = this.matchesAny(contactName, regexes)
         ? 'block'
