@@ -49,7 +49,7 @@ export const App = (): JSX.Element => {
             </BdsButton>
 
             <BdsButton
-              icon="filter"
+              icon="file-java-script"
               variant="secondary"
               onClick={goTo('SnippetsConfig')}
             >
