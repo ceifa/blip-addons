@@ -9,6 +9,7 @@ import {
 import { KeywordsConfig } from './pages/KeywordConfig';
 import { Flex } from '@components/Flex';
 import { SnippetsConfig } from './pages/snippetsConfig';
+import { ISSUES_URL, REPOSITORY_URL } from '~/Constants';
 
 const Pages = {
   keywordConfig: {
@@ -26,6 +27,18 @@ const Pages = {
 
 type Page = keyof typeof Pages | 'home';
 
+const openRepository = (): void =>
+  chrome.tabs.create({
+    active: true,
+    url: REPOSITORY_URL,
+  });
+
+const openIssue = (): void =>
+  chrome.tabs.create({
+    active: true,
+    url: ISSUES_URL,
+  });
+
 export const App = (): JSX.Element => {
   const [page, setPage] = React.useState('home' as Page);
 
@@ -37,7 +50,7 @@ export const App = (): JSX.Element => {
         <div style={{ padding: 15 }}>
           <Flex alignItems="center" gap={8}>
             <BdsIcon color="black" name="settings-general" />
-            <h2>Configurações</h2>
+            <h2>Configurações do Blip Addons</h2>
           </Flex>
 
           <div style={{ width: '80%', textAlign: 'left' }}>
@@ -54,6 +67,20 @@ export const App = (): JSX.Element => {
                 </BdsButton>
               </div>
             ))}
+
+            <h3>Endereços externos</h3>
+
+            <BdsButton
+              icon="external-file"
+              variant="secondary"
+              onClick={openRepository}
+            >
+              Repositório do Github
+            </BdsButton>
+
+            <BdsButton icon="warning" variant="secondary" onClick={openIssue}>
+              Reportar problema
+            </BdsButton>
           </div>
         </div>
       </div>
