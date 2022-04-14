@@ -13,8 +13,9 @@ import {
   BlipAccordionItem,
   BlipAccordionHeader,
   BlipAccordionButton,
-  BlipAccordionBody
+  BlipAccordionBody,
 } from '@components';
+import { createToast } from '~/Utils';
 
 const NOT_EMPTY_REGEX = /.+/i;
 
@@ -52,20 +53,12 @@ export const SnippetsConfig = (): JSX.Element => {
         !NOT_EMPTY_REGEX.test(snippet.key) &&
         !NOT_EMPTY_REGEX.test(snippet.value)
     );
+
     if (hasError) {
-      const toast = document.createElement('bds-toast');
-
-      document.querySelector('.toast-container').appendChild(toast);
-
-      toast.create({
-        buttonText: 'Ok',
-        actionType: 'icon',
-        buttonAction: 'close',
+      createToast({
         toastText: 'Todos os snippets devem ter um conteúdo não vazio',
         toastTitle: 'Falha ao salvar os Snippets!',
         variant: 'warning',
-        duration: 0,
-        position: 'top-right',
       });
 
       return;
@@ -75,25 +68,10 @@ export const SnippetsConfig = (): JSX.Element => {
       personalSnippets,
     });
 
-    chrome.storage.sync.set({
-      settings: {
-        personalSnippets,
-      },
-    });
-
-    const toast = document.createElement('bds-toast');
-
-    document.querySelector('.toast-container').appendChild(toast);
-
-    toast.create({
-      buttonText: 'Ok',
-      actionType: 'icon',
-      buttonAction: 'close',
+    createToast({
       toastText: 'Dados atualizados com sucesso',
       toastTitle: 'Sucesso!',
       variant: 'success',
-      duration: 0,
-      position: 'top-left',
     });
   };
 
@@ -102,11 +80,11 @@ export const SnippetsConfig = (): JSX.Element => {
       <div>
         {personalSnippets.length === 0 && <EmptySnippets />}
 
-        <Block width='100%'>
+        <Block width="100%">
           <BlipAccordion>
             {personalSnippets.map((field, index) => {
               return (
-                <BlipAccordionItem borderTop={0} key={uuid()}>
+                <BlipAccordionItem borderTop={0} key={index}>
                   <BlipAccordionHeader>
                     <Flex className="justify-between">
                       <BlipAccordionButton
@@ -127,7 +105,17 @@ export const SnippetsConfig = (): JSX.Element => {
                       <div style={{ width: '95%' }}>
                         <Input
                           value={field.key}
-                          onChange={(e) => (field.key = e.target.value)}
+                          onChange={(e) => {
+                            setPersonalSnippets(
+                              personalSnippets.map((personalSnippets, i) => {
+                                return i === index
+                                  ? { ...personalSnippets, key: e.target.value }
+                                  : personalSnippets;
+                              })
+                            );
+
+                            field.key = e.target.value;
+                          }}
                           errorMessage={error[index]}
                           label="Nome do Snippet"
                           type="text"
@@ -151,9 +139,10 @@ export const SnippetsConfig = (): JSX.Element => {
               );
             })}
           </BlipAccordion>
-            <br />
+          <br />
           <Paragraph>
-            * Recarregue as páginas do builder abertas para carregar os novos snippets.
+            * Recarregue as páginas do builder abertas para carregar os novos
+            snippets.
           </Paragraph>
         </Block>
       </div>
@@ -175,8 +164,15 @@ export const SnippetsConfig = (): JSX.Element => {
    */
   const removeLine = (index: number): void => {
     setError([]);
-    setPersonalSnippets(personalSnippets.filter((_, i) => i !== index));
-    updateSettings();
+    const newPersonalSnippets = personalSnippets.filter((_, i) => i !== index);
+    setPersonalSnippets(newPersonalSnippets);
+    setSettings({ personalSnippets: newPersonalSnippets });
+
+    createToast({
+      toastText: 'Snippet removido com sucesso',
+      toastTitle: 'Sucesso!',
+      variant: 'success',
+    });
   };
 
   return (

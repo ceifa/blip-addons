@@ -7,6 +7,7 @@ import {
 } from '@features/RemoveGlobalTrackings/ConfirmationAlert';
 import { OVERLAY_ID } from './Constants';
 import type { FeatureRequest } from './types';
+import { VariantType } from 'blip-ds/dist/types/components/toast/toast-interface';
 
 const BUILDER_HTML_BLOCK_TAG = 'builder-node';
 
@@ -206,4 +207,31 @@ export const removeOverlay = (): void => {
   if (overlay) {
     document.getElementById(OVERLAY_ID).remove();
   }
+};
+
+type ToastProps = {
+  toastText: string;
+  toastTitle: string;
+  variant: VariantType;
+};
+
+export const createToast = ({
+  toastText,
+  toastTitle,
+  variant,
+}: ToastProps): void => {
+  const toast = document.createElement('bds-toast');
+
+  document.querySelector('.toast-container').appendChild(toast);
+
+  toast.create({
+    buttonText: 'Ok',
+    actionType: 'icon',
+    buttonAction: 'close',
+    toastText,
+    toastTitle,
+    variant,
+    duration: 1,
+    position: 'top-left',
+  });
 };
