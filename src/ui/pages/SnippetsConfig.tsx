@@ -48,20 +48,31 @@ export const SnippetsConfig = (): JSX.Element => {
   }, []);
 
   const updateSettings = (): void => {
-    const hasError = personalSnippets.find(
+    const hasRepeated =
+      Array.from(
+        new Set(personalSnippets.map((personalSnippet) => personalSnippet.key))
+      ).length < personalSnippets.length;
+
+    if (hasRepeated) {
+      return createToast({
+        toastText: 'Não podem haver 2 snippets com o mesmo nome',
+        toastTitle: 'Falha ao salvar os Snippets!',
+        variant: 'warning',
+      });
+    }
+
+    const hasEmpty = personalSnippets.find(
       (snippet) =>
         !NOT_EMPTY_REGEX.test(snippet.key) &&
         !NOT_EMPTY_REGEX.test(snippet.value)
     );
 
-    if (hasError) {
-      createToast({
+    if (hasEmpty) {
+      return createToast({
         toastText: 'Todos os snippets devem ter um conteúdo não vazio',
         toastTitle: 'Falha ao salvar os Snippets!',
         variant: 'warning',
       });
-
-      return;
     }
 
     setSettings({
@@ -84,7 +95,7 @@ export const SnippetsConfig = (): JSX.Element => {
           <BlipAccordion>
             {personalSnippets.map((field, index) => {
               return (
-                <BlipAccordionItem borderTop={0} key={index}>
+                <BlipAccordionItem borderTop={0} key={field.id}>
                   <BlipAccordionHeader>
                     <Flex className="justify-between">
                       <BlipAccordionButton
@@ -154,7 +165,10 @@ export const SnippetsConfig = (): JSX.Element => {
    *
    */
   const addNewLine = (): void => {
-    setPersonalSnippets([...personalSnippets, { key: '', value: '' }]);
+    setPersonalSnippets([
+      ...personalSnippets,
+      { id: uuid(), key: '', value: '' },
+    ]);
   };
 
   /**

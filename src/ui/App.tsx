@@ -8,17 +8,20 @@ import {
 
 import { KeywordsConfig } from './pages/KeywordConfig';
 import { Flex } from '@components/Flex';
-import { SnippetsConfig } from './pages/SnippetsConfig';
+import { SnippetsConfig } from './pages/snippetsConfig';
 
 const Pages = {
   keywordConfig: {
     title: 'Configuração de palavra chave',
     component: <KeywordsConfig />,
+    icon: 'filter',
   },
-  SnippetsConfig: {
+
+  snippetsConfig: {
     title: 'Configuração dos snippets',
     component: <SnippetsConfig />,
-  }
+    icon: 'file-java-script',
+  },
 };
 
 type Page = keyof typeof Pages | 'home';
@@ -32,7 +35,7 @@ export const App = (): JSX.Element => {
     return (
       <div style={{ position: 'relative' }}>
         <div style={{ padding: 15 }}>
-          <Flex alignItems="center" gap={10}>
+          <Flex alignItems="center" gap={8}>
             <BdsIcon color="black" name="settings-general" />
             <h2>Configurações</h2>
           </Flex>
@@ -40,21 +43,17 @@ export const App = (): JSX.Element => {
           <div style={{ width: '80%', textAlign: 'left' }}>
             <h3>Recursos</h3>
 
-            <BdsButton
-              icon="filter"
-              variant="secondary"
-              onClick={goTo('keywordConfig')}
-            >
-              Configurar palavras-chaves de filtro
-            </BdsButton>
-
-            <BdsButton
-              icon="file-java-script"
-              variant="secondary"
-              onClick={goTo('SnippetsConfig')}
-            >
-              Configurar Snippets
-            </BdsButton>
+            {Object.keys(Pages).map((page, i) => (
+              <div key={i} style={{ marginBottom: 5 }}>
+                <BdsButton
+                  icon={Pages[page].icon}
+                  variant="secondary"
+                  onClick={goTo(page as keyof typeof Pages)}
+                >
+                  {Pages[page].title}
+                </BdsButton>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -72,14 +71,7 @@ export const App = (): JSX.Element => {
         }}
       ></div>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 15,
-        }}
-      >
+      <Flex alignItems="center" gap={5}>
         <BdsTooltip position="right-center" tooltipText="Voltar">
           <BdsButtonIcon
             size="short"
@@ -89,10 +81,8 @@ export const App = (): JSX.Element => {
           />
         </BdsTooltip>
 
-        <div style={{ width: '85%' }}>
-          <h2>{currentPage.title}</h2>
-        </div>
-      </div>
+        <h2>{currentPage.title}</h2>
+      </Flex>
 
       <div style={{ width: '80%', margin: '0 auto' }}>
         {currentPage.component}
