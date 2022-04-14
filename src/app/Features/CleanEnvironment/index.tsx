@@ -57,7 +57,15 @@ export class CleanEnvironment extends BaseFeature {
     const hasBuilderContaner = !!builderContainer;
 
     if (hasBuilderContaner) {
-      builderContainer.style.height = 'calc(100vh - 56px)';
+      const canvasWrapper = builderContainer.querySelector('div');
+      const canvas = document.querySelector('#canvas');
+      const hasCanvas = canvas && canvasWrapper;
+
+      if (hasCanvas) {
+        canvas.classList.add('h-100');
+        canvasWrapper.classList.add('h-100');
+        builderContainer.style.height = 'calc(100vh - 56px)';
+      }
     }
   }
 
