@@ -22,15 +22,6 @@ export const KeywordsConfig = (): JSX.Element => {
   }, []);
 
   const updateSettings = (): void => {
-    chrome.storage.sync.set({
-      settings: {
-        prodKey,
-        hmgKey,
-        betaKey,
-        devKey,
-      },
-    });
-
     setSettings({
       prodKey,
       hmgKey,
@@ -90,15 +81,16 @@ export const KeywordsConfig = (): JSX.Element => {
             onChange={(e) => setDevKey(e.target.value)}
           />
 
-          <Flex alignItems="center" gap={10}>
-            <BdsButton onClick={updateSettings} type="submit">
-              Aplicar
-            </BdsButton>
+          <Paragraph>
+            * Recarregue as páginas do builder abertas para carregar os novos
+            snippets.
+          </Paragraph>
 
-            <Paragraph>
-              É necessário atualizar a página para que as mundaças ocorram.
-            </Paragraph>
-          </Flex>
+          <div style={{ display: 'flex', justifyContent: 'right' }}>
+            <BdsButton onClick={updateSettings} type="submit">
+              Salvar
+            </BdsButton>
+          </div>
         </div>
       </div>
     </>
