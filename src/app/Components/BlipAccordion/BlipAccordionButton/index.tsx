@@ -5,6 +5,7 @@ import { BdsIcon } from 'blip-ds/dist/blip-ds-react';
 
 export type BlipAccordionButtonProps = {
   title: string;
+  color?: string;
 };
 
 const ARROW_RIGHT = 'arrow-right';
@@ -12,6 +13,7 @@ const ARROW_DOWN = 'arrow-down';
 
 export const BlipAccordionButton = ({
   title,
+  color
 }: BlipAccordionButtonProps): JSX.Element => {
   const [arrowState, setArrowState] = React.useState(ARROW_RIGHT);
 
@@ -33,6 +35,7 @@ export const BlipAccordionButton = ({
         paddingX={5.1}
         mb={2}
         border={0}
+        bgColor={color || '#FFF'}
       >
         <BdsIcon
           color="#A9C0C5"
