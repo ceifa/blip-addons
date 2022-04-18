@@ -197,7 +197,7 @@ export const RemoveGlobalTrackingsForm = (): JSX.Element => {
 
         <HorizontalStack marginTop={2}>
           <BdsButton size="tall" variant="dashed" onClick={addNewLine}>
-            Add Tracking
+            Adicionar
           </BdsButton>
         </HorizontalStack>
 

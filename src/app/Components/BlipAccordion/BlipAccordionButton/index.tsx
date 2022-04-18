@@ -35,7 +35,6 @@ export const BlipAccordionButton = ({
         paddingX={5.1}
         mb={2}
         border={0}
-        bgColor={color || '#FFF'}
         cursor="pointer"
       >
         <BdsIcon
