@@ -4,7 +4,7 @@ import { BdsButton } from 'blip-ds/dist/blip-ds-react';
 import { setSettings, Settings } from '~/Settings';
 import { Input } from '@components/Input';
 import { Paragraph } from '@components/Paragraph';
-import { Flex } from '@components/Flex';
+import { createToast } from '~/Utils';
 
 export const KeywordsConfig = (): JSX.Element => {
   const [prodKey, setProdKey] = React.useState(Settings.prodKey);
@@ -29,19 +29,10 @@ export const KeywordsConfig = (): JSX.Element => {
       devKey,
     });
 
-    const toast = document.createElement('bds-toast');
-
-    document.querySelector('.toast-container').appendChild(toast);
-
-    toast.create({
-      buttonText: 'Ok',
-      actionType: 'icon',
-      buttonAction: 'close',
+    createToast({
       toastText: 'Dados salvo com sucesso',
-      toastTitle: 'Sucesso!',
+      toastTitle: 'Sucesso novo toast!',
       variant: 'success',
-      duration: 0,
-      position: 'top-right',
     });
   };
 

@@ -13,7 +13,7 @@ const ARROW_DOWN = 'arrow-down';
 
 export const BlipAccordionButton = ({
   title,
-  color
+  color,
 }: BlipAccordionButtonProps): JSX.Element => {
   const [arrowState, setArrowState] = React.useState(ARROW_RIGHT);
 
@@ -36,6 +36,7 @@ export const BlipAccordionButton = ({
         mb={2}
         border={0}
         bgColor={color || '#FFF'}
+        cursor="pointer"
       >
         <BdsIcon
           color="#A9C0C5"
