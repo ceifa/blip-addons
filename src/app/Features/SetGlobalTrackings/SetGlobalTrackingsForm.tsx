@@ -218,7 +218,7 @@ export const SetGlobalTrackingsForm = (): JSX.Element => {
 
         <HorizontalStack marginTop={2}>
           <BdsButton variant="dashed" onClick={addNewLine}>
-            Add Tracking
+            Adicionar
           </BdsButton>
 
           <BdsButton type="submit" variant="primary" onClick={handleSubmit}>
