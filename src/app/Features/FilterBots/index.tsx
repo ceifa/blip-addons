@@ -45,8 +45,6 @@ export class FilterBots extends BaseFeature {
       [Constants.BETA]: Settings.betaKey,
     };
 
-    console.log(keywordsMap);
-
     return keywordsMap[environment]
       .map((keyword) => keyword.trim())
       .map((keyword) => new RegExp(`\\b${keyword}\\b`, 'i'));
