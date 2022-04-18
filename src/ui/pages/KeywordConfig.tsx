@@ -74,7 +74,7 @@ export const KeywordsConfig = (): JSX.Element => {
 
           <Paragraph>
             * Recarregue as páginas do builder abertas para carregar os novos
-            snippets.
+            ajustes.
           </Paragraph>
 
           <div style={{ display: 'flex', justifyContent: 'right' }}>
