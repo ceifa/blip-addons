@@ -213,12 +213,14 @@ type ToastProps = {
   toastText: string;
   toastTitle: string;
   variant: VariantType;
+  duration?: number;
 };
 
 export const createToast = ({
   toastText,
   toastTitle,
   variant,
+  duration = 1
 }: ToastProps): void => {
   const toast = document.createElement('bds-toast');
 
@@ -231,7 +233,7 @@ export const createToast = ({
     toastText,
     toastTitle,
     variant,
-    duration: 1,
+    duration: duration,
     position: 'top-left',
   });
 };

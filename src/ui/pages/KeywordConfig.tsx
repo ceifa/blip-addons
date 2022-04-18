@@ -68,8 +68,8 @@ export const KeywordsConfig = (): JSX.Element => {
           />
 
           <Paragraph>
-            * Recarregue as páginas do builder abertas para atualizar os
-            valores.
+            * Recarregue as páginas do builder abertas para carregar os novos
+            ajustes.
           </Paragraph>
 
           <div style={{ display: 'flex', justifyContent: 'right' }}>

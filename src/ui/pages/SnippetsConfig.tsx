@@ -58,12 +58,13 @@ export const SnippetsConfig = (): JSX.Element => {
         toastText: 'Não podem haver 2 snippets com o mesmo nome',
         toastTitle: 'Falha ao salvar os Snippets!',
         variant: 'warning',
+        duration: 3
       });
     }
 
     const hasEmpty = personalSnippets.find(
       (snippet) =>
-        !NOT_EMPTY_REGEX.test(snippet.key) &&
+        !NOT_EMPTY_REGEX.test(snippet.key) ||
         !NOT_EMPTY_REGEX.test(snippet.value)
     );
 
@@ -72,6 +73,7 @@ export const SnippetsConfig = (): JSX.Element => {
         toastText: 'Todos os snippets devem ter um conteúdo não vazio',
         toastTitle: 'Falha ao salvar os Snippets!',
         variant: 'warning',
+        duration: 3
       });
     }
 
@@ -83,6 +85,7 @@ export const SnippetsConfig = (): JSX.Element => {
       toastText: 'Dados atualizados com sucesso',
       toastTitle: 'Sucesso!',
       variant: 'success',
+      duration: 2
     });
   };
 
