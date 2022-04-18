@@ -102,7 +102,7 @@ export const SnippetsConfig = (): JSX.Element => {
                         color="#FFF"
                         title={field.key || 'Novo Snippet'}
                       />
-                      <div style={{ alignSelf: 'center' }}>
+                      <div style={{ alignSelf: 'center', cursor: 'pointer' }}>
                         <BdsIcon
                           name="trash"
                           color="red"

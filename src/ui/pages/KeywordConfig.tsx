@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { BdsButton } from 'blip-ds/dist/blip-ds-react';
+import { BdsButton, BdsInputChips } from 'blip-ds/dist/blip-ds-react';
 
 import { setSettings, Settings } from '~/Settings';
-import { Input } from '@components/Input';
 import { Paragraph } from '@components/Paragraph';
 import { createToast } from '~/Utils';
 
@@ -40,41 +39,37 @@ export const KeywordsConfig = (): JSX.Element => {
     <>
       <div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
-          <Input
-            helperMessage="Separe as palavras chaves por vírgula"
-            label="Palavras chaves de PRODUÇÃO"
+          <BdsInputChips
+            label="Palavres chaves da PRODUÇÃO"
             type="text"
-            value={prodKey}
-            onChange={(e) => setProdKey(e.target.value)}
+            chips={prodKey}
+            onBdsChangeChips={(e) => setProdKey(e.detail.data)}
           />
 
-          <Input
-            helperMessage="Separe as palavras chaves por vírgula"
-            label="Palavras chaves de HOMOLOGAÇÃO"
+          <BdsInputChips
+            label="Palavres chaves de HOMOLOGAÇÃO"
             type="text"
-            value={hmgKey}
-            onChange={(e) => setHmgKey(e.target.value)}
+            chips={hmgKey}
+            onBdsChangeChips={(e) => setHmgKey(e.detail.data)}
           />
 
-          <Input
-            helperMessage="Separe as palavras chaves por vírgula"
-            label="Palavras chaves de BETA"
+          <BdsInputChips
+            label="Palavres chaves de BETA"
             type="text"
-            value={betaKey}
-            onChange={(e) => setBetaKey(e.target.value)}
+            chips={betaKey}
+            onBdsChangeChips={(e) => setBetaKey(e.detail.data)}
           />
 
-          <Input
-            helperMessage="Separe as palavras chaves por vírgula"
-            label="Palavras chaves de DESENVOLVIMENTO"
+          <BdsInputChips
+            label="Palavres chaves de DESENVOLVIMENTO"
             type="text"
-            value={devKey}
-            onChange={(e) => setDevKey(e.target.value)}
+            chips={devKey}
+            onBdsChangeChips={(e) => setDevKey(e.detail.data)}
           />
 
           <Paragraph>
-            * Recarregue as páginas do builder abertas para carregar os novos
-            snippets.
+            * Recarregue as páginas do builder abertas para atualizar os
+            valores.
           </Paragraph>
 
           <div style={{ display: 'flex', justifyContent: 'right' }}>

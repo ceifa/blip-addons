@@ -1,6 +1,6 @@
 # Blip Addons
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This extension provides a collection of utilities for working with [Blip](https://portal.blip.ai/).
 
@@ -10,7 +10,7 @@ This extension provides a collection of utilities for working with [Blip](https:
 - Allows <kbd>Ctrl + C</kbd>, <kbd>Ctrl + V</kbd> in different bots.
 - Changes the uppercase inputs to normal inputs.
 - Hability to add global waiting limit time to inputs.
-- Hability to add with more flexibility global trackings.
+- Hability to add global trackings with more flexibility.
 - Hability to filter bots by environment.
 - More features in development!
 
@@ -47,7 +47,6 @@ $ yarn build
 5. Go to [`chrome://extensions`](chrome://extensions).
 
 6. Click in `Load unpacked` and select the `dist` folder in the directory you've cloned this repository.
-
 
 ## Contribute
 

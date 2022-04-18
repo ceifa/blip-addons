@@ -2,15 +2,20 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { BaseFeature } from '@features/BaseFeature';
+import * as Constants from './Constants';
 import { Filter } from './Filter';
+import { Settings } from '~/Settings';
 
 const FILTER_ID = 'blip-addons-filter';
+const FILTER_CONTAINER = '.move-bots-button-container';
 
 export class FilterBots extends BaseFeature {
   public static shouldAlwaysClean = true;
 
   private getHeader(): HTMLElement {
-    return document.querySelector('.move-bots-button-container');
+    const container = document.querySelector(FILTER_CONTAINER) as HTMLElement;
+
+    return container;
   }
 
   public handle(): void {
@@ -31,9 +36,18 @@ export class FilterBots extends BaseFeature {
     return patterns.some((pattern) => pattern.test(source));
   }
 
-  private getRegexes(keywords: string): RegExp[] {
-    return keywords
-      .split(',')
+  private getRegexes(environment: keyof typeof Constants): RegExp[] {
+    const keywordsMap = {
+      [Constants.ALL]: [''],
+      [Constants.PRD]: Settings.prodKey,
+      [Constants.HMG]: Settings.hmgKey,
+      [Constants.DEV]: Settings.devKey,
+      [Constants.BETA]: Settings.betaKey,
+    };
+
+    console.log(keywordsMap);
+
+    return keywordsMap[environment]
       .map((keyword) => keyword.trim())
       .map((keyword) => new RegExp(`\\b${keyword}\\b`, 'i'));
   }
@@ -74,14 +88,13 @@ export class FilterBots extends BaseFeature {
 
   public cleanup(): any {
     const header = this.getHeader();
+    this.paintRouters();
 
     if (header) {
       header.style.display = 'flex';
       header.style.alignItems = 'center';
       header.style.justifyContent = 'space-between';
       header.style.padding = '5px';
-
-      this.paintRouters();
 
       if (!this.hasFilter) {
         const filter = document.createElement('div');

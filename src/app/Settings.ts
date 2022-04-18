@@ -5,10 +5,10 @@ export const Settings = {
   lastGlobalTrackings: [],
   lastRemovedGlobalTrackings: [],
   isCleanEnviroment: false,
-  prodKey: 'prd,prod',
-  hmgKey: 'hmg',
-  betaKey: 'beta',
-  devKey: 'dev',
+  prodKey: ['prd', 'prod'],
+  hmgKey: ['hmg'],
+  betaKey: ['beta'],
+  devKey: ['dev'],
   personalSnippets: [],
 };
 
