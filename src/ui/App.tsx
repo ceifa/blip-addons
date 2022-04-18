@@ -8,15 +8,36 @@ import {
 
 import { KeywordsConfig } from './pages/KeywordConfig';
 import { Flex } from '@components/Flex';
+import { SnippetsConfig } from './pages/snippetsConfig';
+import { ISSUES_URL, REPOSITORY_URL } from '~/Constants';
 
 const Pages = {
   keywordConfig: {
     title: 'Configuração de palavra chave',
     component: <KeywordsConfig />,
+    icon: 'filter',
+  },
+
+  snippetsConfig: {
+    title: 'Configuração dos snippets',
+    component: <SnippetsConfig />,
+    icon: 'file-java-script',
   },
 };
 
 type Page = keyof typeof Pages | 'home';
+
+const openRepository = (): void =>
+  chrome.tabs.create({
+    active: true,
+    url: REPOSITORY_URL,
+  });
+
+const openIssue = (): void =>
+  chrome.tabs.create({
+    active: true,
+    url: ISSUES_URL,
+  });
 
 export const App = (): JSX.Element => {
   const [page, setPage] = React.useState('home' as Page);
@@ -27,20 +48,38 @@ export const App = (): JSX.Element => {
     return (
       <div style={{ position: 'relative' }}>
         <div style={{ padding: 15 }}>
-          <Flex alignItems="center" gap={10}>
+          <Flex alignItems="center" gap={8}>
             <BdsIcon color="black" name="settings-general" />
-            <h2>Configurações</h2>
+            <h2>Configurações do Blip Addons</h2>
           </Flex>
 
           <div style={{ width: '80%', textAlign: 'left' }}>
             <h3>Recursos</h3>
 
+            {Object.keys(Pages).map((page, i) => (
+              <div key={i} style={{ marginBottom: 5 }}>
+                <BdsButton
+                  icon={Pages[page].icon}
+                  variant="secondary"
+                  onClick={goTo(page as keyof typeof Pages)}
+                >
+                  {Pages[page].title}
+                </BdsButton>
+              </div>
+            ))}
+
+            <h3>Endereços externos</h3>
+
             <BdsButton
-              icon="filter"
+              icon="external-file"
               variant="secondary"
-              onClick={goTo('keywordConfig')}
+              onClick={openRepository}
             >
-              Configurar palavras-chaves de filtro
+              Repositório do Github
+            </BdsButton>
+
+            <BdsButton icon="warning" variant="secondary" onClick={openIssue}>
+              Reportar problema
             </BdsButton>
           </div>
         </div>
@@ -59,14 +98,7 @@ export const App = (): JSX.Element => {
         }}
       ></div>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 15,
-        }}
-      >
+      <Flex alignItems="center" gap={5}>
         <BdsTooltip position="right-center" tooltipText="Voltar">
           <BdsButtonIcon
             size="short"
@@ -76,10 +108,8 @@ export const App = (): JSX.Element => {
           />
         </BdsTooltip>
 
-        <div style={{ width: '85%' }}>
-          <h2>{currentPage.title}</h2>
-        </div>
-      </div>
+        <h2>{currentPage.title}</h2>
+      </Flex>
 
       <div style={{ width: '80%', margin: '0 auto' }}>
         {currentPage.component}

@@ -9,6 +9,9 @@ export type InputProps = {
   onSubmit?: (e) => void;
   errorMessage?: string;
   helperMessage?: string;
+  rows?: number;
+  cols?: number;
+  isTextarea?: boolean;
 };
 
 export const Input = ({
@@ -19,6 +22,9 @@ export const Input = ({
   onSubmit,
   errorMessage,
   helperMessage,
+  rows,
+  cols,
+  isTextarea
 }: InputProps): JSX.Element => {
   return (
     <div className="relative">
@@ -31,6 +37,9 @@ export const Input = ({
         errorMessage={errorMessage}
         danger={!!errorMessage}
         helperMessage={helperMessage}
+        rows={rows}
+        cols={cols}
+        isTextarea={isTextarea}
       />
     </div>
   );

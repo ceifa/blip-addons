@@ -17,7 +17,7 @@ export class CleanEnvironment extends BaseFeature {
   }
 
   private getMainNavbar(): HTMLElement {
-    return document.querySelector('.main-navbar-content');
+    return document.querySelector('.main-navbar-content, .main-header-top ');
   }
 
   private getBuilderContainer(): HTMLElement {
