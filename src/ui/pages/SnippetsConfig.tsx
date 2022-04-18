@@ -58,7 +58,7 @@ export const SnippetsConfig = (): JSX.Element => {
         toastText: 'Não podem haver 2 snippets com o mesmo nome',
         toastTitle: 'Falha ao salvar os Snippets!',
         variant: 'warning',
-        duration: 3
+        duration: 3,
       });
     }
 
@@ -73,7 +73,7 @@ export const SnippetsConfig = (): JSX.Element => {
         toastText: 'Todos os snippets devem ter um conteúdo não vazio',
         toastTitle: 'Falha ao salvar os Snippets!',
         variant: 'warning',
-        duration: 3
+        duration: 3,
       });
     }
 
@@ -85,7 +85,7 @@ export const SnippetsConfig = (): JSX.Element => {
       toastText: 'Dados atualizados com sucesso',
       toastTitle: 'Sucesso!',
       variant: 'success',
-      duration: 2
+      duration: 2,
     });
   };
 
@@ -102,7 +102,6 @@ export const SnippetsConfig = (): JSX.Element => {
                   <BlipAccordionHeader>
                     <Flex className="justify-between">
                       <BlipAccordionButton
-                        color="#FFF"
                         title={field.key || 'Novo Snippet'}
                       />
                       <div style={{ alignSelf: 'center', cursor: 'pointer' }}>
