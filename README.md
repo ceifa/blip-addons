@@ -1,11 +1,10 @@
-<center>
-  <img src=".github/blipinho.png">
-  <h1>Blip Addons</h1>
+<p align="center">
+<img src=".github/blipinho.png" />
+<h1 align="center">Blip Addons</h1>
+<p align="center"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" /></p>
+</p>
 
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-</center>
-
-[![Baixar na Chrome Store](.github/chrome.png)](https://chrome.google.com/webstore/detail/blip-addons/niopbdedfbgmagppkckachanclmdomeg)
+[![Download at Chrome Store](.github/chrome.png)](https://chrome.google.com/webstore/detail/blip-addons/niopbdedfbgmagppkckachanclmdomeg)
 
 
 This extension provides a collection of utilities for working with [Blip](https://portal.blip.ai/).
@@ -23,6 +22,8 @@ This extension provides a collection of utilities for working with [Blip](https:
 ## How to install
 
 You can download this extension at the [Chrome Store](https://chrome.google.com/webstore/detail/blip-addons/niopbdedfbgmagppkckachanclmdomeg).
+
+[![Download at Chrome Store](.github/chrome.png)](https://chrome.google.com/webstore/detail/blip-addons/niopbdedfbgmagppkckachanclmdomeg)
 
 ### Manual installation
 
