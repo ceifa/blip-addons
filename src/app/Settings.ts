@@ -5,16 +5,31 @@ export const Settings = {
   lastGlobalTrackings: [],
   lastRemovedGlobalTrackings: [],
   isCleanEnviroment: false,
+  prodKey: ['prd', 'prod'],
+  hmgKey: ['hmg'],
+  betaKey: ['beta'],
+  devKey: ['dev'],
+  personalSnippets: [],
+};
+
+export const mergeSettings = (newSettings: Partial<typeof Settings>): void => {
+  Object.assign(Settings, newSettings);
 };
 
 export const setSettings = (newSettings: Partial<typeof Settings>): void => {
-  Object.assign(Settings, newSettings);
+  mergeSettings(newSettings);
+
+  const isFromServer = Boolean(chrome && chrome.storage);
 
   const settingsUpdate: SettingsUpdate = {
     isSettingsUpdate: true,
-    newSettings,
-    isFromClient: true,
+    newSettings: Settings,
+    isFromClient: !isFromServer,
   };
+
+  if (isFromServer) {
+    chrome.storage.sync.set({ settings: Settings });
+  }
 
   window.postMessage(settingsUpdate, '*');
 };

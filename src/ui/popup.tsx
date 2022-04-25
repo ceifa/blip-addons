@@ -1,6 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { applyPolyfills, defineCustomElements } from 'blip-ds/loader';
 
-export const Hello = (): JSX.Element => <div>Hello</div>;
+import { App } from './App';
 
-ReactDOM.render(<Hello />, document.getElementById('root'));
+import '../styles/popup.css';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
+applyPolyfills().then(() => {
+  defineCustomElements(window);
+});

@@ -28,11 +28,13 @@ export const BlipAccordionButton = ({
       <AccordionButton
         _focus={{ outline: 'none' }}
         _hover={{ bgColor: 'none' }}
+        bgColor="transparent"
         onClick={switchArrowState}
         paddingTop={10.1}
         paddingX={5.1}
         mb={2}
         border={0}
+        cursor="pointer"
       >
         <BdsIcon
           color="#A9C0C5"

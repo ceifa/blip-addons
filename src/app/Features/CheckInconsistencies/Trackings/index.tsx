@@ -1,5 +1,10 @@
 import { BaseFeature } from '../../BaseFeature';
-import { getBlocks, showSuccessToast } from '~/Utils';
+import {
+  createConfirmationAlert,
+  getBlocks,
+  removeOverlay,
+  showSuccessToast,
+} from '~/Utils';
 import { ConditionViewModel } from '~/types';
 import { Paragraph } from '@components';
 import * as React from 'react';
@@ -38,19 +43,25 @@ export class TrackingsInconsistencies extends BaseFeature {
     if (trackingsWithProblems.length > 0 && !hasToSetVariable) {
       return {
         trackingMessage: this.getTrackingMessage(trackingsWithProblems),
-        hasTrackings: true
+        hasTrackings: true,
       };
-    }
-    else {
+    } else {
       return {
         trackingMessage: EMPTY_REACT_TEMPLATE,
-        hasTrackings: false
+        hasTrackings: false,
       };
     }
   }
 
   private handleSubmit = (): void => {
-    this.handle(true);
+    createConfirmationAlert({
+      onCancel: () => removeOverlay(),
+      onConfirm: () => {
+        this.handle(true);
+        removeOverlay();
+      },
+    });
+
     showSuccessToast('Trackings Corrigidas!');
   };
 
@@ -61,12 +72,14 @@ export class TrackingsInconsistencies extends BaseFeature {
         {this.getHtmlList(list)}
 
         <Paragraph>
-          * Você deve alterar as condições de execução de trackings destes blocos para
-          evitar o possíveis erros.
-          <br />Você pode arrumar esses fluxos automaticamente apertando no botão abaixo.
+          * Você deve alterar as condições de execução de trackings destes
+          blocos para evitar o possíveis erros.
+          <br />
+          Você pode arrumar esses fluxos automaticamente apertando no botão
+          abaixo.
         </Paragraph>
 
-        <BdsButton type='submit' variant='primary' onClick={this.handleSubmit}>
+        <BdsButton type="submit" variant="primary" onClick={this.handleSubmit}>
           Definir
         </BdsButton>
       </>
@@ -74,11 +87,12 @@ export class TrackingsInconsistencies extends BaseFeature {
   };
 
   private getHtmlList = (list: any[]): any => {
-    console.log(list)
     return (
-      <ul style={{ fontSize: '0.875rem', marginTop: '0.5rem', color: '#607b99' }}>
+      <ul
+        style={{ fontSize: '0.875rem', marginTop: '0.5rem', color: '#607b99' }}
+      >
         {list.map((text, index) => (
-          <li key={index}>{text["$title"]}</li>
+          <li key={index}>{text['$title']}</li>
         ))}
       </ul>
     );
@@ -89,18 +103,24 @@ const actionCanBeNull = (action: any): boolean => {
   const conditionVariable = getTrackingActionVariable(action);
 
   if (hasConditionVariable(conditionVariable)) {
-    const processedConditionVariable = conditionVariable.replace('}}', '').replace('{{', '');
+    const processedConditionVariable = conditionVariable
+      .replace('}}', '')
+      .replace('{{', '');
 
     if (action.conditions.length === 0) {
       return true;
     }
 
-    if (processedConditionVariable === 'input.content' && !!action.conditions.find((x) => x.source === 'input')) {
+    if (
+      processedConditionVariable === 'input.content' &&
+      !!action.conditions.find((x) => x.source === 'input')
+    ) {
       return false;
     }
 
-    return !action.conditions.find((x) => x.variable === processedConditionVariable);
-
+    return !action.conditions.find(
+      (x) => x.variable === processedConditionVariable
+    );
   } else {
     return false;
   }
@@ -142,6 +162,9 @@ const getTrackingActionVariable = (action: any): string => {
   return EMPTY_STRING;
 };
 
-const hasTrackEvent = (trackingActions: any): boolean => trackingActions.length !== 0;
-const isTracking = (action: any): boolean => action.type === TRACKING_ACTION_NAME;
-const hasConditionVariable = (conditionVariable: any): boolean => conditionVariable !== EMPTY_STRING;
+const hasTrackEvent = (trackingActions: any): boolean =>
+  trackingActions.length !== 0;
+const isTracking = (action: any): boolean =>
+  action.type === TRACKING_ACTION_NAME;
+const hasConditionVariable = (conditionVariable: any): boolean =>
+  conditionVariable !== EMPTY_STRING;

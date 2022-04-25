@@ -14,6 +14,7 @@ import {
   Switch,
   Title,
 } from '@components';
+import { createConfirmationAlert, removeOverlay } from '~/Utils';
 
 const EmptyGlboalTrackings = (): JSX.Element => {
   return (
@@ -40,7 +41,7 @@ export const SetGlobalTrackingsForm = (): JSX.Element => {
   );
   const [error, setError] = React.useState([]);
   const [shouldDeleteCurrentExtras, setShouldDeleteCurrentExtras] =
-    React.useState(true);
+    React.useState(false);
 
   /**
    * Set the html tamplate for each global extra
@@ -175,10 +176,16 @@ export const SetGlobalTrackingsForm = (): JSX.Element => {
 
     setSettings({ lastGlobalTrackings: globalExtras });
 
-    new SetGlobalTrackings().handle(
-      globalSettingsWillBeSetted,
-      shouldDeleteCurrentExtras
-    );
+    createConfirmationAlert({
+      onCancel: () => removeOverlay(),
+      onConfirm: () => {
+        new SetGlobalTrackings().handle(
+          globalSettingsWillBeSetted,
+          shouldDeleteCurrentExtras
+        );
+        removeOverlay();
+      },
+    });
 
     setError(new Array(globalExtras.length));
   };
@@ -211,7 +218,7 @@ export const SetGlobalTrackingsForm = (): JSX.Element => {
 
         <HorizontalStack marginTop={2}>
           <BdsButton variant="dashed" onClick={addNewLine}>
-            Add Tracking
+            Adicionar
           </BdsButton>
 
           <BdsButton type="submit" variant="primary" onClick={handleSubmit}>

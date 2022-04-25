@@ -17,7 +17,7 @@
   "background": {
     "service_worker": "js/background.js"
   },
-  "permissions": ["storage", "tabs"],
+  "permissions": ["storage"],
   "host_permissions": ["*://*.blip.ai/*"],
   "web_accessible_resources": [
     {
