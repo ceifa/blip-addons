@@ -10,6 +10,7 @@ import { KeywordsConfig } from './pages/KeywordConfig';
 import { Flex } from '@components/Flex';
 import { SnippetsConfig } from './pages/snippetsConfig';
 import { ISSUES_URL, REPOSITORY_URL } from '~/Constants';
+import { setSettings } from '~/Settings';
 
 const Pages = {
   keywordConfig: {
@@ -43,6 +44,12 @@ export const App = (): JSX.Element => {
   const [page, setPage] = React.useState('home' as Page);
 
   const goTo = (page: Page) => () => setPage(page);
+
+  React.useEffect(() => {
+    chrome.storage.sync.get('settings', (result) => {
+      setSettings(result.settings);
+    });
+  }, []);
 
   if (page === 'home') {
     return (
